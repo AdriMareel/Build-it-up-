@@ -12,13 +12,6 @@ if (app.get('env') === 'production') {
   session.cookie.secure = true // serve secure cookies
 }
 
-app.get('/', (req, res) => {
-  let sessionData = req.session;
-	if (!sessionData.username) {
-    	res.sendFile(__dirname + '/front/html/login.html');
-	}	
-});
-
 http.listen(4200, () => {
   console.log('Serveur lancé sur le port 4200');
 });

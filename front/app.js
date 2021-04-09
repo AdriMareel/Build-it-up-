@@ -13,7 +13,6 @@ var game = new Phaser.Game(config);
 
 function preload(){
 	this.load.image('building','images/building.png');
-	this.load.image('mario','images/mario.png');
 }
 
 function create(){
