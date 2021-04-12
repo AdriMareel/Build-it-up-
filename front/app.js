@@ -20,6 +20,16 @@ function preload(){
 }
 
 function create(){
+	//Gestion scroll cam
+	var cam = this.cameras.main;
+
+	 this.input.on('pointermove', function (p) {
+    	if (!p.isDown) return;
+
+    		cam.scrollX -= (p.x - p.prevPosition.x) / cam.zoom;
+   			cam.scrollY -= (p.y - p.prevPosition.y) / cam.zoom;
+  		});
+
 	for(let i=0;i<10;i++) this.add.image(i*grassWidth/2,i*grassHeight/2,'grass');
 	for(let i=0;i<10;i++) this.add.image(i*grassWidth/2,i*grassHeight/2+grassHeight,'grass');
 	for(let i=0;i<15;i++) this.add.image(i*grassWidth/2,i*grassHeight/2-grassHeight,'grass');
