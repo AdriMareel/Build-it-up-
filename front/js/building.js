@@ -7,20 +7,3 @@ class Buildings{
 		this.social = social;
 	}
 }
-
-
-function allowDrop(ev) {
-	ev.preventDefault();
-}
-  
-function drag(ev) {
-	ev.dataTransfer.setData("text", ev.target.id);
-}
-  
-function drop(ev) {
-        ev.preventDefault();
-	    var data = ev.dataTransfer.getData("text");
-        var elem = document.getElementById(data);
-	    ev.target.appendChild(elem);
-        elem.setAttribute('draggable', false);
-}
