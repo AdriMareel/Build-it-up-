@@ -5,12 +5,14 @@ export default class MainScene extends Phaser.Scene{
 	preload(){
     	//affichage Grass
 		this.load.image('building','../images/building.png');
-		this.load.image('grass','../images/grass.png');
+		this.load.image("tiles", "images/terre.png");
+    	this.load.tilemapTiledJSON("map", "images/map.json");
 	}
 
 	create(){
-		let grassWidth = 386;
-		let grassHeight = 193;
+		const map = this.make.tilemap({ key: "map" });
+    	const tileset = map.addTilesetImage("terre", "tiles");
+    	const layer = map.createStaticLayer("Calque de Tuiles 1", tileset, 0, 0);
 		//Gestion scroll
 		var cam = this.cameras.main;
 
@@ -19,11 +21,6 @@ export default class MainScene extends Phaser.Scene{
             	cam.scrollX -= (p.x - p.prevPosition.x) / cam.zoom;
             	cam.scrollY -= (p.y - p.prevPosition.y) / cam.zoom;
     	});
-    
-		for(let i=0;i<15;i++) this.add.image(i*grassWidth/2,i*grassHeight/2,'grass');
-		for(let i=0;i<15;i++) this.add.image(i*grassWidth/2,i*grassHeight/2+grassHeight,'grass');
-		for(let i=0;i<15;i++) this.add.image(i*grassWidth/2,i*grassHeight/2-grassHeight,'grass');
-		for(let i=0;i<15;i++) this.add.image(i*grassWidth/2,i*grassHeight/2-2*grassHeight,'grass');	
 
 		var building = this.add.image(30,30, "building");
 		building.setInteractive();
@@ -51,5 +48,4 @@ export default class MainScene extends Phaser.Scene{
 	}
 }
 
-//import config from './app.js';
 
