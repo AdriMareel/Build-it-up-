@@ -15,11 +15,23 @@ let grassWidth = 386;
 let grassHeight = 193;
 
 function preload(){
-	this.load.image('building','images/building.png');
-	this.load.image('grass','images/grass.png');
+
+
+    //affichage Grass
+	this.load.image('building','../images/building.png');
+	this.load.image('grass','../images/grass.png');
 }
 
 function create(){
+	//Gestion scroll
+	var cam = this.cameras.main;
+
+	this.input.on('pointermove', function (p) {
+        if (!p.isDown) return;
+            cam.scrollX -= (p.x - p.prevPosition.x) / cam.zoom;
+            cam.scrollY -= (p.y - p.prevPosition.y) / cam.zoom;
+    });
+    
 	for(let i=0;i<15;i++) this.add.image(i*grassWidth/2,i*grassHeight/2,'grass');
 	for(let i=0;i<15;i++) this.add.image(i*grassWidth/2,i*grassHeight/2+grassHeight,'grass');
 	for(let i=0;i<15;i++) this.add.image(i*grassWidth/2,i*grassHeight/2-grassHeight,'grass');
