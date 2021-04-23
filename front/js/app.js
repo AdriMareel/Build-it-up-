@@ -8,6 +8,8 @@ const config = {
 	scene : [MainScene]
 }
 
+
+
 var game = new Phaser.Game(config);
 //export default config;
 

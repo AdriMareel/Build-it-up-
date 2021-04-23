@@ -2,17 +2,26 @@ class playmenu extends Phaser.Scene {
   constructor() {
     super("playmenu");
   }
+
   create() {
+
+    this.play = this.add.sprite(game.config.width * 0.47, game.config.height * 0.49, "play");
+    //set the width of the sprite
+            this.play.displayWidth = 200;
+            //scale evenly
+            this.play.scaleY = this.play.scaleX;
+
+    this.play.setScrollFactor(0);
 
     this.skybg = this.add.tileSprite(0, 0, game.config.width , game.config.height, "skybg");
     this.skybg.setOrigin(0, 0);
-    this.skybg.setScrollFactor(0);
+    this.skybg.setScrollFactor(1);
 
 
  
 
     // Add a second background layer. Repeat as in bg_1
-    this.city = this.add.tileSprite(0, 0, game.config.width , game.config.height, "city");
+    /*this.city = this.add.tileSprite(0, 0, game.config.width , game.config.height, "city");
     this.city.setOrigin(0, 0);
     this.city.setScrollFactor(0);
     // since this tile is shorter I positioned it at the bottom of he screen
@@ -21,7 +30,7 @@ class playmenu extends Phaser.Scene {
     
 
     // add sonic
-    this.sonic = this.add.sprite(game.config.width * 1.5, game.config.height / 1.1, "sonic");
+    this.sonic = this.add.sprite(game.config.width * 1.5, game.config.height / 1.07, "sonic");
     //set the width of the sprite
             this.sonic.displayWidth = 200;
             //scale evenly
@@ -45,7 +54,16 @@ class playmenu extends Phaser.Scene {
     // making the camera follow the sonic
     this.myCam.startFollow(this.sonic);
 
+    
+    /*this.exit = this.add.tileSprite(0, 0, game.config.width , game.config.height, "exit");
+    this.options = this.add.tileSprite(0, 0, game.config.width , game.config.height, "options");*/
+
+
+
   }
+
+
+
     update() {
 
  // move the sonic when the arrow keys are pressed
@@ -60,8 +78,8 @@ class playmenu extends Phaser.Scene {
     } */
     // scroll the texture of the tilesprites proportionally to the camera scroll
 
-    this.city.tilePositionX += 0.6;
-    this.skybg.tilePositionX += 0.3;
+      /*this.city.tilePositionX += 2;
+    this.skybg.tilePositionX += 1;*/
 
 
 
