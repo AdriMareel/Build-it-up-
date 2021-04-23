@@ -21,6 +21,5 @@ window.onload = function(){
 }
 
 
-game.scene.start('playmenu');
 //export default config;
 

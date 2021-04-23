@@ -6,7 +6,7 @@ class MainScene extends Phaser.Scene{
     	//affichage Grass
 		this.load.image('building','../images/building.png');
 		this.load.image("tiles", "images/terre.png");
-    	this.load.tilemapTiledJSON("map", "images/map.json");
+    	this.load.tilemapTiledJSON("map", "images/mapFinale.json");
 	}
 
 	create(){
