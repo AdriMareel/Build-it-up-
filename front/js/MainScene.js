@@ -21,6 +21,34 @@ export default class MainScene extends Phaser.Scene{
             	cam.scrollX -= (p.x - p.prevPosition.x) / cam.zoom;
             	cam.scrollY -= (p.y - p.prevPosition.y) / cam.zoom;
     	});
+		
+
+		//zoom
+
+		this.input.on("wheel",  (pointer, gameObjects, deltaX, deltaY) => {
+			//this.cameras.main.setZoom(0.3);
+			if (deltaY > 0) {
+				console.log(cam.zoom);
+				if(cam.zoom > 0.35){
+					cam.zoom -= .02;
+					console.log(cam.zoom);
+				}
+			
+			
+			}
+		  
+			if (deltaY < 0) {
+				if(cam.zoom < 1){
+					cam.zoom += .02;
+					console.log(cam.zoom);
+				}
+				//console.log(cam.zoom);
+
+
+			}
+
+		  });
+
 
 		var building = this.add.image(30,30, "building");
 		building.setInteractive();
@@ -47,5 +75,6 @@ export default class MainScene extends Phaser.Scene{
 		this.input.off('pointerup', this.stopDrag, this);
 	}
 }
+
 
 
