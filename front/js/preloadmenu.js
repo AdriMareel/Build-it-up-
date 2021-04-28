@@ -14,6 +14,15 @@ class preloadmenu extends Phaser.Scene{
         frameWidth: 48,
         frameHeight: 44
       });
+
+      //load game assets
+      this.load.image('building','../images/building.png');
+      this.load.image('build','../images/build.png');
+      this.load.image("tiles", "images/terre.png");
+      this.load.tilemapTiledJSON("map", "images/mapFinale.json");
+
+      //load HUD
+      this.load.image('Bâtiments', "images/batiment.png")
     }
     create(){
       this.scene.start("playmenu");

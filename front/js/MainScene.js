@@ -2,13 +2,6 @@ class MainScene extends Phaser.Scene{
 	constructor(){
 		super('MainScene');
 	}
-	preload(){
-    	//affichage Map
-		this.load.image('building','../images/building.png');
-		this.load.image('build','../images/build.png');
-		this.load.image("tiles", "images/terre.png");
-    	this.load.tilemapTiledJSON("map", "images/mapFinale.json");
-	}
 
 	create(){
 		//Map
@@ -28,28 +21,17 @@ class MainScene extends Phaser.Scene{
 	
 		//Zoom
 		this.input.on("wheel",  (pointer, gameObjects, deltaX, deltaY) => {
-			//this.cameras.main.setZoom(0.3);
 			if (deltaY > 0) {
-				console.log(cam.zoom);
 				if(cam.zoom > 0.35){
 					cam.zoom -= .02;
-					console.log(cam.zoom);
 				}
-			
-			
 			}
-		  
 			if (deltaY < 0) {
 				if(cam.zoom < 1){
 					cam.zoom += .02;
-					console.log(cam.zoom);
 				}
-				//console.log(cam.zoom);
-
-
 			}
-
-		  });
+		});
 
 
 		var building = this.add.image(30,30, "building");
@@ -61,6 +43,7 @@ class MainScene extends Phaser.Scene{
 
 	update(){}
 
+	//Fonctions Drag&Drop 
 	startDrag(pointer, targets){
 		this.input.off('pointerdown', this.startDrag, this);
 		this.dragObj = targets[0];

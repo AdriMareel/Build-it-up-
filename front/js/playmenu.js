@@ -89,7 +89,7 @@ class playmenu extends Phaser.Scene {
 
   }
   clickButton() {
-    this.scene.switch('MainScene');
+    this.scene.launch('MainScene').launch('hud').stop();
 }
 
     update() {

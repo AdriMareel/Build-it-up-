@@ -1,10 +1,9 @@
-
 var game;
 
 window.onload = function(){
   let gameConfig = {
-    width : 1800,
-	height : 900,
+    width : 1900,
+	height : 910,
 	type : Phaser.AUTO,
     pixelArt: true,
     physics: {
@@ -15,7 +14,7 @@ window.onload = function(){
           }
       }
     },
-    scene: [preloadmenu,playmenu,MainScene]
+    scene: [preloadmenu,playmenu,MainScene,new HUDScene({key: 'hud'})]
   }
   game = new Phaser.Game(gameConfig);
 }
