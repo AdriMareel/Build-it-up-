@@ -5,6 +5,7 @@ class MainScene extends Phaser.Scene{
 	preload(){
     	//affichage Map
 		this.load.image('building','../images/building.png');
+		this.load.image('build','../images/build.png');
 		this.load.image("tiles", "images/terre.png");
     	this.load.tilemapTiledJSON("map", "images/mapFinale.json");
 	}
@@ -52,7 +53,9 @@ class MainScene extends Phaser.Scene{
 
 
 		var building = this.add.image(30,30, "building");
+		var build = this.add.image(100,30, "build");
 		building.setInteractive();
+		build.setInteractive();
 		this.input.on('pointerdown', this.startDrag, this);	
 	}
 
