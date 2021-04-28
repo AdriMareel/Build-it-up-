@@ -3,16 +3,19 @@ class MainScene extends Phaser.Scene{
 		super('MainScene');
 	}
 	preload(){
-    	//affichage Grass
+    	//affichage Map
 		this.load.image('building','../images/building.png');
 		this.load.image("tiles", "images/terre.png");
     	this.load.tilemapTiledJSON("map", "images/mapFinale.json");
 	}
 
 	create(){
+		//Map
 		const map = this.make.tilemap({ key: "map" });
     	const tileset = map.addTilesetImage("terre", "tiles");
     	const layer = map.createStaticLayer("Calque de Tuiles 1", tileset, 0, 0);
+
+
 		//Gestion scroll
 		var cam = this.cameras.main;
 
@@ -21,10 +24,8 @@ class MainScene extends Phaser.Scene{
             	cam.scrollX -= (p.x - p.prevPosition.x) / cam.zoom;
             	cam.scrollY -= (p.y - p.prevPosition.y) / cam.zoom;
     	});
-		
-
-		//zoom
-
+	
+		//Zoom
 		this.input.on("wheel",  (pointer, gameObjects, deltaX, deltaY) => {
 			//this.cameras.main.setZoom(0.3);
 			if (deltaY > 0) {
