@@ -1,7 +1,35 @@
+let isDragging = false;
+
 class MainScene extends Phaser.Scene{
 	constructor(){
 		super('MainScene');
 	}
+
+	doDrag(pointer){
+        this.dragObj.x = pointer.x;
+        this.dragObj.y = pointer.y;
+    }
+
+    stopDrag(){            
+        this.input.on('pointerdown', this.startDrag, this);
+        this.input.off('pointermove', this.doDrag, this);
+        this.input.off('pointerup', this.stopDrag, this);
+    }
+
+    startDrag(pointer, targets){
+        this.input.off('pointerdown', this.startDrag, this);
+        this.dragObj = targets[0];
+        console.log(this.dragObj);
+        if(this.dragObj != undefined){
+            isDragging = true;
+            this.input.on('pointermove', this.doDrag, this);
+            this.input.on('pointerup', this.stopDrag, this);
+        }
+        else {
+            isDragging = false;
+            this.stopDrag();
+        }
+    }
 
 	create(){
 		//Map
@@ -14,10 +42,11 @@ class MainScene extends Phaser.Scene{
 		var cam = this.cameras.main;
 
 		this.input.on('pointermove', function (p) {
-        	if (!p.isDown) return;
-            	cam.scrollX -= (p.x - p.prevPosition.x) / cam.zoom;
-            	cam.scrollY -= (p.y - p.prevPosition.y) / cam.zoom;
-    	});
+            if (!p.isDown) return; 
+            if (isDragging) return; 
+                cam.scrollX -= (p.x - p.prevPosition.x) / cam.zoom;
+                cam.scrollY -= (p.y - p.prevPosition.y) / cam.zoom;  
+        });
 	
 		//Zoom
 		this.input.on("wheel",  (pointer, gameObjects, deltaX, deltaY) => {
@@ -39,7 +68,7 @@ class MainScene extends Phaser.Scene{
 		building.setInteractive();
 		build.setInteractive();
 		this.input.on('pointerdown', this.startDrag, this);	
-
+		
 
 		//ChatBox
 		this.options = this.add.sprite(game.config.width * 0.47, game.config.height * 0.60, "options");
@@ -54,7 +83,7 @@ class MainScene extends Phaser.Scene{
         })
 
         this.events.on('resume', function () {
-            console.log('MainScene A resumed');
+            console.log('MainScene resumed');
         })
     }
 
@@ -64,25 +93,6 @@ class MainScene extends Phaser.Scene{
 	}
 
 	update(){}
-
-	//Fonctions Drag&Drop 
-	startDrag(pointer, targets){
-		this.input.off('pointerdown', this.startDrag, this);
-		this.dragObj = targets[0];
-		this.input.on('pointermove', this.doDrag, this);
-		this.input.on('pointerup', this.stopDrag, this);
-	}
-
-	doDrag(pointer){
-		this.dragObj.x = pointer.x;
-		this.dragObj.y = pointer.y;
-	}
-
-	stopDrag(){			
-		this.input.on('pointerdown', this.startDrag, this);
-		this.input.off('pointermove', this.doDrag, this);
-		this.input.off('pointerup', this.stopDrag, this);
-	}
 }
 
 
