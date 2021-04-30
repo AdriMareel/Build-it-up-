@@ -39,6 +39,28 @@ class MainScene extends Phaser.Scene{
 		building.setInteractive();
 		build.setInteractive();
 		this.input.on('pointerdown', this.startDrag, this);	
+
+
+		//ChatBox
+		this.options = this.add.sprite(game.config.width * 0.47, game.config.height * 0.60, "options");
+        this.options.displayWidth = 200;
+        this.options.scaleY = this.options.scaleX;
+    	this.options.depth = 100;
+    	this.options.setInteractive({  useHandCursor: true});
+  		this.options.on('pointerdown', () => this.clickButton());
+
+        this.events.on('pause', function () {
+            console.log('MainScene paused');
+        })
+
+        this.events.on('resume', function () {
+            console.log('MainScene A resumed');
+        })
+    }
+
+	clickButton() {
+        this.scene.pause();
+        this.scene.launch('DialogBox');
 	}
 
 	update(){}
