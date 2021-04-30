@@ -38,6 +38,9 @@ class MainScene extends Phaser.Scene{
     	const layer = map.createStaticLayer("Calque de Tuiles 1", tileset, 0, 0);
 
 
+    	let maison = new Building(buildingList[1].name,buildingList[1].price,buildingList[1].income,buildingList[1].economie,buildingList[1].ecologie,buildingList[1].bienEtre,155,155);
+		console.log(maison);
+
 		//Gestion scroll
 		var cam = this.cameras.main;
 

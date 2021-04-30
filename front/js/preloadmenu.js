@@ -9,6 +9,7 @@ class preloadmenu extends Phaser.Scene{
       this.load.image("exit", "./images/exit.png");
       this.load.image("play", "./images/play.png");
       this.load.image("options", "./images/options.png");
+      
       // load spritesheet
       this.load.spritesheet("sonic", "./images/sonic.png",{
         frameWidth: 48,
