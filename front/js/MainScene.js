@@ -1,4 +1,5 @@
 let isDragging = false;
+building = "build";
 
 class MainScene extends Phaser.Scene{
 	constructor(){
@@ -10,7 +11,9 @@ class MainScene extends Phaser.Scene{
         this.dragObj.y = pointer.y;
     }
 
-    stopDrag(){            
+    stopDrag(){      
+
+		//this.dragObj.depth =- this.count;      
         this.input.on('pointerdown', this.startDrag, this);
         this.input.off('pointermove', this.doDrag, this);
         this.input.off('pointerup', this.stopDrag, this);
@@ -19,6 +22,7 @@ class MainScene extends Phaser.Scene{
     startDrag(pointer, targets){
         this.input.off('pointerdown', this.startDrag, this);
         this.dragObj = targets[0];
+		//this.dragObj.depth = 100 + this.count;
         console.log(this.dragObj);
         if(this.dragObj != undefined){
             isDragging = true;
@@ -31,8 +35,19 @@ class MainScene extends Phaser.Scene{
         }
     }
 
+
+	displaybatiment(building){
+		console.log("test");
+		building = this.add.image(30,30, building);
+		building.depth = 0;
+		building.setInteractive();
+	}
+	
 	create(){
 		//Map
+		var cam = this.cameras.main;
+	
+		this.count = 0;
 		const map = this.make.tilemap({ key: "map" });
     	const tileset = map.addTilesetImage("terre", "tiles");
     	const layer = map.createStaticLayer("Calque de Tuiles 1", tileset, 0, 0);
@@ -42,15 +57,12 @@ class MainScene extends Phaser.Scene{
 		console.log(maison);
 
 		//Gestion scroll
-		var cam = this.cameras.main;
-
 		this.input.on('pointermove', function (p) {
             if (!p.isDown) return; 
             if (isDragging) return; 
                 cam.scrollX -= (p.x - p.prevPosition.x) / cam.zoom;
                 cam.scrollY -= (p.y - p.prevPosition.y) / cam.zoom;  
         });
-	
 		//Zoom
 		this.input.on("wheel",  (pointer, gameObjects, deltaX, deltaY) => {
 			if (deltaY > 0) {
@@ -65,11 +77,13 @@ class MainScene extends Phaser.Scene{
 			}
 		});
 
-
-		var building = this.add.image(30,30, "building");
-		var build = this.add.image(100,30, "build");
-		building.setInteractive();
-		build.setInteractive();
+		this.displaybatiment(building);
+		//var building = this.add.image(30,30, "building");
+		//var build = this.add.image(100,30, "build");
+		//building.depth = 0;
+		//build.depth = 1;
+		//building.setInteractive();
+		//build.setInteractive();
 		this.input.on('pointerdown', this.startDrag, this);	
 		
 
@@ -88,6 +102,7 @@ class MainScene extends Phaser.Scene{
         this.events.on('resume', function () {
             console.log('MainScene resumed');
         })
+		
     }
 
 	clickButton() {
@@ -95,7 +110,8 @@ class MainScene extends Phaser.Scene{
         this.scene.launch('DialogBox');
 	}
 
-	update(){}
+	update(){
+	}
 }
 
 

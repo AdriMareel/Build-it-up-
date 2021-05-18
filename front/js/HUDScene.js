@@ -1,4 +1,6 @@
+
 class HUDScene extends Phaser.Scene{
+
 	create () {
       //Boutton qui gère la liste des bâtiments
 		  this.button = this.add.sprite(1070, 750, "Bâtiments");
@@ -13,7 +15,8 @@ class HUDScene extends Phaser.Scene{
 
       this.button.setScrollFactor(0);
       this.button.fixedToCamera = true;
-
+      
+   
   	}
 
   	openBuildingList(){
@@ -89,6 +92,7 @@ class HUDBuildingListEcologie extends Phaser.Scene{
     let sousMenuEcologie = this.add.rectangle(960, 450, 1000, 1000, 0xffff00);
 
     this.buttonBuildingEcologie = this.add.image(-1000,100, 'building');
+    this.buttonBuildingEcologie.class = "building";
 
     this.buttonBuildingEcologie.setInteractive({  useHandCursor: true});
     this.buttonBuildingEcologie.on('pointerdown', () => this.placeBuildingEcologie());
@@ -101,16 +105,16 @@ class HUDBuildingListEcologie extends Phaser.Scene{
 
   placeBuildingEcologie(){
     this.scene.stop('ecologie').stop('stat');
-      //var building = this.add.image(30,30, "building");
-      //building.setInteractive();
-      //this.input.on('pointerdown', this.startDrag, this); 
+    var scene = this.scene.get("MainScene");
+    var bat = scene.displaybatiment(this.buttonBuildingEcologie.class);
   }
 }
 
-class HUDBuildingListMoral extends Phaser.Scene{
+class HUDBuildingListMoral extends Phaser.Scene {
     create(){
       let sousMenuMoral = this.add.rectangle(960, 450, 1000, 1000, 0xff0000);
       this.buttonBuildingMoral = this.add.image(-1000,100, 'building');
+      this.buttonBuildingMoral.class = "building";
 
 
       this.buttonBuildingMoral.setInteractive({  useHandCursor: true});
@@ -121,19 +125,21 @@ class HUDBuildingListMoral extends Phaser.Scene{
       this.buttonBuildingMoral.setScrollFactor(0);
       this.buttonBuildingMoral.fixedToCamera = true;
     }
-
     placeBuildingMoral(){
       this.scene.stop('moral').stop('stat');
-      //var building = this.add.image(30,30, "building");
-      //building.setInteractive();
-      //this.input.on('pointerdown', this.startDrag, this);
-    }
+      var scene = this.scene.get("MainScene");
+      var bat = scene.displaybatiment(this.buttonBuildingMoral.class);
+       
+    
+   }
+
 }
 
 class HUDBuildingListEconomie extends Phaser.Scene{
     create(){
     let sousMenuEconomie = this.add.rectangle(960, 450, 1000, 1000, 0xff0000);
     this.buttonBuildingEconomie = this.add.image(-1000,100, 'building');
+    this.buttonBuildingEconomie.class = "building";
 
     this.buttonBuildingEconomie.setInteractive({  useHandCursor: true});
     this.buttonBuildingEconomie.on('pointerdown', () => this.placeBuildingEconomie());
@@ -146,8 +152,8 @@ class HUDBuildingListEconomie extends Phaser.Scene{
 
   placeBuildingEconomie(){
     this.scene.stop('economie').stop('stat');
-      //var building = this.add.image(30,30, "building");
-      //building.setInteractive();
-      //this.input.on('pointerdown', this.startDrag, this); 
+    var scene = this.scene.get("MainScene");
+    var bat = scene.displaybatiment(this.buttonBuildingEconomie.class); 
     }
 }
+
