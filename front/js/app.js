@@ -4,6 +4,7 @@ window.onload = function(){
   let gameConfig = {
     width : 1900,
 	height : 910,
+  backgroundColor : "4488AA",
 	type : Phaser.AUTO,
     pixelArt: true,
     physics: {
