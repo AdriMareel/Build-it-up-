@@ -14,11 +14,28 @@ class HUDScene extends Phaser.Scene{
       this.button.setScrollFactor(0);
       this.button.fixedToCamera = true;
 
+      //Boutton qui bloque la camera
+      this.buttonFl = this.add.sprite(800, 750, "fleche");
+      this.buttonFl.displayWidth = 200;
+      this.buttonFl.scaleY = this.buttonFl.scaleX;
+      this.buttonFl.depth = 100;
+
+      this.buttonFl.setInteractive({  useHandCursor: true});
+      this.buttonFl.on('pointerdown', () => this.lockCam());
+
+      this.buttonFl.setOrigin(-3, 0);
+
+      this.buttonFl.setScrollFactor(0);
+      this.buttonFl.fixedToCamera = true;
   	}
 
   	openBuildingList(){
       this.scene.launch('stat');
 	}
+
+    lockCam(){
+      check(true);
+    }
 
   update () {}
 
@@ -132,16 +149,17 @@ class HUDBuildingListMoral extends Phaser.Scene{
 
 class HUDBuildingListEconomie extends Phaser.Scene{
     create(){
-    let sousMenuEconomie = this.add.rectangle(960, 450, 1000, 1000, 0xff0000);
-    this.buttonBuildingEconomie = this.add.image(-1000,100, 'building');
+      let sousMenuEconomie = this.add.rectangle(960, 450, 1000, 1000, 0xfff000);
+      this.buttonBuildingEconomie = this.add.image(-1000,100, 'building');
 
-    this.buttonBuildingEconomie.setInteractive({  useHandCursor: true});
-    this.buttonBuildingEconomie.on('pointerdown', () => this.placeBuildingEconomie());
 
-    this.buttonBuildingEconomie.setOrigin(-3, 0);
+      this.buttonBuildingEconomie.setInteractive({  useHandCursor: true});
+      this.buttonBuildingEconomie.on('pointerdown', () => this.placeBuildingEconomie());
 
-    this.buttonBuildingEconomie.setScrollFactor(0);
-    this.buttonBuildingEconomie.fixedToCamera = true;
+      this.buttonBuildingEconomie.setOrigin(-3, 0);
+
+      this.buttonBuildingEconomie.setScrollFactor(0);
+      this.buttonBuildingEconomie.fixedToCamera = true;
   }
 
   placeBuildingEconomie(){

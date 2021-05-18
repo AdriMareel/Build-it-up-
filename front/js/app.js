@@ -14,7 +14,7 @@ window.onload = function(){
           }
       }
     },
-    scene: [preloadmenu,playmenu,MainScene,new DialogBox({key: 'DialogBox'}),new HUDScene({key: 'hud'}), new HUDStat({key: 'stat'}), new HUDBuildingListEcologie({key: 'ecologie'}), new HUDBuildingListMoral({key: 'moral'},  new HUDBuildingListEconomie({key: 'economie'}))]
+    scene: [preloadmenu,playmenu,MainScene,new DialogBox({key: 'DialogBox'}),new HUDScene({key: 'hud'}), new HUDStat({key: 'stat'}), new HUDBuildingListEcologie({key: 'ecologie'}), new HUDBuildingListMoral({key: 'moral'}),  new HUDBuildingListEconomie({key: 'economie'})]
   }
   game = new Phaser.Game(gameConfig);
 }
