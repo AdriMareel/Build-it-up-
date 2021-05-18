@@ -7,5 +7,6 @@ let buildingList = [
 	{id: 5,name : "Centrale à charbon", price : 10000, income : 0,ecologie:-10,economie : 5,bienEtre : -5},
 	{id: 6,name : "Parc", price : 1000, income : 0,ecologie:10,economie:0,bienEtre:10},
 	{id: 7,name	: "Centrale Hydraulique", price: 10000, income : 0, ecologie : 10,economie : 0, bienEtre: 0},
-	{id: 8,name : "Usine "}
+	{id: 8,name : "Usine", price: 10000, income: 500, ecologie:-10, economie: 10, bienEtre: 0},
+	{id: 9, name: "Magasin", price: 500, income:150, ecologie:-5, economie: 5, bienEtre: 10}
 ];

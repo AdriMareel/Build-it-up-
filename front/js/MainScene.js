@@ -62,8 +62,20 @@ class MainScene extends Phaser.Scene{
         console.log("X: " + mapCoord.data[2][0].pixelX + " Y: " + mapCoord.data[2][0].pixelY);
         console.log(layer);
 
-    	let maison = new Building(buildingList[1].name,buildingList[1].price,buildingList[1].income,buildingList[1].economie,buildingList[1].ecologie,buildingList[1].bienEtre,155,155);
-		console.log(maison);
+    	//Création Bâtiments
+        let mairie = new Building(buildingList[0].id,155,155);
+        let Commissariat = new Building(buildingList[2].id,155,155);
+        let Poste = new Building(buildingList[3].id,155,155);
+        let Hopital = new Building(buildingList[4].id,155,155);
+
+        let maison = new Building(buildingList[1].id,155,155);
+        let magasin = new Building(buildingList[9].id,155,155);
+
+        let Parc = new Building(buildingList[6].id,155,155);
+
+        let CentraleCharbon = new Building(buildingList[5].id,155,155);
+        let CentraleHydraulique = new Building(buildingList[7].id,155,155);
+        let Usine = new Building(buildingList[8].id,155,155);
 
 		//Gestion scroll
 		this.input.on('pointermove', function (p) {
