@@ -15,13 +15,16 @@ class HUDScene extends Phaser.Scene{
 
       this.button.setScrollFactor(0);
       this.button.fixedToCamera = true;
-      
-   
+
   	}
 
   	openBuildingList(){
       this.scene.launch('stat');
 	}
+
+    lockCam(){
+      check(true);
+    }
 
   update () {}
 
@@ -140,14 +143,17 @@ class HUDBuildingListEconomie extends Phaser.Scene{
     let sousMenuEconomie = this.add.rectangle(960, 450, 1000, 1000, 0xff0000);
     this.buttonBuildingEconomie = this.add.image(-1000,100, 'building');
     this.buttonBuildingEconomie.class = "building";
+      let sousMenuEconomie = this.add.rectangle(960, 450, 1000, 1000, 0xfff000);
+      this.buttonBuildingEconomie = this.add.image(-1000,100, 'building');
 
-    this.buttonBuildingEconomie.setInteractive({  useHandCursor: true});
-    this.buttonBuildingEconomie.on('pointerdown', () => this.placeBuildingEconomie());
 
-    this.buttonBuildingEconomie.setOrigin(-3, 0);
+      this.buttonBuildingEconomie.setInteractive({  useHandCursor: true});
+      this.buttonBuildingEconomie.on('pointerdown', () => this.placeBuildingEconomie());
 
-    this.buttonBuildingEconomie.setScrollFactor(0);
-    this.buttonBuildingEconomie.fixedToCamera = true;
+      this.buttonBuildingEconomie.setOrigin(-3, 0);
+
+      this.buttonBuildingEconomie.setScrollFactor(0);
+      this.buttonBuildingEconomie.fixedToCamera = true;
   }
 
   placeBuildingEconomie(){

@@ -18,6 +18,8 @@ class preloadmenu extends Phaser.Scene{
 
       //load game assets
       this.load.image('building','../images/building.png');
+      this.load.image('building2','../images/building.png');
+
       this.load.image('build','../images/build.png');
       this.load.image("tiles", "images/terre.png");
       this.load.tilemapTiledJSON("map", "images/mapFinale.json");
@@ -27,6 +29,7 @@ class preloadmenu extends Phaser.Scene{
       this.load.image('ecologie', "images/eco.jpg");
       this.load.image('bienetre', "images/bienetre.jpg");
       this.load.image('economie', "images/economie.jpg");
+      this.load.image('fleche', "images/fleche.jpg");
 
       //Dialogue
       this.load.image('box', './images/dialog.png');
