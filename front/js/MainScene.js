@@ -30,13 +30,22 @@ class MainScene extends Phaser.Scene{
             this.stopDrag();
         }
     }
+    moveBuilding(posX,posY,building){// 0 < posX < 50 et 0 < posY < 50 Place le bâtiment en X Y 
+        this.add.image( -(posX*386/2)+386/2+posY*386/2, posY*196/2 + posX*196/2 -196/2,building);
+    }
+
 
 	create(){
 		//Map
 		const map = this.make.tilemap({ key: "map" });
     	const tileset = map.addTilesetImage("terre", "tiles");
     	const layer = map.createStaticLayer("Calque de Tuiles 1", tileset, 0, 0);
-
+        let mapCoord = layer.layer;
+        console.log(mapCoord);
+        console.log("X: " + mapCoord.data[0][0].pixelX + " Y: " + mapCoord.data[0][0].pixelY);
+        console.log("X: " + mapCoord.data[1][0].pixelX + " Y: " + mapCoord.data[1][0].pixelY);
+        console.log("X: " + mapCoord.data[2][0].pixelX + " Y: " + mapCoord.data[2][0].pixelY);
+        console.log(layer);
 
     	let maison = new Building(buildingList[1].name,buildingList[1].price,buildingList[1].income,buildingList[1].economie,buildingList[1].ecologie,buildingList[1].bienEtre,155,155);
 		console.log(maison);
@@ -58,27 +67,22 @@ class MainScene extends Phaser.Scene{
 					cam.zoom -= .02;
 				}
 			}
-			if (deltaY < 0) {
+			if (deltaY < 0){
 				if(cam.zoom < 1){
 					cam.zoom += .02;
 				}
 			}
 		});
-
-
-		var building = this.add.image(30,30, "building");
-		var build = this.add.image(100,30, "build");
-		building.setInteractive();
-		build.setInteractive();
-		this.input.on('pointerdown', this.startDrag, this);	
-		
-
+        
+		this.input.on('pointerdown', this.startDrag, this);
+        
+	   
 		//ChatBox
 		this.options = this.add.sprite(game.config.width * 0.47, game.config.height * 0.60, "options");
         this.options.displayWidth = 200;
         this.options.scaleY = this.options.scaleX;
     	this.options.depth = 100;
-    	this.options.setInteractive({  useHandCursor: true});
+    	this.options.setInteractive({useHandCursor: true});
   		this.options.on('pointerdown', () => this.clickButton());
 
         this.events.on('pause', function () {
