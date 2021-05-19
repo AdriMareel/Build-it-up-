@@ -1,10 +1,24 @@
 let isDragging = false;
 building = "build";
 
+let mapVar = new Array(30);
+
+for(let i=0;i<30;i++){
+    mapVar[i] = new Array(30);
+}
+
 class MainScene extends Phaser.Scene{
 	constructor(){
 		super('MainScene');
 	}
+
+    getPosInPixels(x,y){ //entre 0 et 30
+        let tab = new Array(2);
+        tab[0] = -(x*grassTile.width/2)+grassTile.width/2+y*grassTile.width/2;
+        tab[1] = y * 193/2 + x*193/2 + 193/2;
+        return tab; 
+    }
+
 
 	doDrag(pointer){
         this.dragObj.x = pointer.x;
@@ -12,7 +26,6 @@ class MainScene extends Phaser.Scene{
     }
 
     stopDrag(){      
-
 		//this.dragObj.depth =- this.count;      
         this.input.on('pointerdown', this.startDrag, this);
         this.input.off('pointermove', this.doDrag, this);
@@ -37,8 +50,16 @@ class MainScene extends Phaser.Scene{
     moveBuilding(posX,posY,building){// 0 < posX < 50 et 0 < posY < 50 Place le bâtiment en X Y 
         this.add.image( -(posX*386/2)+386/2+posY*386/2, posY*196/2 + posX*196/2 -196/2,building);
     }
-
-
+    GenerateMap(){
+        //Map Gen
+        for (let i=0;i<30;i++){
+            for (let j=0;j<30;j++){
+                if(map[i][j] == 'ground'){
+                    mapVar[i][j] = this.add.image(this.getPosInPixels(j,i)[0],this.getPosInPixels(j,i)[1],"terre").setInteractive({useHandCursor: true});
+                }
+            }
+        }
+    }
 
 	displaybatiment(building){
 		console.log("test");
@@ -50,18 +71,22 @@ class MainScene extends Phaser.Scene{
 	create(){
 		//Map
 		var cam = this.cameras.main;
+
+        this.GenerateMap();
+
+        for (let i=0;i<30;i++){
+            for (let j=0;j<30;j++){
+                mapVar[i][j].on("pointerover", () => {
+                    console.log("X :" + j + " Y:" + i );
+                    mapVar[i][j].y -= 30;
+                });
+                mapVar[i][j].on("pointerout", () => {
+                    mapVar[i][j].y += 30;
+                });
+            }
+        }
 	
 		this.count = 0;
-		const map = this.make.tilemap({ key: "map" });
-    	const tileset = map.addTilesetImage("terre", "tiles");
-    	const layer = map.createStaticLayer("Calque de Tuiles 1", tileset, 0, 0);
-        let mapCoord = layer.layer;
-        console.log(mapCoord);
-        console.log("X: " + mapCoord.data[0][0].pixelX + " Y: " + mapCoord.data[0][0].pixelY);
-        console.log("X: " + mapCoord.data[1][0].pixelX + " Y: " + mapCoord.data[1][0].pixelY);
-        console.log("X: " + mapCoord.data[2][0].pixelX + " Y: " + mapCoord.data[2][0].pixelY);
-        console.log(layer);
-
     	//Création Bâtiments
         let mairie = new Building(buildingList[0].id,155,155);
         let Commissariat = new Building(buildingList[2].id,155,155);
@@ -71,7 +96,7 @@ class MainScene extends Phaser.Scene{
         let maison = new Building(buildingList[1].id,155,155);
         let magasin = new Building(buildingList[9].id,155,155);
 
-        let Parc = new Building(buildingList[6].id,155,155);
+        let parc = new Building(buildingList[6].id,155,155);
 
         let CentraleCharbon = new Building(buildingList[5].id,155,155);
         let CentraleHydraulique = new Building(buildingList[7].id,155,155);

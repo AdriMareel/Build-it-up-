@@ -18,11 +18,9 @@ class preloadmenu extends Phaser.Scene{
 
       //load game assets
       this.load.image('building','../images/building.png');
-      this.load.image('building2','../images/building.png');
 
       this.load.image('build','../images/build.png');
-      this.load.image("tiles", "images/terre.png");
-      this.load.tilemapTiledJSON("map", "images/mapFinale.json");
+      this.load.image("terre", "images/terre.png");
 
       //load HUD
       this.load.image('Bâtiments', "images/batiment.png")

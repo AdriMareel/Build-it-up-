@@ -143,8 +143,6 @@ class HUDBuildingListEconomie extends Phaser.Scene{
     let sousMenuEconomie = this.add.rectangle(960, 450, 1000, 1000, 0xff0000);
     this.buttonBuildingEconomie = this.add.image(-1000,100, 'building');
     this.buttonBuildingEconomie.class = "building";
-      let sousMenuEconomie = this.add.rectangle(960, 450, 1000, 1000, 0xfff000);
-      this.buttonBuildingEconomie = this.add.image(-1000,100, 'building');
 
 
       this.buttonBuildingEconomie.setInteractive({  useHandCursor: true});
