@@ -18,7 +18,7 @@ class preloadmenu extends Phaser.Scene{
 
       //load game assets
       this.load.image('building','../images/building.png');
-
+      this.load.image('caserne1', '../images/caserne.1');
       this.load.image('build','../images/build.png');
       this.load.image("terre", "images/terre.png");
 

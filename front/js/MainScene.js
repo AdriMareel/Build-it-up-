@@ -1,4 +1,3 @@
-let isDragging = false;
 building = "build";
 
 let mapVar = new Array(30);
@@ -6,6 +5,8 @@ let mapVar = new Array(30);
 for(let i=0;i<30;i++){
     mapVar[i] = new Array(30);
 }
+
+let batVar = new Array(30);
 
 class MainScene extends Phaser.Scene{
 	constructor(){
@@ -19,34 +20,6 @@ class MainScene extends Phaser.Scene{
         return tab; 
     }
 
-
-	doDrag(pointer){
-        this.dragObj.x = pointer.x;
-        this.dragObj.y = pointer.y;
-    }
-
-    stopDrag(){      
-		//this.dragObj.depth =- this.count;      
-        this.input.on('pointerdown', this.startDrag, this);
-        this.input.off('pointermove', this.doDrag, this);
-        this.input.off('pointerup', this.stopDrag, this);
-    }
-
-    startDrag(pointer, targets){
-        this.input.off('pointerdown', this.startDrag, this);
-        this.dragObj = targets[0];
-		//this.dragObj.depth = 100 + this.count;
-        console.log(this.dragObj);
-        if(this.dragObj != undefined){
-            isDragging = true;
-            this.input.on('pointermove', this.doDrag, this);
-            this.input.on('pointerup', this.stopDrag, this);
-        }
-        else {
-            isDragging = false;
-            this.stopDrag();
-        }
-    }
     moveBuilding(posX,posY,building){// 0 < posX < 50 et 0 < posY < 50 Place le bâtiment en X Y 
         this.add.image( -(posX*386/2)+386/2+posY*386/2, posY*196/2 + posX*196/2 -196/2,building);
     }
@@ -67,8 +40,17 @@ class MainScene extends Phaser.Scene{
 		building.depth = 0;
 		building.setInteractive();
 	}
+
+    placeBuilding(building){
+        while(!building.isPlaced){
+            building.x = this.pointer.x;
+            building.y = this.pointer.y;
+        }
+    }
 	
 	create(){
+
+        let caserne1 = this.add.image(0,0,"caserne1");
 		//Map
 		var cam = this.cameras.main;
 
@@ -104,11 +86,11 @@ class MainScene extends Phaser.Scene{
 
 		//Gestion scroll
 		this.input.on('pointermove', function (p) {
-            if (!p.isDown) return; 
-            if (isDragging) return; 
+            if (!p.isDown) return;
                 cam.scrollX -= (p.x - p.prevPosition.x) / cam.zoom;
                 cam.scrollY -= (p.y - p.prevPosition.y) / cam.zoom;  
         });
+
 		//Zoom
 		this.input.on("wheel",  (pointer, gameObjects, deltaX, deltaY) => {
 			if (deltaY > 0) {
@@ -130,11 +112,6 @@ class MainScene extends Phaser.Scene{
 		//build.depth = 1;
 		//building.setInteractive();
 		//build.setInteractive();
-		this.input.on('pointerdown', this.startDrag, this);	
-		
-
-        
-		this.input.on('pointerdown', this.startDrag, this);
         
 	   
 		//ChatBox
@@ -155,7 +132,7 @@ class MainScene extends Phaser.Scene{
 		
     }
 
-	clickButton() {
+	clickButton(){
         this.scene.pause();
         this.scene.launch('DialogBox');
 	}
