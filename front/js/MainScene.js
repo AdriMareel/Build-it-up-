@@ -8,6 +8,12 @@ for(let i=0;i<30;i++){
 
 let batVar = new Array(30);
 
+let batiments = new Array();
+
+
+let isPlaced = new Array();
+isPlaced["caserne1"] = false;
+
 class MainScene extends Phaser.Scene{
 	constructor(){
 		super('MainScene');
@@ -40,23 +46,28 @@ class MainScene extends Phaser.Scene{
 		building.depth = 0;
 		building.setInteractive();
 	}
-
-    placeBuilding(building){
-        while(!building.isPlaced){
-            building.x = this.pointer.x;
-            building.y = this.pointer.y;
-        }
-    }
 	
 	create(){
-
-        let caserne1 = this.add.image(0,0,"caserne1");
-		//Map
-		var cam = this.cameras.main;
-
+        //Map
         this.GenerateMap();
 
-        for (let i=0;i<30;i++){
+        let pointer = this.input.mousePointer;
+        console.log(pointer.x);
+        console.log(pointer.y);
+
+        batiments['caserne1'] = this.add.image(0,0,"caserne1");
+
+        if(isPlaced["caserne1"] == false){
+            this.input.on("pointermove", () => {           
+                batiments['caserne1'].x = pointer.x;
+                batiments['caserne1'].y = pointer.y;
+                this.input.on("pointerdown", () =>{
+                    isPlaced["caserne1"] = true;
+                });
+            });
+        }
+                
+        for (let i=0;i<30;i++){ 
             for (let j=0;j<30;j++){
                 mapVar[i][j].on("pointerover", () => {
                     console.log("X :" + j + " Y:" + i );
@@ -105,7 +116,6 @@ class MainScene extends Phaser.Scene{
 			}
 		});
 
-		this.displaybatiment(building);
 		//var building = this.add.image(30,30, "building");
 		//var build = this.add.image(100,30, "build");
 		//building.depth = 0;
@@ -140,6 +150,7 @@ class MainScene extends Phaser.Scene{
 	update(){
 	}
 }
+
 
 
 
