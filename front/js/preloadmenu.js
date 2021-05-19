@@ -20,8 +20,8 @@ class preloadmenu extends Phaser.Scene{
       this.load.image('building','../images/building.png');
       this.load.image('building2','../images/building.png');
       this.load.image('build','../images/build.png');
-      this.load.image("tiles", "images/terre.png");
-      this.load.image('mairie1','../images//mairie/mairie1.png');
+      this.load.image("terre", "../images/terre.png");
+      this.load.image('mairie1','../images/mairie/mairie1.png');
       this.load.image('mairie2','../images/mairie/mairie2.png');
       this.load.image('mairie3','../images/mairie/mairie3.png');
       this.load.image('maison1','../images/maison/maison1.png');
@@ -30,6 +30,9 @@ class preloadmenu extends Phaser.Scene{
       this.load.image('caserne1','../images/bienetre/caserne/caserne1.png');
       this.load.image('caserne2','../images/bienetre/caserne/caserne2.png');
       this.load.image('caserne3','../images/bienetre/caserne/caserne3.png');
+      this.load.image('commissariat1','../images/bienetre/commissariat/commissariat1.png');
+      this.load.image('commissariat2','../images/bienetre/commissariat/commissariat2.png');
+      this.load.image('commissariat3','../images/bienetre/commissariat/commissariat3.png');
       this.load.image('poste1','../images/bienetre/poste/poste1.png');
       this.load.image('poste2','../images/bienetre/poste/poste2.png');
       this.load.image('poste3','../images/bienetre/poste/poste3.png');
@@ -42,9 +45,9 @@ class preloadmenu extends Phaser.Scene{
       this.load.image('parc1','../images/ecologie/parc/parc1.png');
       this.load.image('parc2','../images/ecologie/parc/parc2.png');
       this.load.image('parc3','../images/ecologie/parc/parc3.png');
-      this.load.image('central_hydrolique1','../images/ecologie/central_hydrolique/central_hydrolique1.png');
-      this.load.image('central_hydrolique2','../images/ecologie/central_hydrolique/central_hydrolique2.png');
-      this.load.image('central_hydrolique3','../images/ecologie/central_hydrolique/central_hydrolique3.png');
+      this.load.image('centrale_hydrolique1','../images/ecologie/centrale_hydrolique/centrale_hydrolique1.png');
+      this.load.image('centrale_hydrolique2','../images/ecologie/centrale_hydrolique/centrale_hydrolique2.png');
+      this.load.image('centrale_hydrolique3','../images/ecologie/centrale_hydrolique/centrale_hydrolique3.png');
       this.load.image('magasin1','../images/economie/magasin/magasin1.png');
       this.load.image('magasin2','../images/economie/magasin/magasin2.png');
       this.load.image('magasin3','../images/economie/magasin/magasin3.png');
@@ -62,20 +65,11 @@ class preloadmenu extends Phaser.Scene{
       this.load.image('banque2','../images/economie/banque/banque2.png');
       this.load.image('banque3','../images/economie/banque/banque3.png');
 
- 
-
-      this.load.tilemapTiledJSON("map", "images/mapFinale.json");
-
- 
-
       //load HUD
-      this.load.image('Bâtiments', "images/batiment.png")
-      this.load.image('ecologie', "images/eco.jpg");
-      this.load.image('bienetre', "images/bienetre.jpg");
-      this.load.image('economie', "images/economie.jpg");
-      this.load.image('fleche', "images/fleche.jpg");
-
- 
+      this.load.image('Bâtiments', "../images/HUD/batiment.png")
+      this.load.image('ecologie', "../images/HUD/ecologie.png");
+      this.load.image('bienetre', "../images/HUD/bienetre.png");
+      this.load.image('economie', "../images/HUD/economie.png");
 
       //Dialogue
       this.load.image('box', './images/dialog.png');

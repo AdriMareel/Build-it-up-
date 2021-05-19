@@ -95,6 +95,7 @@ class MainScene extends Phaser.Scene{
         let CentraleHydraulique = new Building(buildingList[7].id,155,155);
         let Usine = new Building(buildingList[8].id,155,155);
 
+        var cam = this.cameras.main;
 		//Gestion scroll
 		this.input.on('pointermove', function (p) {
             if (!p.isDown) return;
