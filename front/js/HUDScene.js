@@ -1,7 +1,6 @@
-
 class HUDScene extends Phaser.Scene{
-
 	create () {
+      this.counter = 0;
       //Boutton qui gère la liste des bâtiments
 		  this.button = this.add.sprite(1070, 750, "Bâtiments");
       this.button.displayWidth = 200;
@@ -15,19 +14,31 @@ class HUDScene extends Phaser.Scene{
 
       this.button.setScrollFactor(0);
       this.button.fixedToCamera = true;
+  	//timer      
+       this.timer = this.time.addEvent({
+          delay: 24000,
+          callback:this.updateDay,
+          callbackScope:this,
+          paused: false,
+          repeat: 10000
+      });
 
-  	}
-
-  	openBuildingList(){
-      this.scene.launch('stat');
-	}
-
-    lockCam(){
-      check(true);
+      this.text = this.add.text(10, 10, 'Jour : 0', { fill: 0xffffff, font: 'bold 36px system-ui' }).setShadow(2, 2, 0xffff00, 8);
     }
 
-  update () {}
+    openBuildingList(){
+      this.scene.launch('stat');
+    }
 
+    updateDay(){
+      this.counter++;
+      if(this.counter >= 365){this.endGame();}
+    }
+
+    update () {
+      this.text
+      .setText('Jour : ' + this.counter.toFixed(0));
+    }
 }
 
 
@@ -128,14 +139,12 @@ class HUDBuildingListMoral extends Phaser.Scene {
       this.buttonBuildingMoral.setScrollFactor(0);
       this.buttonBuildingMoral.fixedToCamera = true;
     }
+
     placeBuildingMoral(){
       this.scene.stop('moral').stop('stat');
       var scene = this.scene.get("MainScene");
       var bat = scene.displaybatiment(this.buttonBuildingMoral.class);
-       
-    
    }
-
 }
 
 class HUDBuildingListEconomie extends Phaser.Scene{
@@ -144,14 +153,13 @@ class HUDBuildingListEconomie extends Phaser.Scene{
     this.buttonBuildingEconomie = this.add.image(-1000,100, 'building');
     this.buttonBuildingEconomie.class = "building";
 
+    this.buttonBuildingEconomie.setInteractive({  useHandCursor: true});
+    this.buttonBuildingEconomie.on('pointerdown', () => this.placeBuildingEconomie());
 
-      this.buttonBuildingEconomie.setInteractive({  useHandCursor: true});
-      this.buttonBuildingEconomie.on('pointerdown', () => this.placeBuildingEconomie());
+    this.buttonBuildingEconomie.setOrigin(-3, 0);
 
-      this.buttonBuildingEconomie.setOrigin(-3, 0);
-
-      this.buttonBuildingEconomie.setScrollFactor(0);
-      this.buttonBuildingEconomie.fixedToCamera = true;
+    this.buttonBuildingEconomie.setScrollFactor(0);
+    this.buttonBuildingEconomie.fixedToCamera = true;
   }
 
   placeBuildingEconomie(){
