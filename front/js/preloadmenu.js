@@ -70,6 +70,10 @@ class preloadmenu extends Phaser.Scene{
       this.load.image('ecologie', "../images/HUD/ecologie.png");
       this.load.image('bienetre', "../images/HUD/bienetre.png");
       this.load.image('economie', "../images/HUD/economie.png");
+      this.load.image('income', "../images/HUD/income.png");
+      this.load.image('bank', "../images/HUD/bank.png");
+      this.load.image('pop', "../images/HUD/pop.png");
+      this.load.image('close', "../images/HUD/close.png");
 
       //Dialogue
       this.load.image('box', './images/dialog.png');

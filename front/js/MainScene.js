@@ -1,4 +1,5 @@
 building = "build";
+let isMovingCamera = false;
 
 let mapVar = new Array(30);
 
@@ -10,6 +11,7 @@ let batVar = new Array(30);
 
 let batiments = new Array();
 
+let flag = 0;
 
 let isPlaced = new Array();
 isPlaced["caserne1"] = false;
@@ -19,16 +21,38 @@ class MainScene extends Phaser.Scene{
 		super('MainScene');
 	}
 
+    moveBuilding(posX,posY){ // x et y entre 0 et 30
+        building.x = posX;
+        building.y = posY;
+    }
+
     getPosInPixels(x,y){ //entre 0 et 30
         let tab = new Array(2);
         tab[0] = -(x*grassTile.width/2)+grassTile.width/2+y*grassTile.width/2;
-        tab[1] = y * 193/2 + x*193/2 + 193/2;
+        tab[1] = y * grassTile.height/2 + x*grassTile.height/2 + grassTile.height/2;
         return tab; 
     }
 
-    moveBuilding(posX,posY,building){// 0 < posX < 50 et 0 < posY < 50 Place le bâtiment en X Y 
-        this.add.image( -(posX*386/2)+386/2+posY*386/2, posY*196/2 + posX*196/2 -196/2,building);
+    getPosInCoord(x,y){ //x et y en pixels
+        let coordX = - (toInteger(x/grassTile.width/2) - 1);
+        let coordY;
+        y = toInteger(y/grassTile.height/2);
+
+        for (let i=0; i < y; i++){
+            coordY++;
+            coordX++;
+        }
+        let tab = new Array(2);
+        tab[0] = coordX;
+        tab[1] = coordY;
+
+        return tab;
     }
+
+    getPosInNumber(x,y){ //x et y pixels
+        let tab = new Array(2);
+    }
+
     GenerateMap(){
         //Map Gen
         for (let i=0;i<30;i++){
@@ -39,7 +63,6 @@ class MainScene extends Phaser.Scene{
             }
         }
     }
-
 	displaybatiment(building){
 		console.log("test");
 		building = this.add.image(30,30, building);
@@ -48,53 +71,65 @@ class MainScene extends Phaser.Scene{
 	}
 	
 	create(){
+        var cam = this.cameras.main;
         //Map
         this.GenerateMap();
 
         let pointer = this.input.mousePointer;
-        console.log(pointer.x);
-        console.log(pointer.y);
 
         batiments['caserne1'] = this.add.image(0,0,"caserne1");
 
+            
+        this.input.on('pointermove', function (p) {
+
+        }, this);
+
+
         if(isPlaced["caserne1"] == false){
-            this.input.on("pointermove", () => {           
-                batiments['caserne1'].x = pointer.x;
-                batiments['caserne1'].y = pointer.y;
-                this.input.on("pointerdown", () =>{
-                    isPlaced["caserne1"] = true;
-                });
-            });
-        }
-                
-        for (let i=0;i<30;i++){ 
-            for (let j=0;j<30;j++){
-                mapVar[i][j].on("pointerover", () => {
-                    console.log("X :" + j + " Y:" + i );
-                    mapVar[i][j].y -= 30;
-                });
-                mapVar[i][j].on("pointerout", () => {
-                    mapVar[i][j].y += 30;
-                });
+
+            let posBatX;
+            let posBatY;
+
+            batiments['caserne1'].x = pointer.x;
+            batiments['caserne1'].y = pointer.y;
+
+            this.input.mouse.requestPointerLock();
+
+            for (let i=0;i<30;i++){ 
+                for (let j=0;j<30;j++){
+                    mapVar[i][j].on("pointerover", () => {
+                        console.log("X :" + j + " Y:" + i );
+                        mapVar[i][j].y -= 30;
+                    });
+                    mapVar[i][j].on("pointerout", () => {
+                        mapVar[i][j].y += 30;
+                    });
+                }
             }
+
+            if(!this.input.mouse.locked && isPlaced["caserne1"] == false){
+                        isPlaced["caserne1"] == true;
+                        console.log("ok");
+                        console.log(map);
+                    }
+
+            this.input.on("pointermove", () => {
+                if (!this.input.mouse.locked) return;  
+                cam.scrollX += pointer.movementX / cam.zoom;
+                cam.scrollY += pointer.movementY / cam.zoom;
+                      
+                batiments['caserne1'].x = cam.scrollX + 950;
+                batiments['caserne1'].y = cam.scrollY + 450;                
+            });
+
+
+            
         }
+              
+
+        
 	
 		this.count = 0;
-    	//Création Bâtiments
-        let mairie = new Building(buildingList[0].id,155,155);
-        let Commissariat = new Building(buildingList[2].id,155,155);
-        let Poste = new Building(buildingList[3].id,155,155);
-        let Hopital = new Building(buildingList[4].id,155,155);
-
-        let maison = new Building(buildingList[1].id,155,155);
-        let magasin = new Building(buildingList[9].id,155,155);
-
-        let parc = new Building(buildingList[6].id,155,155);
-
-        let CentraleCharbon = new Building(buildingList[5].id,155,155);
-        let CentraleHydraulique = new Building(buildingList[7].id,155,155);
-        let Usine = new Building(buildingList[8].id,155,155);
-
         var cam = this.cameras.main;
 		//Gestion scroll
 		this.input.on('pointermove', function (p) {
@@ -103,8 +138,11 @@ class MainScene extends Phaser.Scene{
                 cam.scrollY -= (p.y - p.prevPosition.y) / cam.zoom;  
         });
 
+
+
 		//Zoom
 		this.input.on("wheel",  (pointer, gameObjects, deltaX, deltaY) => {
+            isMovingCamera = true;
 			if (deltaY > 0) {
 				if(cam.zoom > 0.35){
 					cam.zoom -= .02;
@@ -116,7 +154,6 @@ class MainScene extends Phaser.Scene{
 				}
 			}
 		});
-
 		//var building = this.add.image(30,30, "building");
 		//var build = this.add.image(100,30, "build");
 		//building.depth = 0;
