@@ -74,6 +74,7 @@ class preloadmenu extends Phaser.Scene{
       this.load.image('bank', "../images/HUD/bank.png");
       this.load.image('pop', "../images/HUD/pop.png");
       this.load.image('close', "../images/HUD/close.png");
+      this.load.image('iconeInfo', "../images/HUD/iconeInfo.png");
 
       //Dialogue
       this.load.image('box', './images/dialog.png');

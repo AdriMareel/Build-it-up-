@@ -28,7 +28,7 @@ class gameStat{
 						this.Income += buildingListMk2[k].income;
 					}
 				}
-				for(let l = 0; l < buildingListMk2.length; l++){
+				for(let l = 0; l < buildingListMk3.length; l++){
 					if(this.listeBatiment[i] == buildingListMk3[l].name){
 						this.Income += buildingListMk3[l].income;
 					}
@@ -52,7 +52,7 @@ class gameStat{
 						this.statEcologie += buildingListMk2[k].ecologie;
 					}
 				}
-				for(let l = 0; l < buildingListMk2.length; l++){
+				for(let l = 0; l < buildingListMk3.length; l++){
 					if(this.listeBatiment[i] == buildingListMk3[l].name){
 						this.statEcologie += buildingListMk3[l].ecologie;
 					}
@@ -76,7 +76,7 @@ class gameStat{
 						this.statEconomie += buildingListMk2[k].economie;
 					}
 				}
-				for(let l = 0; l < buildingListMk2.length; l++){
+				for(let l = 0; l < buildingListMk3.length; l++){
 					if(this.listeBatiment[i] == buildingListMk3[l].name){
 						this.statEconomie += buildingListMk3[l].economie;
 					}
@@ -100,7 +100,7 @@ class gameStat{
 						this.statBienEtre += buildingListMk2[k].bienEtre;
 					}
 				}
-				for(let l = 0; l < buildingListMk2.length; l++){
+				for(let l = 0; l < buildingListMk3.length; l++){
 					if(this.listeBatiment[i] == buildingListMk3[l].name){
 						this.statBienEtre += buildingListMk3[l].bienEtre;
 					}
@@ -124,7 +124,7 @@ class gameStat{
 						this.Pop += buildingListMk2[k].pop;
 					}
 				}
-				for(let l = 0; l < buildingListMk2.length; l++){
+				for(let l = 0; l < buildingListMk3.length; l++){
 					if(this.listeBatiment[i] == buildingListMk3[l].name){
 						this.Pop += buildingListMk3[l].pop;
 					}
@@ -148,4 +148,43 @@ class gameStat{
 	getIncome(){ return this.Income; }
 
 	getPop(){ return this.Pop; }
+
+	getInfoBuilding(name){
+		let info = [];
+		for(let j = 0; j < buildingListMk1.length; j++){
+			if(name == buildingListMk1[j].name){
+				info[0] = buildingListMk1[j].name;
+				info[1] = buildingListMk1[j].price;
+				info[2] = buildingListMk1[j].income;
+				info[3] = buildingListMk1[j].economie;
+				info[4] = buildingListMk1[j].ecologie;
+				info[5] = buildingListMk1[j].bienEtre;
+				info[6] = buildingListMk1[j].pop;
+			}
+		}
+		
+		for(let k = 0; k < buildingListMk2.length; k++){
+			if(name == buildingListMk2[k].name){
+				info[0] = buildingListMk2[j].name;
+				info[1] = buildingListMk2[j].price;
+				info[2] = buildingListMk2[j].income;
+				info[3] = buildingListMk2[j].economie;
+				info[4] = buildingListMk2[j].ecologie;
+				info[5] = buildingListMk2[j].bienEtre;
+				info[6] = buildingListMk2[j].pop;
+			}
+		}
+		for(let l = 0; l < buildingListMk3.length; l++){
+			if(name == buildingListMk3[l].name){
+				info[0] = buildingListMk3[j].name;
+				info[1] = buildingListMk3[j].price;
+				info[2] = buildingListMk3[j].income;
+				info[3] = buildingListMk3[j].economie;
+				info[4] = buildingListMk3[j].ecologie;
+				info[5] = buildingListMk3[j].bienEtre;
+				info[6] = buildingListMk3[j].pop;				
+			}
+		}
+		return info;
+	}
 }
