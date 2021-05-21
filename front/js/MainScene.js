@@ -1,56 +1,41 @@
-building = "build";
-let isMovingCamera = false;
-
 let mapVar = new Array(30);
+let batiments = new Array();
+let isPlaced = new Array();
+
 
 for(let i=0;i<30;i++){
     mapVar[i] = new Array(30);
 }
 
-let batVar = new Array(30);
+for(let i=0;i<10;i++){
+    batiments[i] = new Array(10);
+}
 
-let batiments = new Array();
+//console.log(batiments);
+let positionY;
+let positionX;
+
 
 let flag = 0;
 
-let isPlaced = new Array();
 isPlaced["caserne1"] = false;
+isPlaced["commissariat1"] = false;
 
 class MainScene extends Phaser.Scene{
 	constructor(){
 		super('MainScene');
 	}
 
-    moveBuilding(posX,posY){ // x et y entre 0 et 30
-        building.x = posX;
-        building.y = posY;
+    moveBuilding(posX,posY,building){
+        building.x = -(posX*grassTile.width/2)+grassTile.width/2+posY*grassTile.width/2;
+        building.y = (posX+posY)*grassTile.height/2 + 1/2*grassTile.height;
     }
 
     getPosInPixels(x,y){ //entre 0 et 30
         let tab = new Array(2);
         tab[0] = -(x*grassTile.width/2)+grassTile.width/2+y*grassTile.width/2;
-        tab[1] = y * grassTile.height/2 + x*grassTile.height/2 + grassTile.height/2;
+        tab[1] = y * grassTile.height/2 + x*grassTile.height/2;
         return tab; 
-    }
-
-    getPosInCoord(x,y){ //x et y en pixels
-        let coordX = - (toInteger(x/grassTile.width/2) - 1);
-        let coordY;
-        y = toInteger(y/grassTile.height/2);
-
-        for (let i=0; i < y; i++){
-            coordY++;
-            coordX++;
-        }
-        let tab = new Array(2);
-        tab[0] = coordX;
-        tab[1] = coordY;
-
-        return tab;
-    }
-
-    getPosInNumber(x,y){ //x et y pixels
-        let tab = new Array(2);
     }
 
     GenerateMap(){
@@ -63,74 +48,16 @@ class MainScene extends Phaser.Scene{
             }
         }
     }
-	displaybatiment(building){
-		console.log("test");
-		building = this.add.image(30,30, building);
-		building.depth = 0;
-		building.setInteractive();
-	}
 	
 	create(){
         var cam = this.cameras.main;
         //Map
         this.GenerateMap();
 
-        let pointer = this.input.mousePointer;
-
-        batiments['caserne1'] = this.add.image(0,0,"caserne1");
-
-            
-        this.input.on('pointermove', function (p) {
-
-        }, this);
-
-
-        if(isPlaced["caserne1"] == false){
-
-            let posBatX;
-            let posBatY;
-
-            batiments['caserne1'].x = pointer.x;
-            batiments['caserne1'].y = pointer.y;
-
-            this.input.mouse.requestPointerLock();
-
-            for (let i=0;i<30;i++){ 
-                for (let j=0;j<30;j++){
-                    mapVar[i][j].on("pointerover", () => {
-                        console.log("X :" + j + " Y:" + i );
-                        mapVar[i][j].y -= 30;
-                    });
-                    mapVar[i][j].on("pointerout", () => {
-                        mapVar[i][j].y += 30;
-                    });
-                }
-            }
-
-            if(!this.input.mouse.locked && isPlaced["caserne1"] == false){
-                        isPlaced["caserne1"] == true;
-                        console.log("ok");
-                        console.log(map);
-                    }
-
-            this.input.on("pointermove", () => {
-                if (!this.input.mouse.locked) return;  
-                cam.scrollX += pointer.movementX / cam.zoom;
-                cam.scrollY += pointer.movementY / cam.zoom;
-                      
-                batiments['caserne1'].x = cam.scrollX + 950;
-                batiments['caserne1'].y = cam.scrollY + 450;                
-            });
-
-
-            
-        }
-              
-
-        
+        let pointer = this.input.mousePointer;        
 	
 		this.count = 0;
-        var cam = this.cameras.main;
+    	
 		//Gestion scroll
 		this.input.on('pointermove', function (p) {
             if (!p.isDown) return;
@@ -142,7 +69,6 @@ class MainScene extends Phaser.Scene{
 
 		//Zoom
 		this.input.on("wheel",  (pointer, gameObjects, deltaX, deltaY) => {
-            isMovingCamera = true;
 			if (deltaY > 0) {
 				if(cam.zoom > 0.35){
 					cam.zoom -= .02;
@@ -180,9 +106,60 @@ class MainScene extends Phaser.Scene{
 		
     }
 
+    displaybatiment(building){
+        var cam = this.cameras.main;
+        let pointer = this.input.mousePointer;  
+        batiments[building] = this.add.image(0,0,building);
+        this.input.mouse.requestPointerLock();
+        this.input.mouse.locked = true;
+
+        for (let i=0;i<30;i++){ 
+            for (let j=0;j<30;j++){
+                mapVar[i][j].on("pointerover", () => {
+                    if (isPlaced[building] == false){
+                        //console.log("X :" + j + " Y:" + i );
+                        mapVar[i][j].y -= 30;
+                        //console.log("bougé de 30px");
+                        positionX = j;
+                        positionY = i;
+                    }   
+                });
+                mapVar[i][j].on("pointerout", () => {
+                    if (isPlaced[building] == false){
+                        mapVar[i][j].y += 30; 
+                    } 
+                });       
+            }
+        }
+
+        this.input.on("pointerdown", () => {
+            if(!isPlaced[building]){
+                mapVar[positionY][positionX].y +=30;
+                isPlaced[building] = true;
+                this.input.mouse.locked = false;
+                this.input.mouse.releasePointerLock();
+                this.moveBuilding(positionX,positionY,batiments[building]);
+            }
+        });
+
+        this.input.on("pointermove", () => {
+            //console.log("X: "+pointer.x+ " Y: " + pointer.y);
+            if(isPlaced[building] == false){ 
+                cam.scrollX += pointer.event.movementX / cam.zoom;
+                cam.scrollY += pointer.event.movementY / cam.zoom;
+                
+                //centre le batiment sur la map
+                batiments[building].x = cam.scrollX + pointer.x;
+                batiments[building].y = cam.scrollY + pointer.y;
+                }                
+            });
+    }
+    
+
 	clickButton(){
         this.scene.pause();
         this.scene.launch('DialogBox');
+
 	}
 
 	update(){

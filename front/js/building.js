@@ -2,35 +2,35 @@ class gameStat{
 	constructor(){
 		this.Income = 0;
 		this.Bank = 10000;
+		this.Pop = 0;
 		this.statEcologie = 0;
 		this.statEconomie = 0;
 		this.statBienEtre = 0;
 		this.listeBatiment = [];
-		this.Pop = 0;
-
 	}
 
 	saveBatiment(name){
-		this.listeBatiment.append(name);
+		this.listeBatiment.push(name);
 	}
 
 	updateIncome(){
 		if(this.listeBatiment == null) {return 0;}
 		else{
+			this.Income = 0;
 			for(let i = 0; i < this.listeBatiment.length; i++){
 				for(let j = 0; j < buildingListMk1.length; j++){
 					if(this.listeBatiment[i] == buildingListMk1[j].name){
-						this.income += buildingListMk1[j].income;
+						this.Income += buildingListMk1[j].income;
 					}
 				}
 				for(let k = 0; k < buildingListMk2.length; k++){
 					if(this.listeBatiment[i] == buildingListMk2[k].name){
-						this.income += buildingListMk2[k].income;
+						this.Income += buildingListMk2[k].income;
 					}
 				}
 				for(let l = 0; l < buildingListMk2.length; l++){
 					if(this.listeBatiment[i] == buildingListMk3[l].name){
-						this.income += buildingListMk3[l].income;
+						this.Income += buildingListMk3[l].income;
 					}
 				}
 			}
@@ -40,6 +40,7 @@ class gameStat{
 	updateEcologie(){
 		if(this.listeBatiment == null) {return 0;}
 		else{
+			this.statEcologie = 0;
 			for(let i = 0; i < this.listeBatiment.length; i++){
 				for(let j = 0; j < buildingListMk1.length; j++){
 					if(this.listeBatiment[i] == buildingListMk1[j].name){
@@ -63,6 +64,7 @@ class gameStat{
 	updateEconomie(){
 		if(this.listeBatiment == null) {return 0;}
 		else{
+			this.statEconomie = 0;
 			for(let i = 0; i < this.listeBatiment.length; i++){
 				for(let j = 0; j < buildingListMk1.length; j++){
 					if(this.listeBatiment[i] == buildingListMk1[j].name){
@@ -86,6 +88,7 @@ class gameStat{
 	updateBienEtre(){
 		if(this.listeBatiment == null) {return 0;}
 		else{
+			this.statBienEtre = 0;
 			for(let i = 0; i < this.listeBatiment.length; i++){
 				for(let j = 0; j < buildingListMk1.length; j++){
 					if(this.listeBatiment[i] == buildingListMk1[j].name){
@@ -109,6 +112,7 @@ class gameStat{
 	updatePop(){
 		if(this.listeBatiment == null) {return 0;}
 		else{
+			this.Pop = 0;
 			for(let i = 0; i < this.listeBatiment.length; i++){
 				for(let j = 0; j < buildingListMk1.length; j++){
 					if(this.listeBatiment[i] == buildingListMk1[j].name){

@@ -34,43 +34,52 @@ class HUDScene extends Phaser.Scene{
       this.barEconomie = new Phaser.GameObjects.Graphics(this);
       this.add.existing(this.barEconomie);
       this.barEconomie.fillStyle(0xFF9900);
-      this.barEconomie.fillRect(10,25, 250, 20);
-      this.textEconomie = this.add.text(265, 24, 'Economie', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textEconomie = this.add.text(15, 24, 'Economie', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      this.rEconomie = this.add.rectangle(160, 34, 300, 20);
+      this.rEconomie.setStrokeStyle(2, 0x080808);
+      this.lineEconomie = this.add.line(50, -30, 110, 65, 110, 85, 0x080808);
 
       //Ecologie
       this.barEcologie = new Phaser.GameObjects.Graphics(this);
       this.add.existing(this.barEcologie);
       this.barEcologie.fillStyle(0x38761D);
-      this.barEcologie.fillRect(10,75, 250, 20);
-      this.textEcologie = this.add.text(265, 74, 'Ecologie', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textEcologie = this.add.text(15, 74, 'Ecologie', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      this.rEcologie = this.add.rectangle(160, 84, 300, 20);
+      this.rEcologie.setStrokeStyle(2, 0x080808);
+      this.lineEcologie = this.add.line(50, -30, 110, 115, 110, 135, 0x080808);
 
       //Bien Etre
       this.barBienEtre = new Phaser.GameObjects.Graphics(this);
       this.add.existing(this.barBienEtre);
       this.barBienEtre.fillStyle(0x0B5394);
-      this.barBienEtre.fillRect(10,125, 250, 20);
-      this.textBienEtre = this.add.text(265, 124, 'Bien être', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textBienEtre = this.add.text(15, 124, 'Bien être', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      this.rBienEtre = this.add.rectangle(160, 134, 300, 20);
+      this.rBienEtre.setStrokeStyle(2, 0x080808);
+      this.lineBienEtre = this.add.line(50, -30, 110, 165, 110, 185, 0x080808);
 
       //Income
-      this.iconeIncome = this.add.sprite(1750, 60, "income");
-      this.iconeIncome.displayWidth = 75;
+      this.iconeIncome = this.add.sprite(1770, 50, "income");
+      this.iconeIncome.displayWidth = 60;
       this.iconeIncome.scaleY = this.iconeIncome.scaleX;
       this.iconeIncome.depth = 100;
-      this.textIncome = this.add.text(1820, 50, '0', { fill: 0xffffff, font: 'bold 36px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textIncome = this.add.text(1820, 40, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //bank
-      this.iconeBank = this.add.sprite(1550, 70, "bank");
-      this.iconeBank.displayWidth = 75;
+      this.iconeBank = this.add.sprite(1610, 60, "bank");
+      this.iconeBank.displayWidth = 60;
       this.iconeBank.scaleY = this.iconeBank.scaleX;
       this.iconeBank.depth = 100;
-      this.textBank = this.add.text(1585, 50, '0', { fill: 0xffffff, font: 'bold 36px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textBank = this.add.text(1635, 42, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //pop
-      this.iconePopulation = this.add.sprite(1750, 160, "pop");
+      this.iconePopulation = this.add.sprite(1770, 120, "pop");
       this.iconePopulation.displayWidth = 75;
       this.iconePopulation.scaleY = this.iconePopulation.scaleX;
       this.iconePopulation.depth = 100;
-      this.textPopulation = this.add.text(1820, 140, '0', { fill: 0xffffff, font: 'bold 36px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textPopulation = this.add.text(1820, 102, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
     }
 
     openBuildingList(){
@@ -80,7 +89,7 @@ class HUDScene extends Phaser.Scene{
     updateDay(){
       this.counter++;
       statistiques.updateBank();
-      if(this.counter >= 365){this.endGame();}
+      //if(this.counter >= 365){ this.endGame(); }
     }
 
     updateEverything(){
@@ -89,14 +98,39 @@ class HUDScene extends Phaser.Scene{
       statistiques.updateEcologie();
       statistiques.updateBienEtre();
       statistiques.updatePop();
+
+    }
+
+    updateBar(){
+      this.barEconomie.fillRect(160,25, 0, 20);
+      this.barEcologie.fillRect(160,75, 0, 20);
+      this.barBienEtre.fillRect(160,125, 0, 20);
+
+      let econo = statistiques.getEconomie(), ecolo = statistiques.getEcologie(), bienE = statistiques.getBienEtre();
+
+      //Economie
+      if(econo*1.5 > 150){ this.barEconomie.fillRect(160,25, 150, 20);}
+      else if(150 < econo*1.5 < 150){ this.barEconomie.fillRect(160,25, statistiques.getEconomie()*1.5, 20);}
+      else if(econo*1.5 <= -150){ this.barBienEconomie.fillRect(160,125, -150, 20);}
+
+      //Ecologie
+      if(ecolo*1.5 > 150){ this.barEcologie.fillRect(160,75, 150, 20); }
+      else if(150 < ecolo*1.5 < 150){ this.barEcologie.fillRect(160,75, statistiques.getEcologie()*1.5, 20); }
+      else if(ecolo*1.5 <= -150){ this.barBienEcologie.fillRect(160,125, -150, 20);}
+      //Bien Etre
+      if(bienE*1.5 > 150){ this.barBienEtre.fillRect(160,125, 150, 20); }
+      else if(150 < bienE*1.5 < 150){ this.barBienEtre.fillRect(160,125, statistiques.getBienEtre()*1.5, 20); }
+      else if(bienE*1.5 <= -150){ this.barBienEtre.fillRect(160,125, -150, 20);}
     }
 
     update () {
       this.text.setText('Jour ' + this.counter.toFixed(0));
       this.textBank.setText(statistiques.getBank()/1000 + 'k');
-      this.textIncome.setText(statistiques.getIncome().toFixed(0));
-      this.textPopulation.setText(statistiques.getPop().toFixed(0));
+      this.textIncome.setText(statistiques.getIncome()/1000 + 'k');
+      this.textPopulation.setText(statistiques.getPop()/1000 + 'k');
+      this.updateBar();
     }
+
 }
 
 
@@ -224,6 +258,7 @@ class HUDBuildingListEcologie extends Phaser.Scene{
 
   placeBuildingEcologie(name){
     this.scene.stop('ecologie').stop('stat');
+    statistiques.saveBatiment(name);
     var scene = this.scene.get("MainScene");
     var bat = scene.displaybatiment(name);
   }
@@ -321,6 +356,7 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
     placeBuildingMoral(name){
       this.scene.stop('moral').stop('stat');
+      statistiques.saveBatiment(name);
       var scene = this.scene.get("MainScene");
       var bat = scene.displaybatiment(name);
    }
@@ -378,6 +414,7 @@ class HUDBuildingListEconomie extends Phaser.Scene{
 
   placeBuildingEconomie(name){
     this.scene.stop('economie').stop('stat');
+    statistiques.saveBatiment(name);
     var scene = this.scene.get("MainScene");
     var bat = scene.displaybatiment(name); 
   }
