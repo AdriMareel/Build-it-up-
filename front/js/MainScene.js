@@ -108,6 +108,7 @@ class MainScene extends Phaser.Scene{
     }
 
     displaybatiment(building){
+
         var cam = this.cameras.main;
         let pointer = this.input.mousePointer; 
         let bat_var = 0;
@@ -173,7 +174,8 @@ class MainScene extends Phaser.Scene{
             if(isPlaced[building][bat_var]){
                 var scene = this.scene.get("ecologie");
                 scene.getInfo(building);
-                this.scene.launch('menu')
+                this.scene.launch('menu');
+                if(building == buildingListMk1[13].name || building == buildingListMk2[13].name || building == buildingListMk3[13].name) { this.scene.launch('techno'); }
             }
         });
         

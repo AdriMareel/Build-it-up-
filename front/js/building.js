@@ -7,11 +7,16 @@ class gameStat{
 		this.statEconomie = 0;
 		this.statBienEtre = 0;
 		this.listeBatiment = [];
+		this.listeTechno = [];
 		this.description = "";
 	}
 
 	saveBatiment(name){
 		this.listeBatiment.push(name);
+	}
+
+	saveTechno(name){
+		this.listeTechno.push(name);
 	}
 
 	updateIncome(){
@@ -162,6 +167,7 @@ class gameStat{
 				info[5] = buildingListMk1[j].bienEtre;
 				info[6] = buildingListMk1[j].pop;
 				info[7] = buildingListMk1[j].description
+				info[8] = buildingListMk1[j].nom;
 			}
 		}
 		
@@ -174,7 +180,8 @@ class gameStat{
 				info[4] = buildingListMk2[k].ecologie;
 				info[5] = buildingListMk2[k].bienEtre;
 				info[6] = buildingListMk2[k].pop;
-				info[7] = buildingListMk2[k].description
+				info[7] = buildingListMk2[k].description;
+				info[8] = buildingListMk2[k].nom;
 			}
 		}
 		for(let l = 0; l < buildingListMk3.length; l++){
@@ -186,7 +193,8 @@ class gameStat{
 				info[4] = buildingListMk3[l].ecologie;
 				info[5] = buildingListMk3[l].bienEtre;
 				info[6] = buildingListMk3[l].pop;
-				info[7] = buildingListMk3[l].description			
+				info[7] = buildingListMk3[l].description;
+				info[8] = buildingListMk3[l].nom;		
 			}
 		}
 		return info;

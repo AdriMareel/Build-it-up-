@@ -377,8 +377,16 @@ class HUDBuildingListMoral extends Phaser.Scene {
       //Text Bank 2
       this.textBank2 = this.add.text(1500, 70, "Vous avez : " + statistiques.getBank()/1000 + 'k', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
+      /* TEMPORAIRE MAIRIE*/
+      this.buttonBuildingMairie = this.add.image(150,0, 'mairie1');
+      this.buttonBuildingMairie.setInteractive({useHandCursor: true});
+      this.buttonBuildingMairie.on('pointerdown', () => this.placeBuildingMoral('mairie1'));
+      this.buttonBuildingMairie.setOrigin(-3, 0);
+      this.buttonBuildingMairie.setScrollFactor(0);
+      this.buttonBuildingMairie.fixedToCamera = true;
+
       //Caserne
-      this.buttonBuildingCaserne = this.add.image(650,180, 'caserne1');
+      this.buttonBuildingCaserne = this.add.image(640,180, 'caserne1');
       if(statistiques.getBank() < buildingListMk1[0].price) { 
         let croix = this.add.sprite(1510, 300, 'croix');
         croix.depth = 300;
@@ -738,7 +746,7 @@ class Info extends Phaser.Scene{
 
     //Text Info
     this.textInfo = this.add.text(400, 270, 'Informations sur le bâtiment !', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-    this.textName = this.add.text(400, 310, 'Nom : ' + temp[0], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textName = this.add.text(400, 310, 'Nom : ' + temp[8], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
     this.textPrice = this.add.text(400, 350, 'Prix : ' + temp[1] + '$', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
     this.textIncome = this.add.text(400, 390, 'Income généré : ' + temp[2] + '$/jour', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
     this.textEconomieInfo = this.add.text(400, 430, 'Impact economique : ' + temp[3], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
@@ -803,7 +811,7 @@ class buildingMenu extends Phaser.Scene{
   }
 
   close(){
-    this.scene.stop('info').stop('menu');
+    this.scene.stop('info').stop('menu').stop('techno');
   }
 }
 
@@ -831,7 +839,7 @@ class showUpgrade extends Phaser.Scene{
     sousMenuRec3.setStrokeStyle(4, 0x080808);
 
    //Text Info
-    this.textNameUpgrade = this.add.text(400, 250, 'Nom : ' + temp[0], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textNameUpgrade = this.add.text(400, 250, 'Nom : ' + temp[8], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
     this.textPriceUpgrade = this.add.text(400, 300, 'Prix : ' + temp[1], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
     this.textIncomeUpgrade = this.add.text(400, 350, 'Income généré : ' + temp[2], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
     this.textEconomieInfoUpgrade = this.add.text(400, 400, 'Impact economique : ' + temp[3], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
@@ -870,5 +878,114 @@ class showUpgrade extends Phaser.Scene{
 
   close(){
     this.scene.stop('showUpgrade');
+  }
+}
+
+class techno extends Phaser.Scene{
+  create(){
+    //Close bouton
+    this.closeButton = this.add.sprite(1680, 80, 'close');
+    this.closeButton.displayWidth = 50;
+    this.closeButton.scaleY = this.closeButton.scaleX;
+    this.closeButton.depth = 200;
+    this.closeButton.setInteractive({  useHandCursor: true});
+    this.closeButton.on('pointerdown', () => this.close());
+
+    //Bouton Upgrade
+    this.upgradebutton = this.add.sprite(960, 800, 'techno');
+    this.upgradebutton.displayWidth = 150;
+    this.upgradebutton.scaleY = this.upgradebutton.scaleX;
+    this.upgradebutton.depth = 200;
+    this.upgradebutton.setInteractive({  useHandCursor: true});
+    this.upgradebutton.on('pointerdown', () => this.mairieTechno());
+  }
+  
+  mairieTechno(){
+  //Mairie niveau 1
+    if(temp[0] == buildingListMk1[13].name){
+      this.textTechno = this.add.text(400, 270, 'Technologie', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      let sousMenuEcologie = this.add.rectangle(960, 450, 1500, 800, 0xffffff);
+      let sousMenuRec1 = this.add.rectangle(960, 450, 1500, 800);
+      sousMenuRec1.setStrokeStyle(3, 0x080808);
+
+      this.buttonBuildingPoste = this.add.image(-100,180, 'poste1');
+      if(statistiques.getBank() < buildingListMk1[5].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= buildingListMk1[5].price){
+        this.buttonBuildingPoste.setInteractive({useHandCursor: true});
+        this.buttonBuildingPoste.on('pointerdown', () => this.buyTechno('poste1'));
+      }
+      this.buttonBuildingPoste.setOrigin(-3, 0);
+      this.buttonBuildingPoste.setScrollFactor(0);
+      this.buttonBuildingPoste.fixedToCamera = true;
+      this.prixPoste = this.add.text(750, 440, buildingListMk1[5].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textPoste = this.add.text(752, 460, "Poste", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //Poste Info
+      this.buttonInfoPoste = this.add.image(550,445, 'iconeInfo');
+      this.buttonInfoPoste.displayWidth = 50;
+      this.buttonInfoPoste.scaleY = this.buttonInfoPoste.scaleX;
+      this.buttonInfoPoste.setInteractive({useHandCursor: true});
+      this.buttonInfoPoste.on('pointerdown', () => this.getInfo('poste1'));
+      this.buttonInfoPoste.setOrigin(-3, 0);
+      this.buttonInfoPoste.setScrollFactor(0);
+      this.buttonInfoPoste.fixedToCamera = true;
+    }
+
+    //Mairie niveau 2
+     if(temp[0] == buildingListMk2[13].name){
+      this.textTechno = this.add.text(400, 270, 'Technologie', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      let sousMenuEcologie = this.add.rectangle(960, 450, 1500, 800, 0xffffff);
+      let sousMenuRec1 = this.add.rectangle(960, 450, 1500, 800);
+      sousMenuRec1.setStrokeStyle(3, 0x080808);
+
+            //Hopital
+      this.buttonBuildingHopital = this.add.image(-450,180, 'hopital1');
+      if(statistiques.getBank() < buildingListMk1[4].price) { 
+        let croix = this.add.sprite(400, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= buildingListMk1[4].price){
+        this.buttonBuildingHopital.setInteractive({useHandCursor: true});
+        this.buttonBuildingHopital.on('pointerdown', () => this.placeBuildingMoral('hopital1'));
+      }
+      this.buttonBuildingHopital.setOrigin(-3, 0);
+      this.buttonBuildingHopital.setScrollFactor(0);
+      this.buttonBuildingHopital.fixedToCamera = true;
+      this.prixHopital = this.add.text(350, 440, buildingListMk1[4].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textHopital = this.add.text(345, 460, "Hopital", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //Hopital Info
+      this.buttonInfoHopital = this.add.image(150,445, 'iconeInfo');
+      this.buttonInfoHopital.displayWidth = 50;
+      this.buttonInfoHopital.scaleY = this.buttonInfoHopital.scaleX;
+      this.buttonInfoHopital.setInteractive({useHandCursor: true});
+      this.buttonInfoHopital.on('pointerdown', () => this.getInfo('hopital1'));
+      this.buttonInfoHopital.setOrigin(-3, 0);
+      this.buttonInfoHopital.setScrollFactor(0);
+      this.buttonInfoHopital.fixedToCamera = true;
+    }
+
+    //Mairie niveau 3
+     if(temp[0] == buildingListMk3[13].name){
+      this.textTechno = this.add.text(400, 270, 'Technologie', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      let sousMenuEcologie = this.add.rectangle(960, 450, 1500, 800, 0xffffff);
+      let sousMenuRec1 = this.add.rectangle(960, 450, 1500, 800);
+      sousMenuRec1.setStrokeStyle(3, 0x080808);
+    }
+  }
+
+  buyTechno(name){
+    statistiques.saveTechno(name);
+  }
+
+  close(){
+    this.scene.stop('info').stop('menu').stop('techno');
   }
 }
