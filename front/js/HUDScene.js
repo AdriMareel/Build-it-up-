@@ -424,7 +424,7 @@ class HUDBuildingListMoral extends Phaser.Scene {
       this.textMaison = this.add.text(965, 770, "Maison", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //Maison Info
-      this.buttonInfoMaison = this.add.image(760,760, 'iconeInfo');
+      this.buttonInfoMaison = this.add.image(765,760, 'iconeInfo');
       this.buttonInfoMaison.displayWidth = 50;
       this.buttonInfoMaison.scaleY = this.buttonInfoMaison.scaleX;
       this.buttonInfoMaison.setInteractive({useHandCursor: true});
@@ -452,7 +452,7 @@ class HUDBuildingListMoral extends Phaser.Scene {
       this.textCentrale = this.add.text(1340, 770, "Centrale", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //Centrale Info
-      this.buttonInfoCentrale = this.add.image(1160,760, 'iconeInfo');
+      this.buttonInfoCentrale = this.add.image(1145,760, 'iconeInfo');
       this.buttonInfoCentrale.displayWidth = 50;
       this.buttonInfoCentrale.scaleY = this.buttonInfoCentrale.scaleX;
       this.buttonInfoCentrale.setInteractive({useHandCursor: true});
@@ -789,7 +789,7 @@ class buildingMenu extends Phaser.Scene{
   }
 
   teleportBuilding(name){
-    this.scene.stop('info');
+    this.scene.stop('info').stop('menu');
     var scene = this.scene.get("MainScene");
     var bat = scene.displaybatiment(temp[0],false); 
   }

@@ -173,6 +173,7 @@ class MainScene extends Phaser.Scene{
             if(isPlaced[building][bat_var]){
                 var scene = this.scene.get("ecologie");
                 scene.getInfo(building);
+                this.scene.launch('menu')
             }
         });
         
