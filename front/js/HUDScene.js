@@ -141,7 +141,8 @@ class HUDScene extends Phaser.Scene{
 class HUDStat extends Phaser.Scene{
   create(){
     let sousMenu1 = this.add.rectangle(950, 450, 700, 300, 0xffffff);
-
+    let sousMenuRec1 = this.add.rectangle(950, 450, 700, 300);
+    sousMenuRec1.setStrokeStyle(3, 0x080808);
     //Close bouton
     this.closeButton = this.add.sprite(1275, 325, 'close');
     this.closeButton.displayWidth = 50;
@@ -207,6 +208,8 @@ class HUDStat extends Phaser.Scene{
 class HUDBuildingListEcologie extends Phaser.Scene{
   create(){
     let sousMenuEcologie = this.add.rectangle(960, 450, 1500, 800, 0xffffff);
+    let sousMenuRec1 = this.add.rectangle(960, 450, 1500, 800);
+    sousMenuRec1.setStrokeStyle(3, 0x080808);
 
     //Close bouton
     this.closeButton = this.add.sprite(1680, 80, 'close');
@@ -360,6 +363,8 @@ class HUDBuildingListEcologie extends Phaser.Scene{
 class HUDBuildingListMoral extends Phaser.Scene {
     create(){
       let sousMenuMoral = this.add.rectangle(960, 450, 1500, 800, 0xffffff);
+      let sousMenuRec1 = this.add.rectangle(960, 450, 1500, 800);
+      sousMenuRec1.setStrokeStyle(3, 0x080808);
 
       //Close bouton
       this.closeButton = this.add.sprite(1680, 80, 'close');
@@ -590,6 +595,8 @@ class HUDBuildingListMoral extends Phaser.Scene {
 class HUDBuildingListEconomie extends Phaser.Scene{
     create(){
     let sousMenuEconomie = this.add.rectangle(960, 450, 1500, 700, 0xffffff);
+    let sousMenuRec1 = this.add.rectangle(960, 450, 1500, 700);
+    sousMenuRec1.setStrokeStyle(3, 0x080808);
 
     //Close bouton
     this.closeButton = this.add.sprite(1680, 130, 'close');
@@ -717,7 +724,7 @@ class Info extends Phaser.Scene{
     sousMenuRec2.setStrokeStyle(3, 0x080808);
 
     //Ajout Sprite image
-    this.displayBuilding = this.add.image(960,450, temp[0]);
+    this.displayBuilding = this.add.image(860,450, temp[0]);
     this.displayBuilding.displayWidth = 400;
     this.displayBuilding.scaleY = this.displayBuilding.scaleX;
 
@@ -738,6 +745,10 @@ class Info extends Phaser.Scene{
     this.textEcologieInfo = this.add.text(400, 470, 'Impact écologique : ' + temp[4], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
     this.textBienEtreInfo = this.add.text(400, 510, 'Impact sur le bien-être : ' + temp[5], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
     this.textPop = this.add.text(400, 550, 'Population ajouté : ' + temp[6], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+    //Text description 
+    this.titleDesc = this.add.text(1060, 250, 'Description du batiment:', {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8); 
+    this.textDesc = this.add.text(1060, 350, temp[7], {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff0);
   }
 
   close(){
@@ -805,7 +816,7 @@ class showUpgrade extends Phaser.Scene{
 
     let buyconfirm = this.add.rectangle(980, 700, 600, 100, 0x999999);
     let sousMenuRec3 = this.add.rectangle(980, 700, 600, 100);
-    sousMenuRec2.setStrokeStyle(4, 0x080808);
+    sousMenuRec3.setStrokeStyle(4, 0x080808);
 
    //Text Info
     this.textNameUpgrade = this.add.text(400, 250, 'Nom : ' + temp[0], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
@@ -817,7 +828,7 @@ class showUpgrade extends Phaser.Scene{
     this.textPopUpgrade = this.add.text(400, 550, 'Population ajouté : ' + temp[6], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
     //Ajout Sprite image
-    this.displayBuilding = this.add.image(960,450, temp[0]);
+    this.displayBuilding = this.add.image(860,450, temp[0]);
     this.displayBuilding.displayWidth = 400;
     this.displayBuilding.scaleY = this.displayBuilding.scaleX;
 
