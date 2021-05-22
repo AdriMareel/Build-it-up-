@@ -709,7 +709,12 @@ class HUDBuildingListEconomie extends Phaser.Scene{
 class Info extends Phaser.Scene{
   create(){
     let sousMenuInfo = this.add.rectangle(640, 450, 600, 500, 0xffffff);
+    let sousMenuRec = this.add.rectangle(640, 450, 600, 500);
+    sousMenuRec.setStrokeStyle(3, 0x080808);
+
     let batimentDesc = this.add.rectangle(1260, 450, 600, 500, 0xffffff);
+    let sousMenuRec2 = this.add.rectangle(1260, 450, 600, 500);
+    sousMenuRec2.setStrokeStyle(3, 0x080808);
 
     //Ajout Sprite image
     this.displayBuilding = this.add.image(960,450, temp[0]);
@@ -791,8 +796,16 @@ class showUpgrade extends Phaser.Scene{
 
     //Rectangle
     let Upgradeinfo = this.add.rectangle(640, 450, 600, 500, 0xffffff);
+    let sousMenuRec = this.add.rectangle(640, 450, 600, 500);
+    sousMenuRec.setStrokeStyle(3, 0x080808);
+
     let batimentDesc = this.add.rectangle(1260, 450, 600, 500, 0xffffff);
+    let sousMenuRec2 = this.add.rectangle(1260, 450, 600, 500);
+    sousMenuRec2.setStrokeStyle(3, 0x080808);
+
     let buyconfirm = this.add.rectangle(980, 700, 600, 100, 0x999999);
+    let sousMenuRec3 = this.add.rectangle(980, 700, 600, 100);
+    sousMenuRec2.setStrokeStyle(4, 0x080808);
 
    //Text Info
     this.textNameUpgrade = this.add.text(400, 250, 'Nom : ' + temp[0], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
@@ -831,6 +844,7 @@ class showUpgrade extends Phaser.Scene{
     this.cancelbutton.on('pointerdown', () => this.close());
 
   }
+
   close(){
     this.scene.stop('showUpgrade');
   }
