@@ -11,7 +11,7 @@ for(let i=0;i<10;i++){
     batiments[i] = new Array(10);
 }
 
-//console.log(batiments);
+console.log(batiments);
 let positionY;
 let positionX;
 
@@ -48,71 +48,24 @@ class MainScene extends Phaser.Scene{
             }
         }
     }
-	
-	create(){
-        var cam = this.cameras.main;
-        //Map
-        this.GenerateMap();
 
-        let pointer = this.input.mousePointer;        
-	
-		this.count = 0;
-    	
-		//Gestion scroll
-		this.input.on('pointermove', function (p) {
-            if (!p.isDown) return;
-                cam.scrollX -= (p.x - p.prevPosition.x) / cam.zoom;
-                cam.scrollY -= (p.y - p.prevPosition.y) / cam.zoom;  
-        });
-
-
-
-		//Zoom
-		this.input.on("wheel",  (pointer, gameObjects, deltaX, deltaY) => {
-			if (deltaY > 0) {
-				if(cam.zoom > 0.35){
-					cam.zoom -= .02;
-				}
-			}
-			if (deltaY < 0){
-				if(cam.zoom < 1){
-					cam.zoom += .02;
-				}
-			}
-		});
-		//var building = this.add.image(30,30, "building");
-		//var build = this.add.image(100,30, "build");
-		//building.depth = 0;
-		//build.depth = 1;
-		//building.setInteractive();
-		//build.setInteractive();
-        
-	   
-		//ChatBox
-		this.options = this.add.sprite(game.config.width * 0.47, game.config.height * 0.60, "options");
-        this.options.displayWidth = 200;
-        this.options.scaleY = this.options.scaleX;
-    	this.options.depth = 100;
-    	this.options.setInteractive({useHandCursor: true});
-  		this.options.on('pointerdown', () => this.clickButton());
-
-        this.events.on('pause', function () {
-            console.log('MainScene paused');
-        })
-
-        this.events.on('resume', function () {
-            console.log('MainScene resumed');
-        })
-		
+    deleteBatiment()
+    {
+         mapVar[i][j]
     }
 
-    displaybatiment(building){
+      displaybatiment(building,isReplacing){
         var cam = this.cameras.main;
-        let pointer = this.input.mousePointer;  
+        let pointer = this.input.mousePointer; 
         batiments[building] = this.add.image(0,0,building);
+
         this.input.mouse.requestPointerLock();
         this.input.mouse.locked = true;
 
+        if (isReplacing == false) {
+            isPlaced[building] = false;
+        }
+        
         for (let i=0;i<30;i++){ 
             for (let j=0;j<30;j++){
                 mapVar[i][j].on("pointerover", () => {
@@ -122,6 +75,8 @@ class MainScene extends Phaser.Scene{
                         //console.log("bougé de 30px");
                         positionX = j;
                         positionY = i;
+                        console.log("c'est j " + positionX);
+                        console.log("c'est i " + positionY);
                     }   
                 });
                 mapVar[i][j].on("pointerout", () => {
@@ -135,7 +90,15 @@ class MainScene extends Phaser.Scene{
         this.input.on("pointerdown", () => {
             if(!isPlaced[building]){
                 mapVar[positionY][positionX].y +=30;
+                batiments[building].setInteractive();
                 isPlaced[building] = true;
+                
+                batiments[building].setInteractive().on("pointerdown", () => {
+                    var scene = this.scene.get("ecologie");
+                    scene.getInfo(building);
+                    this.scene.launch('menu');
+                });
+                
                 this.input.mouse.locked = false;
                 this.input.mouse.releasePointerLock();
                 this.moveBuilding(positionX,positionY,batiments[building]);
@@ -156,11 +119,62 @@ class MainScene extends Phaser.Scene{
     }
     
 
-	clickButton(){
+    clickButton(){
         this.scene.pause();
         this.scene.launch('DialogBox');
 
-	}
+    }
+	
+	create(){
+        var cam = this.cameras.main;
+        //Map
+        this.GenerateMap();
+      
+        let pointer = this.input.mousePointer;        
+	
+		this.input.on('pointermove', function (p) {
+            if (!p.isDown) return;
+                cam.scrollX -= (p.x - p.prevPosition.x) / cam.zoom;
+                cam.scrollY -= (p.y - p.prevPosition.y) / cam.zoom;  
+        });
+
+
+
+		//Zoom
+		this.input.on("wheel",  (pointer, gameObjects, deltaX, deltaY) => {
+            isMovingCamera = true;
+			if (deltaY > 0) {
+				if(cam.zoom > 0.35){
+					cam.zoom -= .02;
+				}
+			}
+			if (deltaY < 0){
+				if(cam.zoom < 1){
+					cam.zoom += .02;
+				}
+			}
+		});
+        
+	   
+		//ChatBox
+		this.options = this.add.sprite(game.config.width * 0.47, game.config.height * 0.60, "options");
+        this.options.displayWidth = 200;
+        this.options.scaleY = this.options.scaleX;
+    	this.options.depth = 100;
+    	this.options.setInteractive({useHandCursor: true});
+  		this.options.on('pointerdown', () => this.clickButton());
+
+        this.events.on('pause', function () {
+            console.log('MainScene paused');
+        })
+
+        this.events.on('resume', function () {
+            console.log('MainScene resumed');
+        })
+		
+    }
+
+  
 
 	update(){
 	}

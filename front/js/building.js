@@ -1,12 +1,13 @@
 class gameStat{
 	constructor(){
 		this.Income = 0;
-		this.Bank = 10000;
+		this.Bank = 100000;
 		this.Pop = 0;
 		this.statEcologie = 0;
 		this.statEconomie = 0;
 		this.statBienEtre = 0;
 		this.listeBatiment = [];
+		this.description = "";
 	}
 
 	saveBatiment(name){
@@ -160,31 +161,46 @@ class gameStat{
 				info[4] = buildingListMk1[j].ecologie;
 				info[5] = buildingListMk1[j].bienEtre;
 				info[6] = buildingListMk1[j].pop;
+				info[7] = buildingListMk1[j].description
 			}
 		}
 		
 		for(let k = 0; k < buildingListMk2.length; k++){
 			if(name == buildingListMk2[k].name){
-				info[0] = buildingListMk2[j].name;
-				info[1] = buildingListMk2[j].price;
-				info[2] = buildingListMk2[j].income;
-				info[3] = buildingListMk2[j].economie;
-				info[4] = buildingListMk2[j].ecologie;
-				info[5] = buildingListMk2[j].bienEtre;
-				info[6] = buildingListMk2[j].pop;
+				info[0] = buildingListMk2[k].name;
+				info[1] = buildingListMk2[k].price;
+				info[2] = buildingListMk2[k].income;
+				info[3] = buildingListMk2[k].economie;
+				info[4] = buildingListMk2[k].ecologie;
+				info[5] = buildingListMk2[k].bienEtre;
+				info[6] = buildingListMk2[k].pop;
+				info[7] = buildingListMk2[k].description
 			}
 		}
 		for(let l = 0; l < buildingListMk3.length; l++){
 			if(name == buildingListMk3[l].name){
-				info[0] = buildingListMk3[j].name;
-				info[1] = buildingListMk3[j].price;
-				info[2] = buildingListMk3[j].income;
-				info[3] = buildingListMk3[j].economie;
-				info[4] = buildingListMk3[j].ecologie;
-				info[5] = buildingListMk3[j].bienEtre;
-				info[6] = buildingListMk3[j].pop;				
+				info[0] = buildingListMk3[l].name;
+				info[1] = buildingListMk3[l].price;
+				info[2] = buildingListMk3[l].income;
+				info[3] = buildingListMk3[l].economie;
+				info[4] = buildingListMk3[l].ecologie;
+				info[5] = buildingListMk3[l].bienEtre;
+				info[6] = buildingListMk3[l].pop;
+				info[7] = buildingListMk3[l].description			
 			}
 		}
 		return info;
+	}
+
+	setBank(price){
+		this.Bank -= price;
+	}
+
+	getId(name){
+		for(let i = 0; i < buildingListMk1.length; i++){
+			if(name == buildingListMk1[i].name){
+				return buildingListMk1[i].id;
+			}
+		}
 	}
 }

@@ -66,7 +66,7 @@ class HUDScene extends Phaser.Scene{
       this.iconeIncome.displayWidth = 60;
       this.iconeIncome.scaleY = this.iconeIncome.scaleX;
       this.iconeIncome.depth = 100;
-      this.textIncome = this.add.text(1820, 40, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textIncome = this.add.text(1810, 40, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //bank
       this.iconeBank = this.add.sprite(1610, 60, "bank");
@@ -80,7 +80,7 @@ class HUDScene extends Phaser.Scene{
       this.iconePopulation.displayWidth = 75;
       this.iconePopulation.scaleY = this.iconePopulation.scaleX;
       this.iconePopulation.depth = 100;
-      this.textPopulation = this.add.text(1820, 102, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textPopulation = this.add.text(1810, 102, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
     }
 
     openBuildingList(){
@@ -103,9 +103,12 @@ class HUDScene extends Phaser.Scene{
     }
 
     updateBar(){
-      this.barEconomie.fillRect(160,25, 0, 20);
-      this.barEcologie.fillRect(160,75, 0, 20);
-      this.barBienEtre.fillRect(160,125, 0, 20);
+      this.barEconomie.clear();
+      this.barEconomie.fillStyle(0xFF9900);
+      this.barEcologie.clear();
+      this.barEcologie.fillStyle(0x38761D);
+      this.barBienEtre.clear();
+      this.barBienEtre.fillStyle(0x0B5394);
 
       let econo = statistiques.getEconomie(), ecolo = statistiques.getEcologie(), bienE = statistiques.getBienEtre();
 
@@ -210,7 +213,7 @@ class HUDBuildingListEcologie extends Phaser.Scene{
     this.closeButton.displayWidth = 50;
     this.closeButton.scaleY = this.closeButton.scaleX;
     this.closeButton.depth = 200;
-    this.closeButton.setInteractive({  useHandCursor: true});
+    this.closeButton.setInteractive({useHandCursor: true});
     this.closeButton.on('pointerdown', () => this.close());
 
     //Text Bank 2
@@ -218,8 +221,16 @@ class HUDBuildingListEcologie extends Phaser.Scene{
 
     //Panneau Solaire
     this.buttonBuildingPSolaire = this.add.image(-1100,100, 'panneau_solaire');
-    this.buttonBuildingPSolaire.setInteractive({  useHandCursor: true});
-    this.buttonBuildingPSolaire.on('pointerdown', () => this.placeBuildingEcologie('panneau_solaire'));
+    if(statistiques.getBank() < buildingListMk1[7].price) { 
+      let croix = this.add.sprite(650, 300, 'croix');
+      croix.depth = 300;
+      croix.displayWidth = 50;
+      croix.scaleX = croix.scaleY;
+    }
+    else if(statistiques.getBank() >= buildingListMk1[7].price){
+      this.buttonBuildingPSolaire.setInteractive({useHandCursor: true});
+      this.buttonBuildingPSolaire.on('pointerdown', () => this.placeBuildingEcologie('panneau_solaire'));
+    }
     this.buttonBuildingPSolaire.setOrigin(-3, 0);
     this.buttonBuildingPSolaire.setScrollFactor(0);
     this.buttonBuildingPSolaire.fixedToCamera = true;
@@ -239,8 +250,16 @@ class HUDBuildingListEcologie extends Phaser.Scene{
 
     //Centrale Hydrolique
     this.buttonBuildingCentraleHydrolique = this.add.image(-50,110, 'centrale_hydrolique1');
-    this.buttonBuildingCentraleHydrolique.setInteractive({  useHandCursor: true});
-    this.buttonBuildingCentraleHydrolique.on('pointerdown', () => this.placeBuildingEcologie('centrale_hydrolique1'));
+    if(statistiques.getBank() < buildingListMk1[6].price) { 
+      let croix = this.add.sprite(1350, 300, 'croix');
+      croix.depth = 300;
+      croix.displayWidth = 50;
+      croix.scaleX = croix.scaleY;
+    }
+    else if(statistiques.getBank() >= buildingListMk1[6].price){
+      this.buttonBuildingCentraleHydrolique.setInteractive({useHandCursor: true});
+      this.buttonBuildingCentraleHydrolique.on('pointerdown', () => this.placeBuildingEcologie('centrale_hydrolique1'));
+    }
     this.buttonBuildingCentraleHydrolique.setOrigin(-3, 0);
     this.buttonBuildingCentraleHydrolique.setScrollFactor(0);
     this.buttonBuildingCentraleHydrolique.fixedToCamera = true;
@@ -259,8 +278,19 @@ class HUDBuildingListEcologie extends Phaser.Scene{
 
     //Parc
     this.buttonBuildingParc = this.add.image(-200,500, 'parc1');
-    this.buttonBuildingParc.setInteractive({  useHandCursor: true});
-    this.buttonBuildingParc.on('pointerdown', () => this.placeBuildingEcologie('parc1'));
+    if(statistiques.getBank() < buildingListMk1[8].price) { 
+      let croix = this.add.sprite(540, 500, 'croix');
+      croix.depth = 300;
+      croix.displayWidth = 50;
+      croix.scaleX = croix.scaleY;
+      croix.setOrigin(0, 0);
+      croix.setScrollFactor(0);
+      croix.fixedToCamera = true;
+    }
+    else if(statistiques.getBank() >= buildingListMk1[8].price){
+      this.buttonBuildingParc.setInteractive({useHandCursor: true});
+      this.buttonBuildingParc.on('pointerdown', () => this.placeBuildingEcologie('parc1'));
+    }
     this.buttonBuildingParc.setOrigin(-3, 0);
     this.buttonBuildingParc.setScrollFactor(0);
     this.buttonBuildingParc.fixedToCamera = true;
@@ -279,8 +309,19 @@ class HUDBuildingListEcologie extends Phaser.Scene{
 
     //Usine Recyclage
     this.buttonBuildingUsineRecyclage = this.add.image(500,520, 'usine_recyclage1');
-    this.buttonBuildingUsineRecyclage.setInteractive({  useHandCursor: true});
-    this.buttonBuildingUsineRecyclage.on('pointerdown', () => this.placeBuildingEcologie('usine_recyclage1'));
+    if(statistiques.getBank() < buildingListMk1[9].price) { 
+      let croix = this.add.sprite(1240, 500, 'croix');
+      croix.depth = 200;
+      croix.displayWidth = 50;
+      croix.scaleX = croix.scaleY;
+      croix.setOrigin(0, 0);
+      croix.setScrollFactor(0);
+      croix.fixedToCamera = true;
+    }
+    else if(statistiques.getBank() >= buildingListMk1[9].price){
+      this.buttonBuildingUsineRecyclage.setInteractive({useHandCursor: true});
+      this.buttonBuildingUsineRecyclage.on('pointerdown', () => this.placeBuildingEcologie('usine_recyclage1'));
+    }
     this.buttonBuildingUsineRecyclage.setOrigin(-3, 0);
     this.buttonBuildingUsineRecyclage.setScrollFactor(0);
     this.buttonBuildingUsineRecyclage.fixedToCamera = true;
@@ -301,6 +342,7 @@ class HUDBuildingListEcologie extends Phaser.Scene{
   placeBuildingEcologie(name){
     this.scene.stop('ecologie').stop('stat');
     statistiques.saveBatiment(name);
+    statistiques.setBank(buildingListMk1[statistiques.getId(name)].price);
     var scene = this.scene.get("MainScene");
     var bat = scene.displaybatiment(name);
   }
@@ -332,8 +374,16 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
       //Caserne
       this.buttonBuildingCaserne = this.add.image(650,180, 'caserne1');
-      this.buttonBuildingCaserne.setInteractive({useHandCursor: true});
-      this.buttonBuildingCaserne.on('pointerdown', () => this.placeBuildingMoral('caserne1'));
+      if(statistiques.getBank() < buildingListMk1[0].price) { 
+        let croix = this.add.sprite(1510, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= buildingListMk1[0].price){
+        this.buttonBuildingCaserne.setInteractive({useHandCursor: true});
+        this.buttonBuildingCaserne.on('pointerdown', () => this.placeBuildingMoral('caserne1'));
+      }
       this.buttonBuildingCaserne.setOrigin(-3, 0);
       this.buttonBuildingCaserne.setScrollFactor(0);
       this.buttonBuildingCaserne.fixedToCamera = true;
@@ -352,8 +402,16 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
       //Maison
       this.buttonBuildingMaison = this.add.image(150, 500, 'maison1');
-      this.buttonBuildingMaison.setInteractive({useHandCursor: true});
-      this.buttonBuildingMaison.on('pointerdown', () => this.placeBuildingMoral('maison1'));
+      if(statistiques.getBank() < buildingListMk1[14].price) { 
+        let croix = this.add.sprite(1000, 620, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= buildingListMk1[14].price){
+        this.buttonBuildingMaison.setInteractive({useHandCursor: true});
+        this.buttonBuildingMaison.on('pointerdown', () => this.placeBuildingMoral('maison1'));
+      }
       this.buttonBuildingMaison.setOrigin(-3, 0);
       this.buttonBuildingMaison.setScrollFactor(0);
       this.buttonBuildingMaison.fixedToCamera = true;
@@ -372,8 +430,16 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
       //Centrale
       this.buttonBuildingCentrale = this.add.image(500,500, 'centrale1');
-      this.buttonBuildingCentrale.setInteractive({useHandCursor: true});
-      this.buttonBuildingCentrale.on('pointerdown', () => this.placeBuildingMoral('centrale1'));
+      if(statistiques.getBank() < buildingListMk1[1].price) {
+        let croix = this.add.sprite(1350, 620, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= buildingListMk1[1].price){
+        this.buttonBuildingCentrale.setInteractive({useHandCursor: true});
+        this.buttonBuildingCentrale.on('pointerdown', () => this.placeBuildingMoral('centrale1'));
+      }
       this.buttonBuildingCentrale.setOrigin(-3, 0);
       this.buttonBuildingCentrale.setScrollFactor(0);
       this.buttonBuildingCentrale.fixedToCamera = true;
@@ -381,7 +447,7 @@ class HUDBuildingListMoral extends Phaser.Scene {
       this.textCentrale = this.add.text(1340, 770, "Centrale", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //Centrale Info
-      this.buttonInfoCentrale = this.add.image(1140,760, 'iconeInfo');
+      this.buttonInfoCentrale = this.add.image(1160,760, 'iconeInfo');
       this.buttonInfoCentrale.displayWidth = 50;
       this.buttonInfoCentrale.scaleY = this.buttonInfoCentrale.scaleX;
       this.buttonInfoCentrale.setInteractive({useHandCursor: true});
@@ -392,8 +458,16 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
       //Commissariat
       this.buttonBuildingCommissariat = this.add.image(250,180, 'commissariat1');
-      this.buttonBuildingCommissariat.setInteractive({useHandCursor: true});
-      this.buttonBuildingCommissariat.on('pointerdown', () => this.placeBuildingMoral('commissariat1'));
+      if(statistiques.getBank() < buildingListMk1[2].price) { 
+        let croix = this.add.sprite(1120, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= buildingListMk1[2].price){
+        this.buttonBuildingCommissariat.setInteractive({useHandCursor: true});
+        this.buttonBuildingCommissariat.on('pointerdown', () => this.placeBuildingMoral('commissariat1'));
+      }
       this.buttonBuildingCommissariat.setOrigin(-3, 0);
       this.buttonBuildingCommissariat.setScrollFactor(0);
       this.buttonBuildingCommissariat.fixedToCamera = true;
@@ -412,8 +486,16 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
       //Ecole
       this.buttonBuildingEcole = this.add.image(-250,500, 'ecole1');
-      this.buttonBuildingEcole.setInteractive({useHandCursor: true});
-      this.buttonBuildingEcole.on('pointerdown', () => this.placeBuildingMoral('ecole1'));
+      if(statistiques.getBank() < buildingListMk1[3].price) { 
+        let croix = this.add.sprite(600, 620, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= buildingListMk1[3].price){
+        this.buttonBuildingEcole.setInteractive({useHandCursor: true});
+        this.buttonBuildingEcole.on('pointerdown', () => this.placeBuildingMoral('ecole1'));
+      }
       this.buttonBuildingEcole.setOrigin(-3, 0);
       this.buttonBuildingEcole.setScrollFactor(0);
       this.buttonBuildingEcole.fixedToCamera = true;
@@ -432,8 +514,16 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
       //Hopital
       this.buttonBuildingHopital = this.add.image(-450,180, 'hopital1');
-      this.buttonBuildingHopital.setInteractive({useHandCursor: true});
-      this.buttonBuildingHopital.on('pointerdown', () => this.placeBuildingMoral('hopital1'));
+      if(statistiques.getBank() < buildingListMk1[4].price) { 
+        let croix = this.add.sprite(400, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= buildingListMk1[4].price){
+        this.buttonBuildingHopital.setInteractive({useHandCursor: true});
+        this.buttonBuildingHopital.on('pointerdown', () => this.placeBuildingMoral('hopital1'));
+      }
       this.buttonBuildingHopital.setOrigin(-3, 0);
       this.buttonBuildingHopital.setScrollFactor(0);
       this.buttonBuildingHopital.fixedToCamera = true;
@@ -452,8 +542,16 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
       //Poste
       this.buttonBuildingPoste = this.add.image(-100,180, 'poste1');
-      this.buttonBuildingPoste.setInteractive({useHandCursor: true});
-      this.buttonBuildingPoste.on('pointerdown', () => this.placeBuildingMoral('poste1'));
+      if(statistiques.getBank() < buildingListMk1[5].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= buildingListMk1[5].price){
+        this.buttonBuildingPoste.setInteractive({useHandCursor: true});
+        this.buttonBuildingPoste.on('pointerdown', () => this.placeBuildingMoral('poste1'));
+      }
       this.buttonBuildingPoste.setOrigin(-3, 0);
       this.buttonBuildingPoste.setScrollFactor(0);
       this.buttonBuildingPoste.fixedToCamera = true;
@@ -474,6 +572,7 @@ class HUDBuildingListMoral extends Phaser.Scene {
     placeBuildingMoral(name){
       this.scene.stop('moral').stop('stat');
       statistiques.saveBatiment(name);
+      statistiques.setBank(buildingListMk1[statistiques.getId(name)].price);
       var scene = this.scene.get("MainScene");
       var bat = scene.displaybatiment(name);
    }
@@ -505,8 +604,16 @@ class HUDBuildingListEconomie extends Phaser.Scene{
 
     //Banque
     this.buttonBuildingBanque = this.add.image(-750,150, 'banque1');
-    this.buttonBuildingBanque.setInteractive({useHandCursor: true});
-    this.buttonBuildingBanque.on('pointerdown', () => this.placeBuildingEconomie('banque1'));
+    if(statistiques.getBank() < buildingListMk1[10].price) {
+      let croix = this.add.sprite(980, 400, 'croix');
+      croix.depth = 300;
+      croix.displayWidth = 50;
+      croix.scaleX = croix.scaleY;
+    }
+    else if(statistiques.getBank() >= buildingListMk1[10].price){
+      this.buttonBuildingBanque.setInteractive({useHandCursor: true});
+      this.buttonBuildingBanque.on('pointerdown', () => this.placeBuildingEconomie('banque1'));
+    }
     this.buttonBuildingBanque.setOrigin(-3, 0);
     this.buttonBuildingBanque.setScrollFactor(0);
     this.buttonBuildingBanque.fixedToCamera = true;
@@ -525,8 +632,16 @@ class HUDBuildingListEconomie extends Phaser.Scene{
 
     //Magasin
     this.buttonBuildingMagasin = this.add.image(-350,300, 'magasin1');
-    this.buttonBuildingMagasin.setInteractive({useHandCursor: true});
-    this.buttonBuildingMagasin.on('pointerdown', () => this.placeBuildingEconomie('magasin1'));
+    if(statistiques.getBank() < buildingListMk1[11].price) {
+      let croix = this.add.sprite(520, 420, 'croix');
+      croix.depth = 300;
+      croix.displayWidth = 50;
+      croix.scaleX = croix.scaleY;
+    }
+    else if(statistiques.getBank() >= buildingListMk1[11].price){
+      this.buttonBuildingMagasin.setInteractive({useHandCursor: true});
+      this.buttonBuildingMagasin.on('pointerdown', () => this.placeBuildingEconomie('magasin1'));
+    }
     this.buttonBuildingMagasin.setOrigin(-3, 0);
     this.buttonBuildingMagasin.setScrollFactor(0);
     this.buttonBuildingMagasin.fixedToCamera = true;
@@ -545,8 +660,16 @@ class HUDBuildingListEconomie extends Phaser.Scene{
 
     //Usine
     this.buttonBuildingUsine = this.add.image(550,290, 'usine1');
-    this.buttonBuildingUsine.setInteractive({useHandCursor: true});
-    this.buttonBuildingUsine.on('pointerdown', () => this.placeBuildingEconomie('usine1'));
+    if(statistiques.getBank() < buildingListMk1[12].price) {
+      let croix = this.add.sprite(1400, 400, 'croix');
+      croix.depth = 300;
+      croix.displayWidth = 50;
+      croix.scaleX = croix.scaleY;
+    }
+    else if(statistiques.getBank() >= buildingListMk1[12].price){
+      this.buttonBuildingUsine.setInteractive({useHandCursor: true});
+      this.buttonBuildingUsine.on('pointerdown', () => this.placeBuildingEconomie('usine1'));
+    }
     this.buttonBuildingUsine.setOrigin(-3, 0);
     this.buttonBuildingUsine.setScrollFactor(0);
     this.buttonBuildingUsine.fixedToCamera = true;
@@ -567,6 +690,7 @@ class HUDBuildingListEconomie extends Phaser.Scene{
   placeBuildingEconomie(name){
     this.scene.stop('economie').stop('stat');
     statistiques.saveBatiment(name);
+    statistiques.setBank(buildingListMk1[statistiques.getId(name)].price);
     var scene = this.scene.get("MainScene");
     var bat = scene.displaybatiment(name); 
   }
@@ -584,10 +708,16 @@ class HUDBuildingListEconomie extends Phaser.Scene{
 
 class Info extends Phaser.Scene{
   create(){
-    let sousMenuInfo = this.add.rectangle(960, 450, 1000, 500, 0xffffff);
+    let sousMenuInfo = this.add.rectangle(640, 450, 600, 500, 0xffffff);
+    let batimentDesc = this.add.rectangle(1260, 450, 600, 500, 0xffffff);
+
+    //Ajout Sprite image
+    this.displayBuilding = this.add.image(960,450, temp[0]);
+    this.displayBuilding.displayWidth = 400;
+    this.displayBuilding.scaleY = this.displayBuilding.scaleX;
 
     //Close bouton
-    this.closeButton = this.add.sprite(1420, 245, 'close');
+    this.closeButton = this.add.sprite(1530, 235, 'close');
     this.closeButton.displayWidth = 50;
     this.closeButton.scaleY = this.closeButton.scaleX;
     this.closeButton.depth = 200;
@@ -595,16 +725,113 @@ class Info extends Phaser.Scene{
     this.closeButton.on('pointerdown', () => this.close());
 
     //Text Info
-    this.textName = this.add.text(700, 250, 'Nom : ' + temp[0], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-    this.textPrice = this.add.text(700, 300, 'Prix : ' + temp[1] + '$', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-    this.textIncome = this.add.text(700, 350, 'Income généré : ' + temp[2] + '$/jour', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-    this.textEconomieInfo = this.add.text(700, 400, 'Impact economique : ' + temp[3], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-    this.textEcologieInfo = this.add.text(700, 450, 'Impact écologique : ' + temp[4], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-    this.textBienEtreInfo = this.add.text(700, 500, 'Impact sur le bien-être : ' + temp[5], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-    this.textPop = this.add.text(700, 550, 'Population ajouté : ' + temp[6], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textInfo = this.add.text(400, 270, 'Informations sur le bâtiment !', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textName = this.add.text(400, 310, 'Nom : ' + temp[0], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textPrice = this.add.text(400, 350, 'Prix : ' + temp[1] + '$', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textIncome = this.add.text(400, 390, 'Income généré : ' + temp[2] + '$/jour', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textEconomieInfo = this.add.text(400, 430, 'Impact economique : ' + temp[3], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textEcologieInfo = this.add.text(400, 470, 'Impact écologique : ' + temp[4], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textBienEtreInfo = this.add.text(400, 510, 'Impact sur le bien-être : ' + temp[5], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textPop = this.add.text(400, 550, 'Population ajouté : ' + temp[6], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
   }
 
   close(){
     this.scene.stop('info');
+  }
+}
+
+
+class buildingMenu extends Phaser.Scene{
+  create(){
+    //Bouton Move
+    this.movebutton = this.add.sprite(800, 700, 'move');
+    this.movebutton.displayWidth = 150;
+    this.movebutton.scaleY = this.movebutton.scaleX;
+    this.movebutton.depth = 200;
+    this.movebutton.setInteractive({  useHandCursor: true});
+    this.movebutton.on('pointerdown', () => this.teleportBuilding());
+
+    //Bouton Upgrade
+    this.upgradebutton = this.add.sprite(1150, 700, 'star');
+    this.upgradebutton.displayWidth = 150;
+    this.upgradebutton.scaleY = this.upgradebutton.scaleX;
+    this.upgradebutton.depth = 200;
+    this.upgradebutton.setInteractive({  useHandCursor: true});
+    this.upgradebutton.on('pointerdown', () => this.getInfoUpgrade(temp[0]));
+  }
+
+  teleportBuilding(name){
+    this.scene.stop('info');
+    var scene = this.scene.get("MainScene");
+    var bat = scene.displaybatiment(temp[0],false); 
+  }
+
+  getInfoUpgrade(name){
+    let editedtext = name.slice(0, -1);
+    let newtest = editedtext + "2";
+    temp = statistiques.getInfoBuilding(newtest);
+    this.scene.launch('showUpgrade');
+    this.scene.stop('info').stop('menu');
+  }
+
+  close(){
+    this.scene.stop('info').stop('menu');
+  }
+}
+
+class showUpgrade extends Phaser.Scene{
+  create(){
+    //Close bouton
+    this.closeButton = this.add.sprite(1530, 235, 'close');
+    this.closeButton.displayWidth = 50;
+    this.closeButton.scaleY = this.closeButton.scaleX;
+    this.closeButton.depth = 200;
+    this.closeButton.setInteractive({  useHandCursor: true});
+    this.closeButton.on('pointerdown', () => this.close());
+
+    //Rectangle
+    let Upgradeinfo = this.add.rectangle(640, 450, 600, 500, 0xffffff);
+    let batimentDesc = this.add.rectangle(1260, 450, 600, 500, 0xffffff);
+    let buyconfirm = this.add.rectangle(980, 700, 600, 100, 0x999999);
+
+   //Text Info
+    this.textNameUpgrade = this.add.text(400, 250, 'Nom : ' + temp[0], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textPriceUpgrade = this.add.text(400, 300, 'Prix : ' + temp[1], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textIncomeUpgrade = this.add.text(400, 350, 'Income généré : ' + temp[2], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textEconomieInfoUpgrade = this.add.text(400, 400, 'Impact economique : ' + temp[3], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textEcologieInfoUpgrade = this.add.text(400, 450, 'Impact écologique : ' + temp[4], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textBienEtreInfoUpgrade = this.add.text(400, 500, 'Impact sur le bien-être : ' + temp[5], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textPopUpgrade = this.add.text(400, 550, 'Population ajouté : ' + temp[6], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+    //Ajout Sprite image
+    this.displayBuilding = this.add.image(960,450, temp[0]);
+    this.displayBuilding.displayWidth = 400;
+    this.displayBuilding.scaleY = this.displayBuilding.scaleX;
+
+    //Text description 
+    this.titleDesc = this.add.text(1060, 250, 'Description du batiment:', {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8); 
+    this.textDesc = this.add.text(1060, 350, temp[7], {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff0);
+
+    //Text shop
+    this.shopPop = this.add.text(820, 690, 'Achetez-vous ce batiment pour ' + temp[1] + '?', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);    
+    
+    this.confirmbutton = this.add.sprite(900, 840, 'confirm');
+    this.confirmbutton.displayWidth = 150;
+    this.confirmbutton.scaleY = this.confirmbutton.scaleX;
+    this.confirmbutton.depth = 200;
+    this.confirmbutton.setInteractive({  useHandCursor: true});
+    this.confirmbutton.on('pointerdown', () => this.teleportBuilding());
+
+
+    this.cancelbutton = this.add.sprite(1100, 850, 'cancel');
+    this.cancelbutton.displayWidth = 150;
+    this.cancelbutton.scaleY = this.cancelbutton.scaleX;
+    this.cancelbutton.depth = 200;
+    this.cancelbutton.setInteractive({  useHandCursor: true});
+    this.cancelbutton.on('pointerdown', () => this.close());
+
+  }
+  close(){
+    this.scene.stop('showUpgrade');
   }
 }
