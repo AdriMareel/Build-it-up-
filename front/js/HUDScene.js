@@ -759,6 +759,14 @@ class Info extends Phaser.Scene{
 
 class buildingMenu extends Phaser.Scene{
   create(){
+    //Close bouton
+    this.closeButton = this.add.sprite(1530, 235, 'close');
+    this.closeButton.displayWidth = 50;
+    this.closeButton.scaleY = this.closeButton.scaleX;
+    this.closeButton.depth = 200;
+    this.closeButton.setInteractive({  useHandCursor: true});
+    this.closeButton.on('pointerdown', () => this.close());
+
     //Bouton Move
     this.movebutton = this.add.sprite(800, 700, 'move');
     this.movebutton.displayWidth = 150;
@@ -774,6 +782,10 @@ class buildingMenu extends Phaser.Scene{
     this.upgradebutton.depth = 200;
     this.upgradebutton.setInteractive({  useHandCursor: true});
     this.upgradebutton.on('pointerdown', () => this.getInfoUpgrade(temp[0]));
+  }
+
+  close(){
+    this.scene.stop('menu');
   }
 
   teleportBuilding(name){
