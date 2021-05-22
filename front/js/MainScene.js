@@ -2,24 +2,25 @@ let mapVar = new Array(30);
 let batiments = new Array();
 let isPlaced = new Array();
 
-
 for(let i=0;i<30;i++){
     mapVar[i] = new Array(30);
 }
 
-for(let i=0;i<10;i++){
-    batiments[i] = new Array(10);
+for(bat in buildingListMk1){
+    batiments[buildingListMk1[bat].name] = new Array(5);
+    isPlaced[buildingListMk1[bat].name] = new Array(5);
 }
 
-console.log(batiments);
+for(bat in buildingListMk1){
+    for(let i=0;i<5;i++){
+        isPlaced[buildingListMk1[bat].name][i] = false;
+    }
+}
+
 let positionY;
 let positionX;
 
-
 let flag = 0;
-
-isPlaced["caserne1"] = false;
-isPlaced["commissariat1"] = false;
 
 class MainScene extends Phaser.Scene{
 	constructor(){
@@ -28,7 +29,7 @@ class MainScene extends Phaser.Scene{
 
     moveBuilding(posX,posY,building){
         building.x = -(posX*grassTile.width/2)+grassTile.width/2+posY*grassTile.width/2;
-        building.y = (posX+posY)*grassTile.height/2 + 1/2*grassTile.height;
+        building.y = (posX+posY)*grassTile.height/2;
     }
 
     getPosInPixels(x,y){ //entre 0 et 30
@@ -48,91 +49,18 @@ class MainScene extends Phaser.Scene{
             }
         }
     }
-
-    deleteBatiment()
-    {
-         mapVar[i][j]
-    }
-
-      displaybatiment(building,isReplacing){
-        var cam = this.cameras.main;
-        let pointer = this.input.mousePointer; 
-        batiments[building] = this.add.image(0,0,building);
-
-        this.input.mouse.requestPointerLock();
-        this.input.mouse.locked = true;
-
-        if (isReplacing == false) {
-            isPlaced[building] = false;
-        }
-        
-        for (let i=0;i<30;i++){ 
-            for (let j=0;j<30;j++){
-                mapVar[i][j].on("pointerover", () => {
-                    if (isPlaced[building] == false){
-                        //console.log("X :" + j + " Y:" + i );
-                        mapVar[i][j].y -= 30;
-                        //console.log("bougé de 30px");
-                        positionX = j;
-                        positionY = i;
-                        console.log("c'est j " + positionX);
-                        console.log("c'est i " + positionY);
-                    }   
-                });
-                mapVar[i][j].on("pointerout", () => {
-                    if (isPlaced[building] == false){
-                        mapVar[i][j].y += 30; 
-                    } 
-                });       
-            }
-        }
-
-        this.input.on("pointerdown", () => {
-            if(!isPlaced[building]){
-                mapVar[positionY][positionX].y +=30;
-                batiments[building].setInteractive();
-                isPlaced[building] = true;
-                
-                batiments[building].setInteractive().on("pointerdown", () => {
-                    var scene = this.scene.get("ecologie");
-                    scene.getInfo(building);
-                    this.scene.launch('menu');
-                });
-                
-                this.input.mouse.locked = false;
-                this.input.mouse.releasePointerLock();
-                this.moveBuilding(positionX,positionY,batiments[building]);
-            }
-        });
-
-        this.input.on("pointermove", () => {
-            //console.log("X: "+pointer.x+ " Y: " + pointer.y);
-            if(isPlaced[building] == false){ 
-                cam.scrollX += pointer.event.movementX / cam.zoom;
-                cam.scrollY += pointer.event.movementY / cam.zoom;
-                
-                //centre le batiment sur la map
-                batiments[building].x = cam.scrollX + pointer.x;
-                batiments[building].y = cam.scrollY + pointer.y;
-                }                
-            });
-    }
-    
-
-    clickButton(){
-        this.scene.pause();
-        this.scene.launch('DialogBox');
-
-    }
 	
 	create(){
         var cam = this.cameras.main;
         //Map
         this.GenerateMap();
-      
+
         let pointer = this.input.mousePointer;        
 	
-		this.input.on('pointermove', function (p) {
+		this.count = 0;
+    	
+		//Gestion scroll
+		this.input.on('pointermove', function (p){
             if (!p.isDown) return;
                 cam.scrollX -= (p.x - p.prevPosition.x) / cam.zoom;
                 cam.scrollY -= (p.y - p.prevPosition.y) / cam.zoom;  
@@ -142,7 +70,6 @@ class MainScene extends Phaser.Scene{
 
 		//Zoom
 		this.input.on("wheel",  (pointer, gameObjects, deltaX, deltaY) => {
-            isMovingCamera = true;
 			if (deltaY > 0) {
 				if(cam.zoom > 0.35){
 					cam.zoom -= .02;
@@ -154,6 +81,12 @@ class MainScene extends Phaser.Scene{
 				}
 			}
 		});
+		//var building = this.add.image(30,30, "building");
+		//var build = this.add.image(100,30, "build");
+		//building.depth = 0;
+		//build.depth = 1;
+		//building.setInteractive();
+		//build.setInteractive();
         
 	   
 		//ChatBox
@@ -174,7 +107,83 @@ class MainScene extends Phaser.Scene{
 		
     }
 
-  
+    displaybatiment(building){
+        var cam = this.cameras.main;
+        let pointer = this.input.mousePointer; 
+        let bat_var = 0;
+        while(batiments[building][bat_var] != undefined){
+            bat_var ++;
+        }
+        if(bat_var > 5){
+            return;
+        }
+        batiments[building][bat_var] = this.add.image(0,0,building);
+        this.input.mouse.requestPointerLock();
+        this.input.mouse.locked = true;
+
+        for (let i=0;i<30;i++){ 
+            for (let j=0;j<30;j++){
+                mapVar[i][j].on("pointerover", () => {
+                    if (isPlaced[building][bat_var] == false){
+                        //console.log("X :" + j + " Y:" + i );
+                        mapVar[i][j].y -= 30;
+                        //console.log("bougé de 30px");
+                        positionX = j;
+                        positionY = i;
+                    }   
+                });
+                mapVar[i][j].on("pointerout", () => {
+                    if (isPlaced[building][bat_var] == false){
+                        if(mapVar[i][j].y != this.getPosInPixels(j,i)[1]) mapVar[i][j].y += 30; 
+                    } 
+                });       
+            }
+        }
+
+        this.input.on("pointerdown", () => { //Conditions placer batiments et placement si good
+            if(!isPlaced[building][bat_var]){
+                if(map[positionY][positionX] != 'ground'){ //condition si place déjà prise 
+                    let scene = this.scene.get("HUDScene");
+                    //scene.displayErrorTextBuilding();
+                }
+                else{
+                    map[positionY][positionX] = building;
+                    mapVar[positionY][positionX].y += 30;
+                    isPlaced[building][bat_var] = true;
+                    this.input.mouse.locked = false;
+                    this.input.mouse.releasePointerLock();
+                    this.moveBuilding(positionX,positionY,batiments[building][bat_var]);
+                }
+            }
+        });
+
+        this.input.on("pointermove", () => {
+            if(isPlaced[building][bat_var] == false){ 
+                cam.scrollX += pointer.event.movementX / cam.zoom;
+                cam.scrollY += pointer.event.movementY / cam.zoom;
+                
+                //centre le batiment sur la map
+                batiments[building][bat_var].x = cam.scrollX + pointer.x;
+                batiments[building][bat_var].y = cam.scrollY + pointer.y;
+                }                
+        });
+
+        batiments[building][bat_var].setInteractive();
+        batiments[building][bat_var].on("pointerdown", () => {
+            if(isPlaced[building][bat_var]){
+                var scene = this.scene.get("ecologie");
+                scene.getInfo(building);
+            }
+        });
+        
+    }
+    
+
+	clickButton(){
+        this.scene.pause();
+        this.scene.launch('DialogBox');
+
+	}
 
 	update(){
 	}
