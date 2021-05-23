@@ -1,5 +1,6 @@
 let mapVar = new Array(30);
 let batiments = new Array();
+
 let isPlaced = new Array();
 
 for(let i=0;i<30;i++){
@@ -9,13 +10,37 @@ for(let i=0;i<30;i++){
 for(bat in buildingListMk1){
     batiments[buildingListMk1[bat].name] = new Array(5);
     isPlaced[buildingListMk1[bat].name] = new Array(5);
+  
 }
 
+for(bat in buildingListMk2){
+    batiments[buildingListMk2[bat].name] = new Array(5);
+    isPlaced[buildingListMk2[bat].name] = new Array(5);
+  
+}
+
+for(bat in buildingListMk3){
+    batiments[buildingListMk3[bat].name] = new Array(5);
+    isPlaced[buildingListMk3[bat].name] = new Array(5);
+  
+}
 for(bat in buildingListMk1){
     for(let i=0;i<5;i++){
         isPlaced[buildingListMk1[bat].name][i] = false;
     }
 }
+for(bat in buildingListMk2){
+    for(let i=0;i<5;i++){
+        isPlaced[buildingListMk2[bat].name][i] = false;
+    }
+}
+
+for(bat in buildingListMk3){
+    for(let i=0;i<5;i++){
+        isPlaced[buildingListMk3[bat].name][i] = false;
+    }
+}
+
 
 let positionY;
 let positionX;
@@ -27,11 +52,38 @@ class MainScene extends Phaser.Scene{
 		super('MainScene');
 	}
 
-    moveBuilding(posX,posY,building){
-        building.x = -(posX*grassTile.width/2)+grassTile.width/2+posY*grassTile.width/2;
-        building.y = (posX+posY)*grassTile.height/2;
+    getCoordCenter(name_build){
+        let center_coord = new Array();
+        for(const center_temp in buildingListMk1){
+            if(buildingListMk1[center_temp].name == name_build){
+                center_coord[0] = buildingListMk1[center_temp].x;
+                center_coord[1] = buildingListMk1[center_temp].y;
+                return center_coord;
+            }
+        }
+        for(const center_temp in buildingListMk2){
+            if(buildingListMk2[center_temp].name == name_build){
+                center_coord[0] = buildingListMk2[center_temp].x;
+                center_coord[1] = buildingListMk2[center_temp].y;
+                return center_coord;
+            }
+        }
+        for(const center_temp in buildingListMk3){
+            if(buildingListMk3[center_temp].name == name_build){
+                center_coord[0] = buildingListMk3[center_temp].x;
+                center_coord[1] = buildingListMk3[center_temp].y;
+                return center_coord;
+            }
+        }
     }
-
+    moveBuilding(posX,posY,building){
+        //console.log(building);
+        //console.log(this.getCoordCenter(building.texture.key)[0]);
+        //console.log(this.getCoordCenter(building.texture.key)[1]);
+        building.x = -(posX*grassTile.width/2)+grassTile.width/2+posY*grassTile.width/2 + this.getCoordCenter(building.texture.key)[0];
+        building.y = (posX+posY)*grassTile.height/2 +this.getCoordCenter(building.texture.key)[1];
+    }
+ 
     getPosInPixels(x,y){ //entre 0 et 30
         let tab = new Array(2);
         tab[0] = -(x*grassTile.width/2)+grassTile.width/2+y*grassTile.width/2;
@@ -51,6 +103,7 @@ class MainScene extends Phaser.Scene{
     }
 	
 	create(){
+
         var cam = this.cameras.main;
         //Map
         this.GenerateMap();
@@ -107,7 +160,8 @@ class MainScene extends Phaser.Scene{
 		
     }
 
-    displaybatiment(building){
+
+    displaybatiment(building, isupgrade){
 
         var cam = this.cameras.main;
         let pointer = this.input.mousePointer; 
@@ -119,7 +173,21 @@ class MainScene extends Phaser.Scene{
             return;
         }
         batiments[building][bat_var] = this.add.image(0,0,building);
-        this.input.mouse.requestPointerLock();
+      
+        this.input.mouse.requestPointerLock();  
+        if(isupgrade){
+            let arraybuilding = building.split('');
+            //console.log(building.length);
+            let last_char = arraybuilding[building.length-1];
+            //console.log(last_char);
+            arraybuilding.pop();
+            arraybuilding.push(last_char-1);
+            let old_batiment = arraybuilding.toString();
+            let oldbatiment2 = old_batiment.replace(/[\s,]+/g,'').trim();
+            //console.log(oldbatiment2);
+            batiments[oldbatiment2][bat_var].destroy();
+            
+        }
         this.input.mouse.locked = true;
 
         for (let i=0;i<30;i++){ 
@@ -147,14 +215,23 @@ class MainScene extends Phaser.Scene{
                     let scene = this.scene.get("HUDScene");
                     //scene.displayErrorTextBuilding();
                 }
-                else{
+
+                    //console.log("test" ,positionX, positionY)
                     map[positionY][positionX] = building;
                     mapVar[positionY][positionX].y += 30;
                     isPlaced[building][bat_var] = true;
                     this.input.mouse.locked = false;
                     this.input.mouse.releasePointerLock();
                     this.moveBuilding(positionX,positionY,batiments[building][bat_var]);
-                }
+                    batiments[building][bat_var].setInteractive();
+                    batiments[building][bat_var].on("pointerdown", () => {
+                        if(isPlaced[building][bat_var]){
+                            var scene = this.scene.get("ecologie");
+                            scene.getInfo(building);
+                            this.scene.launch('menu');
+                            if(building == buildingListMk1[13].name || building == buildingListMk2[13].name || building == buildingListMk3[13].name) { this.scene.launch('techno'); }
+                        }
+                    });
             }
         });
 
@@ -169,15 +246,7 @@ class MainScene extends Phaser.Scene{
                 }                
         });
 
-        batiments[building][bat_var].setInteractive();
-        batiments[building][bat_var].on("pointerdown", () => {
-            if(isPlaced[building][bat_var]){
-                var scene = this.scene.get("ecologie");
-                scene.getInfo(building);
-                this.scene.launch('menu');
-                if(building == buildingListMk1[13].name || building == buildingListMk2[13].name || building == buildingListMk3[13].name) { this.scene.launch('techno'); }
-            }
-        });
+       
         
     }
     

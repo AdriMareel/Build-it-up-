@@ -1,4 +1,7 @@
 let temp = [];
+let tempT = [];
+let DELAY = 24000;
+
 class HUDScene extends Phaser.Scene{
 	create () {
       //Boutton qui gère la liste des bâtiments
@@ -15,7 +18,7 @@ class HUDScene extends Phaser.Scene{
   	   //timer      
        this.counter = 0;
        this.timer = this.time.addEvent({
-          delay: 24000,
+          delay: DELAY,
           callback:this.updateDay,
           callbackScope:this,
           repeat: 100000
@@ -29,6 +32,47 @@ class HUDScene extends Phaser.Scene{
       });
 
       this.text = this.add.text(10, 860, 'Jour 0', { fill: 0xffffff, font: 'bold 36px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //Bouton pour changer le temps
+      this.buttonX1 = this.add.sprite(700, 40, "X1");
+      this.buttonX1.displayWidth = 50;
+      this.buttonX1.scaleY = this.buttonX1.scaleX;
+      this.buttonX1.depth = 100;
+      this.buttonX1.setInteractive({  useHandCursor: true});
+      this.buttonX1.on('pointerdown', () => this.timeX1());
+      this.buttonX1.setOrigin(-3, 0);
+      this.buttonX1.setScrollFactor(0);
+      this.buttonX1.fixedToCamera = true;
+
+      this.buttonX2 = this.add.sprite(760, 40, "X2");
+      this.buttonX2.displayWidth = 50;
+      this.buttonX2.scaleY = this.buttonX2.scaleX;
+      this.buttonX2.depth = 100;
+      this.buttonX2.setInteractive({  useHandCursor: true});
+      this.buttonX2.on('pointerdown', () => this.timeX2());
+      this.buttonX2.setOrigin(-3, 0);
+      this.buttonX2.setScrollFactor(0);
+      this.buttonX2.fixedToCamera = true;
+
+      this.buttonX3 = this.add.sprite(820, 40, "X3");
+      this.buttonX3.displayWidth = 50;
+      this.buttonX3.scaleY = this.buttonX3.scaleX;
+      this.buttonX3.depth = 100;
+      this.buttonX3.setInteractive({  useHandCursor: true});
+      this.buttonX3.on('pointerdown', () => this.timeX3());
+      this.buttonX3.setOrigin(-3, 0);
+      this.buttonX3.setScrollFactor(0);
+      this.buttonX3.fixedToCamera = true;
+
+      this.buttonPause = this.add.sprite(880, 40, "Pause");
+      this.buttonPause.displayWidth = 50;
+      this.buttonPause.scaleY = this.buttonPause.scaleX;
+      this.buttonPause.depth = 100;
+      this.buttonPause.setInteractive({  useHandCursor: true});
+      this.buttonPause.on('pointerdown', () => this.timePause());
+      this.buttonPause.setOrigin(-3, 0);
+      this.buttonPause.setScrollFactor(0);
+      this.buttonPause.fixedToCamera = true;
 
       //Affichage Stat
       //Economie
@@ -125,6 +169,22 @@ class HUDScene extends Phaser.Scene{
       if(bienE*1.5 > 150){ this.barBienEtre.fillRect(160,125, 150, 20); }
       else if(150 < bienE*1.5 < 150){ this.barBienEtre.fillRect(160,125, statistiques.getBienEtre()*1.5, 20); }
       else if(bienE*1.5 <= -150){ this.barBienEtre.fillRect(160,125, -150, 20);}
+    }
+
+    timeX1(){
+      DELAY = 24000;
+    }
+
+    timeX2(){
+      DELAY = 12000;
+    }
+
+    timeX3(){
+      DELAY = 8000;
+    }
+
+    timePause(){
+      DELAY = 1000000000000000;
     }
 
     update () {
@@ -802,12 +862,20 @@ class buildingMenu extends Phaser.Scene{
     var bat = scene.displaybatiment(temp[0],false); 
   }
 
-  getInfoUpgrade(name){
-    let editedtext = name.slice(0, -1);
-    let newtest = editedtext + "2";
-    temp = statistiques.getInfoBuilding(newtest);
+   getInfoUpgrade(name){
+    let word = name.substring(name.length - 1);
+    if( word == 2 ){
+      let newword = name.slice(0, -1);
+      let finalword =  newword + "3";
+      temp = statistiques.getInfoBuilding(finalword);
+    }
+    else {
+      let editedtext = name.slice(0, -1);
+      let newtest = editedtext + "2";
+      temp = statistiques.getInfoBuilding(newtest);
+    }
     this.scene.launch('showUpgrade');
-    this.scene.stop('info').stop('menu');
+    this.scene.stop('info').stop('menu').stop('techno');
   }
 
   close(){
@@ -864,7 +932,7 @@ class showUpgrade extends Phaser.Scene{
     this.confirmbutton.scaleY = this.confirmbutton.scaleX;
     this.confirmbutton.depth = 200;
     this.confirmbutton.setInteractive({  useHandCursor: true});
-    this.confirmbutton.on('pointerdown', () => this.teleportBuilding());
+    this.confirmbutton.on('pointerdown', () => this.confirmUpgrade(temp[0]));
 
 
     this.cancelbutton = this.add.sprite(1100, 850, 'cancel');
@@ -876,21 +944,20 @@ class showUpgrade extends Phaser.Scene{
 
   }
 
-  close(){
+  confirmUpgrade(name){
     this.scene.stop('showUpgrade');
+    var scene = this.scene.get("MainScene");
+    var bat = scene.displaybatiment(name, true); 
+
+  }
+
+  close(){
+    this.scene.stop('showUpgrade').stop('techno');
   }
 }
 
 class techno extends Phaser.Scene{
   create(){
-    //Close bouton
-    this.closeButton = this.add.sprite(1680, 80, 'close');
-    this.closeButton.displayWidth = 50;
-    this.closeButton.scaleY = this.closeButton.scaleX;
-    this.closeButton.depth = 200;
-    this.closeButton.setInteractive({  useHandCursor: true});
-    this.closeButton.on('pointerdown', () => this.close());
-
     //Bouton Upgrade
     this.upgradebutton = this.add.sprite(960, 800, 'techno');
     this.upgradebutton.displayWidth = 150;
@@ -901,6 +968,14 @@ class techno extends Phaser.Scene{
   }
   
   mairieTechno(){
+  //Close button
+    this.closeButton = this.add.sprite(1680, 80, 'close');
+    this.closeButton.displayWidth = 50;
+    this.closeButton.scaleY = this.closeButton.scaleX;
+    this.closeButton.depth = 200;
+    this.closeButton.setInteractive({  useHandCursor: true});
+    this.closeButton.on('pointerdown', () => this.close());
+
   //Mairie niveau 1
     if(temp[0] == buildingListMk1[13].name){
       this.textTechno = this.add.text(400, 270, 'Technologie', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
@@ -908,32 +983,263 @@ class techno extends Phaser.Scene{
       let sousMenuRec1 = this.add.rectangle(960, 450, 1500, 800);
       sousMenuRec1.setStrokeStyle(3, 0x080808);
 
-      this.buttonBuildingPoste = this.add.image(-100,180, 'poste1');
-      if(statistiques.getBank() < buildingListMk1[5].price) { 
+      //Feu malvoyant
+      this.buttonFeu1 = this.add.image(-125,160, 'feuMalvoyant');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
+      if(statistiques.getBank() < technologieT1[0].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= buildingListMk1[5].price){
-        this.buttonBuildingPoste.setInteractive({useHandCursor: true});
-        this.buttonBuildingPoste.on('pointerdown', () => this.buyTechno('poste1'));
+      else if(statistiques.getBank() >= technologieT1[0].price && !statistiques.isTechnoBuyed('feuMalvoyant')){
+        this.buttonFeu1.setInteractive({useHandCursor: true});
+        this.buttonFeu1.on('pointerdown', () => this.buyTechno('feuMalvoyant'));
       }
-      this.buttonBuildingPoste.setOrigin(-3, 0);
-      this.buttonBuildingPoste.setScrollFactor(0);
-      this.buttonBuildingPoste.fixedToCamera = true;
-      this.prixPoste = this.add.text(750, 440, buildingListMk1[5].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textPoste = this.add.text(752, 460, "Poste", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.buttonFeu1.setOrigin(-3, 0);
+      this.buttonFeu1.setScrollFactor(0);
+      this.buttonFeu1.fixedToCamera = true;
+      this.prixFeu1 = this.add.text(380,350, technologieT1[0].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textFeu1 = this.add.text(310,370, technologieT1[0].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
-      //Poste Info
-      this.buttonInfoPoste = this.add.image(550,445, 'iconeInfo');
-      this.buttonInfoPoste.displayWidth = 50;
-      this.buttonInfoPoste.scaleY = this.buttonInfoPoste.scaleX;
-      this.buttonInfoPoste.setInteractive({useHandCursor: true});
-      this.buttonInfoPoste.on('pointerdown', () => this.getInfo('poste1'));
-      this.buttonInfoPoste.setOrigin(-3, 0);
-      this.buttonInfoPoste.setScrollFactor(0);
-      this.buttonInfoPoste.fixedToCamera = true;
+      //Feu malvoyant Info
+      this.buttonInfoFeu1 = this.add.image(100,360, 'iconeInfo');
+      this.buttonInfoFeu1.displayWidth = 50;
+      this.buttonInfoFeu1.scaleY = this.buttonInfoFeu1.scaleX;
+      this.buttonInfoFeu1.setInteractive({useHandCursor: true});
+      this.buttonInfoFeu1.on('pointerdown', () => this.getInfoT('feuMalvoyant'));
+      this.buttonInfoFeu1.setOrigin(-3, 0);
+      this.buttonInfoFeu1.setScrollFactor(0);
+      this.buttonInfoFeu1.fixedToCamera = true;
+
+      //Signal Sonore
+      this.buttonSignalSonore = this.add.image(200,180, 'signalSonore');
+      if(statistiques.getBank() < technologieT1[1].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT1[1].price){
+        this.buttonSignalSonore.setInteractive({useHandCursor: true});
+        this.buttonSignalSonore.on('pointerdown', () => this.buyTechno('signalSonore'));
+      }
+      this.buttonSignalSonore.setOrigin(-3, 0);
+      this.buttonSignalSonore.setScrollFactor(0);
+      this.buttonSignalSonore.fixedToCamera = true;
+      this.prixSignalSonore = this.add.text(710,352, technologieT1[1].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textSignalSonore = this.add.text(680,372, technologieT1[1].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //SignalSonore Info
+      this.buttonInfoSignalSonore = this.add.image(470,360, 'iconeInfo');
+      this.buttonInfoSignalSonore.displayWidth = 50;
+      this.buttonInfoSignalSonore.scaleY = this.buttonInfoSignalSonore.scaleX;
+      this.buttonInfoSignalSonore.setInteractive({useHandCursor: true});
+      this.buttonInfoSignalSonore.on('pointerdown', () => this.getInfoT('signalSonore'));
+      this.buttonInfoSignalSonore.setOrigin(-3, 0);
+      this.buttonInfoSignalSonore.setScrollFactor(0);
+      this.buttonInfoSignalSonore.fixedToCamera = true;
+
+      //feu Smart
+      this.buttonFeu2 = this.add.image(750,225, 'feuSmart');
+      if(statistiques.getBank() < technologieT1[2].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT1[2].price){
+        this.buttonFeu2.setInteractive({useHandCursor: true});
+        this.buttonFeu2.on('pointerdown', () => this.buyTechno('feuSmart'));
+      }
+      this.buttonFeu2.setOrigin(-3, 0);
+      this.buttonFeu2.setScrollFactor(0);
+      this.buttonFeu2.fixedToCamera = true;
+      this.prixFeu2 = this.add.text(930, 350, technologieT1[2].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textFeu2 = this.add.text(900, 370, technologieT1[2].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //feu Smart Info
+      this.buttonInfoFeu2 = this.add.image(705,360, 'iconeInfo');
+      this.buttonInfoFeu2.displayWidth = 50;
+      this.buttonInfoFeu2.scaleY = this.buttonInfoFeu2.scaleX;
+      this.buttonInfoFeu2.setInteractive({useHandCursor: true});
+      this.buttonInfoFeu2.on('pointerdown', () => this.getInfoT('feuSmart'));
+      this.buttonInfoFeu2.setOrigin(-3, 0);
+      this.buttonInfoFeu2.setScrollFactor(0);
+      this.buttonInfoFeu2.fixedToCamera = true;
+
+      //peage Vehicule Vert
+      this.buttonPeageVehiVert = this.add.image(700,182, 'peageVehiVert');
+      if(statistiques.getBank() < technologieT1[3].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT1[3].price){
+        this.buttonPeageVehiVert.setInteractive({useHandCursor: true});
+        this.buttonPeageVehiVert.on('pointerdown', () => this.buyTechno('peageVehiVert'));
+      }
+      this.buttonPeageVehiVert.setOrigin(-3, 0);
+      this.buttonPeageVehiVert.setScrollFactor(0);
+      this.buttonPeageVehiVert.fixedToCamera = true;
+      this.prixPeageVehiVert = this.add.text(1200, 350, technologieT1[3].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textPeageVehiVert = this.add.text(1095, 370, technologieT1[3].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //peage Vehicule Vert Info
+      this.buttonInfoPeageVehiVert = this.add.image(900,360, 'iconeInfo');
+      this.buttonInfoPeageVehiVert.displayWidth = 50;
+      this.buttonInfoPeageVehiVert.scaleY = this.buttonInfoPeageVehiVert.scaleX;
+      this.buttonInfoPeageVehiVert.setInteractive({useHandCursor: true});
+      this.buttonInfoPeageVehiVert.on('pointerdown', () => this.getInfoT('peageVehiVert'));
+      this.buttonInfoPeageVehiVert.setOrigin(-3, 0);
+      this.buttonInfoPeageVehiVert.setScrollFactor(0);
+      this.buttonInfoPeageVehiVert.fixedToCamera = true;
+
+      //e-administration
+      this.buttonE_Admin = this.add.image(990,160, 'e_Admin');
+      if(statistiques.getBank() < technologieT1[4].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT1[4].price){
+        this.buttonE_Admin.setInteractive({useHandCursor: true});
+        this.buttonE_Admin.on('pointerdown', () => this.buyTechno('e_Admin'));
+      }
+      this.buttonE_Admin.setOrigin(-3, 0);
+      this.buttonE_Admin.setScrollFactor(0);
+      this.buttonE_Admin.fixedToCamera = true;
+      this.prixE_Admin = this.add.text(1495, 350, technologieT1[4].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textE_Admin = this.add.text(1450, 370, technologieT1[4].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //e-administration Info
+      this.buttonInfoE_Admin = this.add.image(1250,360, 'iconeInfo');
+      this.buttonInfoE_Admin.displayWidth = 50;
+      this.buttonInfoE_Admin.scaleY = this.buttonInfoE_Admin.scaleX;
+      this.buttonInfoE_Admin.setInteractive({useHandCursor: true});
+      this.buttonInfoE_Admin.on('pointerdown', () => this.getInfoT('e_Admin'));
+      this.buttonInfoE_Admin.setOrigin(-3, 0);
+      this.buttonInfoE_Admin.setScrollFactor(0);
+      this.buttonInfoE_Admin.fixedToCamera = true;
+
+      //Système de gestion des déchets intelligents
+      this.buttonDechetIntell = this.add.image(-200,500, 'dechetIntell');
+      if(statistiques.getBank() < technologieT1[5].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT1[5].price){
+        this.buttonDechetIntell.setInteractive({useHandCursor: true});
+        this.buttonDechetIntell.on('pointerdown', () => this.buyTechno('dechetIntell'));
+      }
+      this.buttonDechetIntell.setOrigin(-3, 0);
+      this.buttonDechetIntell.setScrollFactor(0);
+      this.buttonDechetIntell.fixedToCamera = true;
+      this.prixDechetIntell = this.add.text(480, 680, technologieT1[5].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textDechetIntell = this.add.text(320, 710, technologieT1[5].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //Système de gestion des déchets intelligents Info
+      this.buttonInfoDechetIntell = this.add.image(115,700, 'iconeInfo');
+      this.buttonInfoDechetIntell.displayWidth = 50;
+      this.buttonInfoDechetIntell.scaleY = this.buttonInfoDechetIntell.scaleX;
+      this.buttonInfoDechetIntell.setInteractive({useHandCursor: true});
+      this.buttonInfoDechetIntell.on('pointerdown', () => this.getInfoT('dechetIntell'));
+      this.buttonInfoDechetIntell.setOrigin(-3, 0);
+      this.buttonInfoDechetIntell.setScrollFactor(0);
+      this.buttonInfoDechetIntell.fixedToCamera = true;
+
+      //passageCamions
+      this.buttonPassageCamions = this.add.image(300,540, 'passageCamions');
+      if(statistiques.getBank() < technologieT1[6].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT1[6].price){
+        this.buttonPassageCamions.setInteractive({useHandCursor: true});
+        this.buttonPassageCamions.on('pointerdown', () => this.buyTechno('passageCamions'));
+      }
+      this.buttonPassageCamions.setOrigin(-3, 0);
+      this.buttonPassageCamions.setScrollFactor(0);
+      this.buttonPassageCamions.fixedToCamera = true;
+      this.prixPassageCamions = this.add.text(815, 690, technologieT1[6].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textPassageCamions = this.add.text(750, 705, technologieT1[6].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //passageCamions Info
+      this.buttonInfoPassageCamions = this.add.image(550,700, 'iconeInfo');
+      this.buttonInfoPassageCamions.displayWidth = 50;
+      this.buttonInfoPassageCamions.scaleY = this.buttonInfoPassageCamions.scaleX;
+      this.buttonInfoPassageCamions.setInteractive({useHandCursor: true});
+      this.buttonInfoPassageCamions.on('pointerdown', () => this.getInfoT('passageCamions'));
+      this.buttonInfoPassageCamions.setOrigin(-3, 0);
+      this.buttonInfoPassageCamions.setScrollFactor(0);
+      this.buttonInfoPassageCamions.fixedToCamera = true;
+
+      //capteurPoub
+      this.buttonCapteurPoub = this.add.image(600,525, 'capteurPoub');
+      if(statistiques.getBank() < technologieT1[7].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT1[7].price){
+        this.buttonCapteurPoub.setInteractive({useHandCursor: true});
+        this.buttonCapteurPoub.on('pointerdown', () => this.buyTechno('capteurPoub'));
+      }
+      this.buttonCapteurPoub.setOrigin(-3, 0);
+      this.buttonCapteurPoub.setScrollFactor(0);
+      this.buttonCapteurPoub.fixedToCamera = true;
+      this.prixCapteurPoub = this.add.text(1100, 690, technologieT1[7].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textCapteurPoub = this.add.text(1050, 710, technologieT1[7].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //capteurPoub Info
+      this.buttonInfoCapteurPoub = this.add.image(855,700, 'iconeInfo');
+      this.buttonInfoCapteurPoub.displayWidth = 50;
+      this.buttonInfoCapteurPoub.scaleY = this.buttonInfoCapteurPoub.scaleX;
+      this.buttonInfoCapteurPoub.setInteractive({useHandCursor: true});
+      this.buttonInfoCapteurPoub.on('pointerdown', () => this.getInfoT('capteurPoub'));
+      this.buttonInfoCapteurPoub.setOrigin(-3, 0);
+      this.buttonInfoCapteurPoub.setScrollFactor(0);
+      this.buttonInfoCapteurPoub.fixedToCamera = true;
+
+      //LED
+      this.buttonLED = this.add.image(920,525, 'LED');
+      if(statistiques.getBank() < technologieT1[8].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT1[8].price){
+        this.buttonLED.setInteractive({useHandCursor: true});
+        this.buttonLED.on('pointerdown', () => this.buyTechno('LED'));
+      }
+      this.buttonLED.setOrigin(-3, 0);
+      this.buttonLED.setScrollFactor(0);
+      this.buttonLED.fixedToCamera = true;
+      this.prixLED = this.add.text(1420, 690, technologieT1[8].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textLED = this.add.text(1380, 710, technologieT1[8].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //LED Info
+      this.buttonInfoLED = this.add.image(1185,700, 'iconeInfo');
+      this.buttonInfoLED.displayWidth = 50;
+      this.buttonInfoLED.scaleY = this.buttonInfoLED.scaleX;
+      this.buttonInfoLED.setInteractive({useHandCursor: true});
+      this.buttonInfoLED.on('pointerdown', () => this.getInfoT('LED'));
+      this.buttonInfoLED.setOrigin(-3, 0);
+      this.buttonInfoLED.setScrollFactor(0);
+      this.buttonInfoLED.fixedToCamera = true;
     }
 
     //Mairie niveau 2
@@ -943,33 +1249,201 @@ class techno extends Phaser.Scene{
       let sousMenuRec1 = this.add.rectangle(960, 450, 1500, 800);
       sousMenuRec1.setStrokeStyle(3, 0x080808);
 
-            //Hopital
-      this.buttonBuildingHopital = this.add.image(-450,180, 'hopital1');
-      if(statistiques.getBank() < buildingListMk1[4].price) { 
+      //voitureElec
+      this.buttonVoitureElec = this.add.image(-125,160, 'voitureElec');
+      if(statistiques.getBank() < technologieT2[0].price) { 
         let croix = this.add.sprite(400, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= buildingListMk1[4].price){
-        this.buttonBuildingHopital.setInteractive({useHandCursor: true});
-        this.buttonBuildingHopital.on('pointerdown', () => this.placeBuildingMoral('hopital1'));
+      else if(statistiques.getBank() >= technologieT2[0].price){
+        this.buttonVoitureElec.setInteractive({useHandCursor: true});
+        this.buttonVoitureElec.on('pointerdown', () => this.placeBuildingMoral('voitureElec'));
       }
-      this.buttonBuildingHopital.setOrigin(-3, 0);
-      this.buttonBuildingHopital.setScrollFactor(0);
-      this.buttonBuildingHopital.fixedToCamera = true;
-      this.prixHopital = this.add.text(350, 440, buildingListMk1[4].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textHopital = this.add.text(345, 460, "Hopital", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.buttonVoitureElec.setOrigin(-3, 0);
+      this.buttonVoitureElec.setScrollFactor(0);
+      this.buttonVoitureElec.fixedToCamera = true;
+      this.prixVoitureElec = this.add.text(390,350, technologieT2[0].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textVoitureElec = this.add.text(310,370, technologieT2[0].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
-      //Hopital Info
-      this.buttonInfoHopital = this.add.image(150,445, 'iconeInfo');
-      this.buttonInfoHopital.displayWidth = 50;
-      this.buttonInfoHopital.scaleY = this.buttonInfoHopital.scaleX;
-      this.buttonInfoHopital.setInteractive({useHandCursor: true});
-      this.buttonInfoHopital.on('pointerdown', () => this.getInfo('hopital1'));
-      this.buttonInfoHopital.setOrigin(-3, 0);
-      this.buttonInfoHopital.setScrollFactor(0);
-      this.buttonInfoHopital.fixedToCamera = true;
+      //voitureElec Info
+      this.buttonInfoVoitureElec = this.add.image(100,360, 'iconeInfo');
+      this.buttonInfoVoitureElec.displayWidth = 50;
+      this.buttonInfoVoitureElec.scaleY = this.buttonInfoVoitureElec.scaleX;
+      this.buttonInfoVoitureElec.setInteractive({useHandCursor: true});
+      this.buttonInfoVoitureElec.on('pointerdown', () => this.getInfoT('voitureElec'));
+      this.buttonInfoVoitureElec.setOrigin(-3, 0);
+      this.buttonInfoVoitureElec.setScrollFactor(0);
+      this.buttonInfoVoitureElec.fixedToCamera = true;
+
+      //routeElec
+      this.buttonRouteElec = this.add.image(200,180, 'routeElec');
+      if(statistiques.getBank() < technologieT2[1].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT2[1].price){
+        this.buttonRouteElec.setInteractive({useHandCursor: true});
+        this.buttonRouteElec.on('pointerdown', () => this.buyTechno('routeElec'));
+      }
+      this.buttonRouteElec.setOrigin(-3, 0);
+      this.buttonRouteElec.setScrollFactor(0);
+      this.buttonRouteElec.fixedToCamera = true;
+      this.prixRouteElec = this.add.text(715,352, technologieT2[1].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textRouteElec = this.add.text(715,352, technologieT2[1].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //routeElec Info
+      this.buttonInfoRouteElec = this.add.image(470,360, 'iconeInfo');
+      this.buttonInfoRouteElec.displayWidth = 50;
+      this.buttonInfoRouteElec.scaleY = this.buttonInfoRouteElec.scaleX;
+      this.buttonInfoRouteElec.setInteractive({useHandCursor: true});
+      this.buttonInfoRouteElec.on('pointerdown', () => this.getInfoT('routeElec'));
+      this.buttonInfoRouteElec.setOrigin(-3, 0);
+      this.buttonInfoRouteElec.setScrollFactor(0);
+      this.buttonInfoRouteElec.fixedToCamera = true;
+
+      //parkingSmart
+      this.buttonParkingSmart = this.add.image(750,225, 'parkingSmart');
+      if(statistiques.getBank() < technologieT2[2].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT2[2].price){
+        this.buttonParkingSmart.setInteractive({useHandCursor: true});
+        this.buttonParkingSmart.on('pointerdown', () => this.buyTechno('parkingSmart'));
+      }
+      this.buttonParkingSmart.setOrigin(-3, 0);
+      this.buttonParkingSmart.setScrollFactor(0);
+      this.buttonParkingSmart.fixedToCamera = true;
+      this.prixParkingSmart = this.add.text(950, 350, technologieT2[2].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textParkingSmart = this.add.text(900, 370, technologieT2[2].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //parkingSmart Info
+      this.buttonInfoParkingSmart = this.add.image(705,360, 'iconeInfo');
+      this.buttonInfoParkingSmart.displayWidth = 50;
+      this.buttonInfoParkingSmart.scaleY = this.buttonInfoParkingSmart.scaleX;
+      this.buttonInfoParkingSmart.setInteractive({useHandCursor: true});
+      this.buttonInfoParkingSmart.on('pointerdown', () => this.getInfoT('parkingSmart'));
+      this.buttonInfoParkingSmart.setOrigin(-3, 0);
+      this.buttonInfoParkingSmart.setScrollFactor(0);
+      this.buttonInfoParkingSmart.fixedToCamera = true;
+
+      //bornes
+      this.buttonBornes = this.add.image(-200,500, 'bornes');
+      if(statistiques.getBank() < technologieT2[3].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT2[3].price){
+        this.buttonBornes.setInteractive({useHandCursor: true});
+        this.buttonBornes.on('pointerdown', () => this.buyTechno('bornes'));
+      }
+      this.buttonBornes.setOrigin(-3, 0);
+      this.buttonBornes.setScrollFactor(0);
+      this.buttonBornes.fixedToCamera = true;
+      this.prixBornes = this.add.text(500, 690, technologieT2[3].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textBornes = this.add.text(320, 710, technologieT2[3].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //bornes Info
+      this.buttonInfoBornes = this.add.image(115,700, 'iconeInfo');
+      this.buttonInfoBornes.displayWidth = 50;
+      this.buttonInfoBornes.scaleY = this.buttonInfoBornes.scaleX;
+      this.buttonInfoBornes.setInteractive({useHandCursor: true});
+      this.buttonInfoBornes.on('pointerdown', () => this.getInfoT('bornes'));
+      this.buttonInfoBornes.setOrigin(-3, 0);
+      this.buttonInfoBornes.setScrollFactor(0);
+      this.buttonInfoBornes.fixedToCamera = true;
+
+      //compacPoub
+      this.buttonCompacPoub = this.add.image(300,540, 'compacPoub');
+      if(statistiques.getBank() < technologieT2[4].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT2[4].price){
+        this.buttonCompacPoub.setInteractive({useHandCursor: true});
+        this.buttonCompacPoub.on('pointerdown', () => this.buyTechno('compacPoub'));
+      }
+      this.buttonCompacPoub.setOrigin(-3, 0);
+      this.buttonCompacPoub.setScrollFactor(0);
+      this.buttonCompacPoub.fixedToCamera = true;
+      this.prixCompacPoub = this.add.text(815, 690, technologieT2[4].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textCompacPoub = this.add.text(750, 710, technologieT2[4].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //compacPoub Info
+      this.buttonInfoCompacPoub = this.add.image(550,700, 'iconeInfo');
+      this.buttonInfoCompacPoub.displayWidth = 50;
+      this.buttonInfoCompacPoub.scaleY = this.buttonInfoCompacPoub.scaleX;
+      this.buttonInfoCompacPoub.setInteractive({useHandCursor: true});
+      this.buttonInfoCompacPoub.on('pointerdown', () => this.getInfoT('compacPoub'));
+      this.buttonInfoCompacPoub.setOrigin(-3, 0);
+      this.buttonInfoCompacPoub.setScrollFactor(0);
+      this.buttonInfoCompacPoub.fixedToCamera = true;
+
+      //IA_Trie
+      this.buttonIA_Trie = this.add.image(600,525, 'IA_Trie');
+      if(statistiques.getBank() < technologieT2[5].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT2[5].price){
+        this.buttonIA_Trie.setInteractive({useHandCursor: true});
+        this.buttonIA_Trie.on('pointerdown', () => this.buyTechno('IA_Trie'));
+      }
+      this.buttonIA_Trie.setOrigin(-3, 0);
+      this.buttonIA_Trie.setScrollFactor(0);
+      this.buttonIA_Trie.fixedToCamera = true;
+      this.prixIA_Trie = this.add.text(1120, 690, technologieT2[5].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textIA_Trie = this.add.text(1050, 710, technologieT2[5].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //IA_Trie Info
+      this.buttonInfoIA_Trie = this.add.image(855,700, 'iconeInfo');
+      this.buttonInfoIA_Trie.displayWidth = 50;
+      this.buttonInfoIA_Trie.scaleY = this.buttonInfoIA_Trie.scaleX;
+      this.buttonInfoIA_Trie.setInteractive({useHandCursor: true});
+      this.buttonInfoIA_Trie.on('pointerdown', () => this.getInfo('IA_Trie'));
+      this.buttonInfoIA_Trie.setOrigin(-3, 0);
+      this.buttonInfoIA_Trie.setScrollFactor(0);
+      this.buttonInfoIA_Trie.fixedToCamera = true;
+
+      //capteurMouv
+      this.buttonCapteurMouv = this.add.image(-100,180, 'capteurMouv');
+      if(statistiques.getBank() < technologieT2[6].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT2[6].price){
+        this.buttonCapteurMouv.setInteractive({useHandCursor: true});
+        this.buttonCapteurMouv.on('pointerdown', () => this.buyTechno('capteurMouv'));
+      }
+      this.buttonCapteurMouv.setOrigin(-3, 0);
+      this.buttonCapteurMouv.setScrollFactor(0);
+      this.buttonCapteurMouv.fixedToCamera = true;
+      this.prixCapteurMouv = this.add.text(750, 440, technologieT2[6].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textCapteurMouv = this.add.text(752, 460, technologieT2[6].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //capteurMouv Info
+      this.buttonInfoCapteurMouv = this.add.image(550,445, 'iconeInfo');
+      this.buttonInfoCapteurMouv.displayWidth = 50;
+      this.buttonInfoCapteurMouv.scaleY = this.buttonInfoCapteurMouv.scaleX;
+      this.buttonInfoCapteurMouv.setInteractive({useHandCursor: true});
+      this.buttonInfoCapteurMouv.on('pointerdown', () => this.getInfoT('capteurMouv'));
+      this.buttonInfoCapteurMouv.setOrigin(-3, 0);
+      this.buttonInfoCapteurMouv.setScrollFactor(0);
+      this.buttonInfoCapteurMouv.fixedToCamera = true;
     }
 
     //Mairie niveau 3
@@ -978,14 +1452,246 @@ class techno extends Phaser.Scene{
       let sousMenuEcologie = this.add.rectangle(960, 450, 1500, 800, 0xffffff);
       let sousMenuRec1 = this.add.rectangle(960, 450, 1500, 800);
       sousMenuRec1.setStrokeStyle(3, 0x080808);
+
+      //voitureAuto
+      this.buttonVoitureAuto = this.add.image(-100,180, 'voitureAuto');
+      if(statistiques.getBank() < technologieT3[0].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT3[0].price){
+        this.buttonVoitureAuto.setInteractive({useHandCursor: true});
+        this.buttonVoitureAuto.on('pointerdown', () => this.buyTechno('voitureAuto'));
+      }
+      this.buttonVoitureAuto.setOrigin(-3, 0);
+      this.buttonVoitureAuto.setScrollFactor(0);
+      this.buttonVoitureAuto.fixedToCamera = true;
+      this.prixVoitureAuto = this.add.text(750, 440, technologieT3[0].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textVoitureAuto = this.add.text(752, 460, technologieT3[0].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //voitureAuto Info
+      this.buttonInfoVoitureAuto = this.add.image(550,445, 'iconeInfo');
+      this.buttonInfoVoitureAuto.displayWidth = 50;
+      this.buttonInfoVoitureAuto.scaleY = this.buttonInfoPoste.scaleX;
+      this.buttonInfoVoitureAuto.setInteractive({useHandCursor: true});
+      this.buttonInfoVoitureAuto.on('pointerdown', () => this.getInfoT('voitureAuto'));
+      this.buttonInfoVoitureAuto.setOrigin(-3, 0);
+      this.buttonInfoVoitureAuto.setScrollFactor(0);
+      this.buttonInfoVoitureAuto.fixedToCamera = true;
+
+      //IAPolice
+      this.buttonIAPolice = this.add.image(-100,180, 'IAPolice');
+      if(statistiques.getBank() < technologieT3[1].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT3[1].price){
+        this.buttonIAPolice.setInteractive({useHandCursor: true});
+        this.buttonIAPolice.on('pointerdown', () => this.buyTechno('IAPolice'));
+      }
+      this.buttonIAPolice.setOrigin(-3, 0);
+      this.buttonIAPolice.setScrollFactor(0);
+      this.buttonIAPolice.fixedToCamera = true;
+      this.prixIAPolice = this.add.text(750, 440, technologieT3[1].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textIAPolice = this.add.text(752, 460, technologieT3[1].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //IAPolice Info
+      this.buttonInfoIAPolice = this.add.image(550,445, 'iconeInfo');
+      this.buttonInfoIAPolice.displayWidth = 50;
+      this.buttonInfoIAPolice.scaleY = this.buttonInfoIAPolice.scaleX;
+      this.buttonInfoIAPolice.setInteractive({useHandCursor: true});
+      this.buttonInfoIAPolice.on('pointerdown', () => this.getInfoT('IAPolice'));
+      this.buttonInfoIAPolice.setOrigin(-3, 0);
+      this.buttonInfoIAPolice.setScrollFactor(0);
+      this.buttonInfoIAPolice.fixedToCamera = true;
+
+      //tuyauDech
+      this.buttonTuyauDech = this.add.image(-100,180, 'tuyauDech');
+      if(statistiques.getBank() < technologieT3[2].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT3[2].price){
+        this.buttonTuyauDech.setInteractive({useHandCursor: true});
+        this.buttonTuyauDech.on('pointerdown', () => this.buyTechno('tuyauDech'));
+      }
+      this.buttonTuyauDech.setOrigin(-3, 0);
+      this.buttonTuyauDech.setScrollFactor(0);
+      this.buttonTuyauDech.fixedToCamera = true;
+      this.prixTuyauDech = this.add.text(750, 440, technologieT3[2].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textTuyauDech = this.add.text(752, 460, technologieT3[2].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //tuyauDech Info
+      this.buttonInfoTuyauDech = this.add.image(550,445, 'iconeInfo');
+      this.buttonInfoTuyauDech.displayWidth = 50;
+      this.buttonInfoTuyauDech.scaleY = this.buttonInfoTuyauDech.scaleX;
+      this.buttonInfoTuyauDech.setInteractive({useHandCursor: true});
+      this.buttonInfoTuyauDech.on('pointerdown', () => this.getInfoT('tuyauDech'));
+      this.buttonInfoTuyauDech.setOrigin(-3, 0);
+      this.buttonInfoTuyauDech.setScrollFactor(0);
+      this.buttonInfoTuyauDech.fixedToCamera = true;
+
+      //IAClean
+      this.buttonIAClean = this.add.image(-100,180, 'IAClean');
+      if(statistiques.getBank() < technologieT3[3].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT3[3].price){
+        this.buttonIAClean.setInteractive({useHandCursor: true});
+        this.buttonIAClean.on('pointerdown', () => this.buyTechno('IAClean'));
+      }
+      this.buttonIAClean.setOrigin(-3, 0);
+      this.buttonIAClean.setScrollFactor(0);
+      this.buttonIAClean.fixedToCamera = true;
+      this.prixIAClean = this.add.text(750, 440, technologieT3[3].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textIAClean = this.add.text(752, 460, technologieT3[3].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //IAClean Info
+      this.buttonInfoIAClean = this.add.image(550,445, 'iconeInfo');
+      this.buttonInfoIAClean.displayWidth = 50;
+      this.buttonInfoIAClean.scaleY = this.buttonInfoIAClean.scaleX;
+      this.buttonInfoIAClean.setInteractive({useHandCursor: true});
+      this.buttonInfoIAClean.on('pointerdown', () => this.getInfoT('IAClean'));
+      this.buttonInfoIAClean.setOrigin(-3, 0);
+      this.buttonInfoIAClean.setScrollFactor(0);
+      this.buttonInfoIAClean.fixedToCamera = true;
+
+      //capteurRes
+      this.buttonCapteurRes = this.add.image(-100,180, 'capteurRes');
+      if(statistiques.getBank() < technologieT3[4].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT3[4].price){
+        this.buttonCapteurRes.setInteractive({useHandCursor: true});
+        this.buttonCapteurRes.on('pointerdown', () => this.buyTechno('capteurRes'));
+      }
+      this.buttonCapteurRes.setOrigin(-3, 0);
+      this.buttonCapteurRes.setScrollFactor(0);
+      this.buttonCapteurRes.fixedToCamera = true;
+      this.prixCapteurRes = this.add.text(750, 440, technologieT3[4].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textCapteurRes = this.add.text(752, 460, technologieT3[4].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //capteurRes Info
+      this.buttonInfoCapteurRes = this.add.image(550,445, 'iconeInfo');
+      this.buttonInfoCapteurRes.displayWidth = 50;
+      this.buttonInfoCapteurRes.scaleY = this.buttonInfoCapteurRes.scaleX;
+      this.buttonInfoCapteurRes.setInteractive({useHandCursor: true});
+      this.buttonInfoCapteurRes.on('pointerdown', () => this.getInfoT('capteurRes'));
+      this.buttonInfoCapteurRes.setOrigin(-3, 0);
+      this.buttonInfoCapteurRes.setScrollFactor(0);
+      this.buttonInfoCapteurRes.fixedToCamera = true;
+
+      //intelOpe
+      this.buttonIntelOpe = this.add.image(-100,180, 'intelOpe');
+      if(statistiques.getBank() < technologieT3[5].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT3[5].price){
+        this.buttonIntelOpe.setInteractive({useHandCursor: true});
+        this.buttonIntelOpe.on('pointerdown', () => this.buyTechno('intelOpe'));
+      }
+      this.buttonIntelOpe.setOrigin(-3, 0);
+      this.buttonIntelOpe.setScrollFactor(0);
+      this.buttonIntelOpe.fixedToCamera = true;
+      this.prixIntelOpe = this.add.text(750, 440, technologieT3[5].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textIntelOpe = this.add.text(752, 460, technologieT3[5].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //IntelOpe Info
+      this.buttonInfoIntelOpe = this.add.image(550,445, 'iconeInfo');
+      this.buttonInfoIntelOpe.displayWidth = 50;
+      this.buttonInfoIntelOpe.scaleY = this.buttonInfoIntelOpe.scaleX;
+      this.buttonInfoIntelOpe.setInteractive({useHandCursor: true});
+      this.buttonInfoIntelOpe.on('pointerdown', () => this.getInfoT('intelOpe'));
+      this.buttonInfoIntelOpe.setOrigin(-3, 0);
+      this.buttonInfoIntelOpe.setScrollFactor(0);
+      this.buttonInfoIntelOpe.fixedToCamera = true;
     }
   }
 
   buyTechno(name){
     statistiques.saveTechno(name);
+    statistiques.setBank(statistiques.getTechnoPrice(name));
+    this.scene.launch('Bought').stop('techno').stop('menu').stop('info');
+  }
+
+  getInfoT(name){
+    tempT = statistiques.getInfoTechno(name);
+    this.scene.launch('infoTechno');
   }
 
   close(){
     this.scene.stop('info').stop('menu').stop('techno');
+  }
+}
+
+class infoTechno extends Phaser.Scene{
+  create(){
+    let sousMenuInfo = this.add.rectangle(640, 450, 600, 500, 0xffffff);
+    let sousMenuRec = this.add.rectangle(640, 450, 600, 500);
+    sousMenuRec.setStrokeStyle(3, 0x080808);
+
+    let batimentDesc = this.add.rectangle(1260, 450, 600, 500, 0xffffff);
+    let sousMenuRec2 = this.add.rectangle(1260, 450, 600, 500);
+    sousMenuRec2.setStrokeStyle(3, 0x080808);
+
+    //Close bouton
+    this.closeButton = this.add.sprite(1530, 235, 'close');
+    this.closeButton.displayWidth = 50;
+    this.closeButton.scaleY = this.closeButton.scaleX;
+    this.closeButton.depth = 200;
+    this.closeButton.setInteractive({  useHandCursor: true});
+    this.closeButton.on('pointerdown', () => this.close());
+
+    //Text Info
+    this.textInfoTechno = this.add.text(400, 270, 'Informations sur la technologie !', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textNameTechno = this.add.text(400, 310, 'Nom : ' + tempT[1], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textPriceTechno = this.add.text(400, 350, 'Prix : ' + tempT[2] + '$', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textEconomieInfoTechno = this.add.text(400, 430, 'Impact economique : ' + tempT[3], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textEcologieInfoTechno = this.add.text(400, 470, 'Impact écologique : ' + tempT[4], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textBienEtreInfoTechno = this.add.text(400, 510, 'Impact sur le bien-être : ' + tempT[5], { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+    //Text description 
+    this.titleDesc = this.add.text(1060, 250, 'Description de la technologie :', {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8); 
+    this.textDesc = this.add.text(1060, 350, tempT[6], {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff0);
+  }
+
+  close(){
+    this.scene.stop('infoTechno');
+  }
+}
+
+class Bought extends Phaser.Scene{
+    create(){
+    let buyconfirm = this.add.rectangle(980, 700, 600, 100, 0x999999);
+    let sousMenuRec3 = this.add.rectangle(980, 700, 600, 100);
+    sousMenuRec3.setStrokeStyle(4, 0x080808);
+
+    this.text = this.add.text(820, 690, 'Technologie achetée !', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+    this.confirmbutton = this.add.sprite(950, 800, 'confirm');
+    this.confirmbutton.displayWidth = 150;
+    this.confirmbutton.scaleY = this.confirmbutton.scaleX;
+    this.confirmbutton.depth = 200;
+    this.confirmbutton.setInteractive({  useHandCursor: true});
+    this.confirmbutton.on('pointerdown', () => this.close());
+  }
+
+  close(){
+    this.scene.stop('Bought').launch('techno').launch('info').launch('menu');
   }
 }

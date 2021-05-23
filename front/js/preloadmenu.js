@@ -80,7 +80,37 @@ class preloadmenu extends Phaser.Scene{
       this.load.image('croix', "../images/HUD/redcross.png");
       this.load.image('confirm', "../images/HUD/confirm.png");
       this.load.image('cancel', "../images/HUD/cancel.png");
+      this.load.image('X1', "../images/HUD/x1.png");
+      this.load.image('X2', "../images/HUD/x2.png");
+      this.load.image('X3', "../images/HUD/x3.png");
+      this.load.image('Pause', "../images/HUD/pause.png");
+      this.load.image('check', "../images/HUD/check.png");
+
+
+      //load techno
       this.load.image('techno', "../images/HUD/technoIcone.png");
+      this.load.image('feuMalvoyant', "../images/techno/Niveau 1/feuMalvoyant.png");
+      this.load.image('signalSonore', "../images/techno/Niveau 1/signalSonore.png");
+      this.load.image('feuSmart', "../images/techno/Niveau 1/feuSmart.png");
+      this.load.image('peageVehiVert', "../images/techno/Niveau 1/peageVehiVert.png");
+      this.load.image('e_Admin', "../images/techno/Niveau 1/e-Admin.png");
+      this.load.image('dechetIntell', "../images/techno/Niveau 1/dechetIntell.png");
+      this.load.image('passageCamions', "../images/techno/Niveau 1/passageCamions.png");
+      this.load.image('capteurPoub', "../images/techno/Niveau 1/capteurPoub.png");
+      this.load.image('LED', "../images/techno/Niveau 1/LED.png");
+      this.load.image('voitureElec', "../images/techno/Niveau 2/voitureElec.png");
+      this.load.image('routeElec', "../images/techno/Niveau 2/routeElec.png");
+      this.load.image('parkingSmart', "../images/techno/Niveau 2/parkingSmart.png");
+      this.load.image('bornes', "../images/techno/Niveau 2/bornes.png");
+      this.load.image('compacPoub', "../images/techno/Niveau 2/compacPoub.png");
+      this.load.image('IA_Trie', "../images/techno/Niveau 2/IA_Trie.png");
+      this.load.image('capteurMouv', "../images/techno/Niveau 2/capteurMouv.png");
+      this.load.image('voitureAuto', "../images/techno/Niveau 3/voitureAuto.png");
+      this.load.image('IAPolice', "../images/techno/Niveau 3/IAPolice.png");
+      this.load.image('tuyauDech', "../images/techno/Niveau 3/tuyauDech.png");
+      this.load.image('IAClean', "../images/techno/Niveau 3/IAClean.png");
+      this.load.image('capteurRes', "../images/techno/Niveau 3/capteurRes.png");
+      this.load.image('intelOpe', "../images/techno/Niveau 3/intelOpe.png");
       
       //Dialogue
       this.load.image('box', './images/dialog.png');

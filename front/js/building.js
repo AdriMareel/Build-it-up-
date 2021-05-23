@@ -47,6 +47,7 @@ class gameStat{
 		if(this.listeBatiment == null) {return 0;}
 		else{
 			this.statEcologie = 0;
+			//Bâtiment
 			for(let i = 0; i < this.listeBatiment.length; i++){
 				for(let j = 0; j < buildingListMk1.length; j++){
 					if(this.listeBatiment[i] == buildingListMk1[j].name){
@@ -64,6 +65,24 @@ class gameStat{
 					}
 				}
 			}
+			//Technologie
+			for(let w = 0; w < this.listeTechno.length; w++){
+				for(let x = 0; x < technologieT1.length; x++){
+					if(this.listeTechno[w] == technologieT1[x].name){
+						this.statEcologie += technologieT1[x].ecologie;
+					}
+				}
+				for(let y = 0; y < technologieT2.length; y++){
+					if(this.listeTechno[w] == technologieT2[y].name){
+						this.statEcologie += technologieT2[y].ecologie;
+					}
+				}
+				for(let z = 0; z < technologieT3.length; z++){
+					if(this.listeTechno[w] == technologieT3[z].name){
+						this.statEcologie += technologieT3[z].ecologie;
+					}
+				}
+			}
 		}
 	}
 
@@ -71,6 +90,7 @@ class gameStat{
 		if(this.listeBatiment == null) {return 0;}
 		else{
 			this.statEconomie = 0;
+			//Batiment
 			for(let i = 0; i < this.listeBatiment.length; i++){
 				for(let j = 0; j < buildingListMk1.length; j++){
 					if(this.listeBatiment[i] == buildingListMk1[j].name){
@@ -88,6 +108,24 @@ class gameStat{
 					}
 				}
 			}
+			//Technologie
+			for(let w = 0; w < this.listeTechno.length; w++){
+				for(let x = 0; x < technologieT1.length; x++){
+					if(this.listeTechno[w] == technologieT1[x].name){
+						this.statEconomie += technologieT1[x].economie;
+					}
+				}
+			for(let y = 0; y < technologieT2.length; y++){
+					if(this.listeTechno[w] == technologieT2[y].name){
+						this.statEconomie += technologieT2[y].economie;
+					}
+				}
+			for(let z = 0; z < technologieT3.length; z++){
+					if(this.listeTechno[w] == technologieT3[z].name){
+						this.statEconomie += technologieT3[z].economie;
+					}
+				}
+			}
 		}
 	}
 
@@ -95,6 +133,7 @@ class gameStat{
 		if(this.listeBatiment == null) {return 0;}
 		else{
 			this.statBienEtre = 0;
+			//Batiment
 			for(let i = 0; i < this.listeBatiment.length; i++){
 				for(let j = 0; j < buildingListMk1.length; j++){
 					if(this.listeBatiment[i] == buildingListMk1[j].name){
@@ -109,6 +148,24 @@ class gameStat{
 				for(let l = 0; l < buildingListMk3.length; l++){
 					if(this.listeBatiment[i] == buildingListMk3[l].name){
 						this.statBienEtre += buildingListMk3[l].bienEtre;
+					}
+				}
+			}
+			//Technologie
+			for(let w = 0; w < this.listeTechno.length; w++){
+				for(let x = 0; x < technologieT1.length; x++){
+					if(this.listeTechno[w] == technologieT1[x].name){
+						this.statBienEtre += technologieT1[x].bienEtre;
+					}
+				}
+				for(let y = 0; y < technologieT2.length; y++){
+					if(this.listeTechno[w] == technologieT2[y].name){
+						this.statBienEtre += technologieT2[y].bienEtre;
+					}
+				}
+				for(let z = 0; z < technologieT3.length; z++){
+					if(this.listeTechno[w] == technologieT3[z].name){
+						this.statBienEtre += technologieT3[z].bienEtre;
 					}
 				}
 			}
@@ -200,6 +257,44 @@ class gameStat{
 		return info;
 	}
 
+	getInfoTechno(name){
+		let infoT = [];
+		for(let j = 0; j < technologieT1.length; j++){
+			if(name == technologieT1[j].name){
+				infoT[0] = technologieT1[j].name;
+				infoT[1] = technologieT1[j].nom;
+				infoT[2] = technologieT1[j].price;
+				infoT[3] = technologieT1[j].economie;
+				infoT[4] = technologieT1[j].ecologie;
+				infoT[5] = technologieT1[j].bienEtre;
+				infoT[6] = technologieT1[j].description;
+			}
+		}
+		for(let k = 0; k < technologieT2.length; k++){
+			if(name == technologieT2[k].name){
+				infoT[0] = technologieT2[k].name;
+				infoT[1] = technologieT2[k].nom;
+				infoT[2] = technologieT2[k].price;
+				infoT[3] = technologieT2[k].economie;
+				infoT[4] = technologieT2[k].ecologie;
+				infoT[5] = technologieT2[k].bienEtre;
+				infoT[6] = technologieT2[k].description;
+			}
+		}
+		for(let l = 0; l < technologieT3.length; l++){
+			if(name == technologieT3[l].name){
+				infoT[0] = technologieT3[l].name;
+				infoT[1] = technologieT3[l].nom;
+				infoT[2] = technologieT3[l].price;
+				infoT[3] = technologieT3[l].economie;
+				infoT[4] = technologieT3[l].ecologie;
+				infoT[5] = technologieT3[l].bienEtre;
+				infoT[6] = technologieT3[l].description;	
+			}
+		}
+		return infoT;
+	}
+
 	setBank(price){
 		this.Bank -= price;
 	}
@@ -211,4 +306,48 @@ class gameStat{
 			}
 		}
 	}
+
+	isTechnoBuyed(name){
+		for(let i = 0; i < this.listeTechno.length; i++){
+			if(name == this.listeTechno[i]){ return true; }
+			else{ return false; }
+		}
+	}
+
+	getTechnoPrice(name){
+		for(let x = 0; x < technologieT1.length; x++){
+			if(name == technologieT1[x].name){
+				return technologieT1[x].price;
+			}
+		}
+		for(let y = 0; y < technologieT2.length; y++){
+			if(name == technologieT2[y].name){
+				return technologieT2[y].price;
+			}
+		}
+		for(let z = 0; z < technologieT3.length; z++){
+			if(name == technologieT3[z].name){
+				return technologieT3[z].price;
+			}
+		}
+	}
+
+	getBuildingPrice(name){
+		for(let x = 0; x < technologieT1.length; x++){
+			if(name == technologieT1[x].name){
+				return technologieT1[x].price;
+			}
+		}
+		for(let y = 0; y < technologieT2.length; y++){
+			if(name == technologieT2[y].name){
+				return technologieT2[y].price;
+			}
+		}
+		for(let z = 0; z < technologieT3.length; z++){
+			if(name == technologieT3[z].name){
+				return technologieT3[z].price;
+			}
+		}
+	}
 }
+
