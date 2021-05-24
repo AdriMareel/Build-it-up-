@@ -326,8 +326,8 @@ class HUDBuildingListEcologie extends Phaser.Scene{
     this.buttonInfoPSolaire.fixedToCamera = true;
 
 
-    //Centrale Hydrolique
-    this.buttonBuildingCentraleHydrolique = this.add.image(-50,110, 'centrale_hydrolique1');
+    //Centrale hydraulique
+    this.buttonBuildingCentralehydraulique = this.add.image(-50,110, 'centrale_hydraulique1');
     if(statistiques.getBank() < buildingListMk1[6].price) { 
       let croix = this.add.sprite(1350, 300, 'croix');
       croix.depth = 300;
@@ -335,24 +335,24 @@ class HUDBuildingListEcologie extends Phaser.Scene{
       croix.scaleX = croix.scaleY;
     }
     else if(statistiques.getBank() >= buildingListMk1[6].price){
-      this.buttonBuildingCentraleHydrolique.setInteractive({useHandCursor: true});
-      this.buttonBuildingCentraleHydrolique.on('pointerdown', () => this.placeBuildingEcologie('centrale_hydrolique1'));
+      this.buttonBuildingCentralehydraulique.setInteractive({useHandCursor: true});
+      this.buttonBuildingCentralehydraulique.on('pointerdown', () => this.placeBuildingEcologie('centrale_hydraulique1'));
     }
-    this.buttonBuildingCentraleHydrolique.setOrigin(-3, 0);
-    this.buttonBuildingCentraleHydrolique.setScrollFactor(0);
-    this.buttonBuildingCentraleHydrolique.fixedToCamera = true;
+    this.buttonBuildingCentralehydraulique.setOrigin(-3, 0);
+    this.buttonBuildingCentralehydraulique.setScrollFactor(0);
+    this.buttonBuildingCentralehydraulique.fixedToCamera = true;
     this.prixHydro = this.add.text(1300, 460, buildingListMk1[6].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-    this.textHydro = this.add.text(1240, 480, "Centrale Hydrolique", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textHydro = this.add.text(1240, 480, "Centrale hydraulique", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
-    //Centrale Hydrolique Info
-    this.buttonInfoCentraleHydrolique = this.add.image(1040,470, 'iconeInfo');
-    this.buttonInfoCentraleHydrolique.displayWidth = 50;
-    this.buttonInfoCentraleHydrolique.scaleY = this.buttonInfoCentraleHydrolique.scaleX;
-    this.buttonInfoCentraleHydrolique.setInteractive({useHandCursor: true});
-    this.buttonInfoCentraleHydrolique.on('pointerdown', () => this.getInfo('centrale_hydrolique1'));
-    this.buttonInfoCentraleHydrolique.setOrigin(-3, 0);
-    this.buttonInfoCentraleHydrolique.setScrollFactor(0);
-    this.buttonInfoCentraleHydrolique.fixedToCamera = true;
+    //Centrale hydraulique Info
+    this.buttonInfoCentralehydraulique = this.add.image(1040,470, 'iconeInfo');
+    this.buttonInfoCentralehydraulique.displayWidth = 50;
+    this.buttonInfoCentralehydraulique.scaleY = this.buttonInfoCentralehydraulique.scaleX;
+    this.buttonInfoCentralehydraulique.setInteractive({useHandCursor: true});
+    this.buttonInfoCentralehydraulique.on('pointerdown', () => this.getInfo('centrale_hydraulique1'));
+    this.buttonInfoCentralehydraulique.setOrigin(-3, 0);
+    this.buttonInfoCentralehydraulique.setScrollFactor(0);
+    this.buttonInfoCentralehydraulique.fixedToCamera = true;
 
     //Parc
     this.buttonBuildingParc = this.add.image(-200,500, 'parc1');
@@ -1034,13 +1034,19 @@ class techno extends Phaser.Scene{
 
       //Signal Sonore
       this.buttonSignalSonore = this.add.image(200,180, 'signalSonore');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT1[1].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[1].price){
+      else if(statistiques.getBank() >= technologieT1[1].price && !statistiques.isTechnoBuyed('signalSonore')){
         this.buttonSignalSonore.setInteractive({useHandCursor: true});
         this.buttonSignalSonore.on('pointerdown', () => this.buyTechno('signalSonore'));
       }
@@ -1062,13 +1068,19 @@ class techno extends Phaser.Scene{
 
       //feu Smart
       this.buttonFeu2 = this.add.image(750,225, 'feuSmart');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT1[2].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[2].price){
+      else if(statistiques.getBank() >= technologieT1[2].price && !statistiques.isTechnoBuyed('feuSmart')){
         this.buttonFeu2.setInteractive({useHandCursor: true});
         this.buttonFeu2.on('pointerdown', () => this.buyTechno('feuSmart'));
       }
@@ -1090,13 +1102,19 @@ class techno extends Phaser.Scene{
 
       //peage Vehicule Vert
       this.buttonPeageVehiVert = this.add.image(700,182, 'peageVehiVert');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT1[3].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[3].price){
+      else if(statistiques.getBank() >= technologieT1[3].price && !statistiques.isTechnoBuyed('peageVehiVert')){
         this.buttonPeageVehiVert.setInteractive({useHandCursor: true});
         this.buttonPeageVehiVert.on('pointerdown', () => this.buyTechno('peageVehiVert'));
       }
@@ -1118,13 +1136,19 @@ class techno extends Phaser.Scene{
 
       //e-administration
       this.buttonE_Admin = this.add.image(990,160, 'e_Admin');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT1[4].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[4].price){
+      else if(statistiques.getBank() >= technologieT1[4].price && !statistiques.isTechnoBuyed('e_Admin')){
         this.buttonE_Admin.setInteractive({useHandCursor: true});
         this.buttonE_Admin.on('pointerdown', () => this.buyTechno('e_Admin'));
       }
@@ -1146,13 +1170,19 @@ class techno extends Phaser.Scene{
 
       //Système de gestion des déchets intelligents
       this.buttonDechetIntell = this.add.image(-200,500, 'dechetIntell');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT1[5].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[5].price){
+      else if(statistiques.getBank() >= technologieT1[5].price && !statistiques.isTechnoBuyed('dechetIntell')){
         this.buttonDechetIntell.setInteractive({useHandCursor: true});
         this.buttonDechetIntell.on('pointerdown', () => this.buyTechno('dechetIntell'));
       }
@@ -1174,13 +1204,19 @@ class techno extends Phaser.Scene{
 
       //passageCamions
       this.buttonPassageCamions = this.add.image(300,540, 'passageCamions');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT1[6].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[6].price){
+      else if(statistiques.getBank() >= technologieT1[6].price && !statistiques.isTechnoBuyed('passageCamions')){
         this.buttonPassageCamions.setInteractive({useHandCursor: true});
         this.buttonPassageCamions.on('pointerdown', () => this.buyTechno('passageCamions'));
       }
@@ -1202,13 +1238,19 @@ class techno extends Phaser.Scene{
 
       //capteurPoub
       this.buttonCapteurPoub = this.add.image(600,525, 'capteurPoub');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT1[7].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[7].price){
+      else if(statistiques.getBank() >= technologieT1[7].price && !statistiques.isTechnoBuyed('capteurPoub')){
         this.buttonCapteurPoub.setInteractive({useHandCursor: true});
         this.buttonCapteurPoub.on('pointerdown', () => this.buyTechno('capteurPoub'));
       }
@@ -1230,13 +1272,19 @@ class techno extends Phaser.Scene{
 
       //LED
       this.buttonLED = this.add.image(920,525, 'LED');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT1[8].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[8].price){
+      else if(statistiques.getBank() >= technologieT1[8].price && !statistiques.isTechnoBuyed('LED')){
         this.buttonLED.setInteractive({useHandCursor: true});
         this.buttonLED.on('pointerdown', () => this.buyTechno('LED'));
       }
@@ -1265,25 +1313,31 @@ class techno extends Phaser.Scene{
       sousMenuRec1.setStrokeStyle(3, 0x080808);
 
       //voitureElec
-      this.buttonVoitureElec = this.add.image(-125,160, 'voitureElec');
+      this.buttonVoitureElec = this.add.image(-115,160, 'voitureElec');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT2[0].price) { 
         let croix = this.add.sprite(400, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT2[0].price){
+      else if(statistiques.getBank() >= technologieT2[0].price && !statistiques.isTechnoBuyed('voitureElec')){
         this.buttonVoitureElec.setInteractive({useHandCursor: true});
-        this.buttonVoitureElec.on('pointerdown', () => this.placeBuildingMoral('voitureElec'));
+        this.buttonVoitureElec.on('pointerdown', () => this.buyTechno('voitureElec'));
       }
       this.buttonVoitureElec.setOrigin(-3, 0);
       this.buttonVoitureElec.setScrollFactor(0);
       this.buttonVoitureElec.fixedToCamera = true;
-      this.prixVoitureElec = this.add.text(390,350, technologieT2[0].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textVoitureElec = this.add.text(310,370, technologieT2[0].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.prixVoitureElec = this.add.text(395,350, technologieT2[0].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textVoitureElec = this.add.text(345,370, technologieT2[0].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //voitureElec Info
-      this.buttonInfoVoitureElec = this.add.image(100,360, 'iconeInfo');
+      this.buttonInfoVoitureElec = this.add.image(150,360, 'iconeInfo');
       this.buttonInfoVoitureElec.displayWidth = 50;
       this.buttonInfoVoitureElec.scaleY = this.buttonInfoVoitureElec.scaleX;
       this.buttonInfoVoitureElec.setInteractive({useHandCursor: true});
@@ -1293,25 +1347,31 @@ class techno extends Phaser.Scene{
       this.buttonInfoVoitureElec.fixedToCamera = true;
 
       //routeElec
-      this.buttonRouteElec = this.add.image(200,180, 'routeElec');
+      this.buttonRouteElec = this.add.image(250,180, 'routeElec');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT2[1].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT2[1].price){
+      else if(statistiques.getBank() >= technologieT2[1].price && !statistiques.isTechnoBuyed('routeElec')){
         this.buttonRouteElec.setInteractive({useHandCursor: true});
         this.buttonRouteElec.on('pointerdown', () => this.buyTechno('routeElec'));
       }
       this.buttonRouteElec.setOrigin(-3, 0);
       this.buttonRouteElec.setScrollFactor(0);
       this.buttonRouteElec.fixedToCamera = true;
-      this.prixRouteElec = this.add.text(715,352, technologieT2[1].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textRouteElec = this.add.text(715,352, technologieT2[1].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.prixRouteElec = this.add.text(750,350, technologieT2[1].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textRouteElec = this.add.text(650,370, technologieT2[1].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //routeElec Info
-      this.buttonInfoRouteElec = this.add.image(470,360, 'iconeInfo');
+      this.buttonInfoRouteElec = this.add.image(450,360, 'iconeInfo');
       this.buttonInfoRouteElec.displayWidth = 50;
       this.buttonInfoRouteElec.scaleY = this.buttonInfoRouteElec.scaleX;
       this.buttonInfoRouteElec.setInteractive({useHandCursor: true});
@@ -1321,25 +1381,31 @@ class techno extends Phaser.Scene{
       this.buttonInfoRouteElec.fixedToCamera = true;
 
       //parkingSmart
-      this.buttonParkingSmart = this.add.image(750,225, 'parkingSmart');
+      this.buttonParkingSmart = this.add.image(650,200, 'parkingSmart');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT2[2].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT2[2].price){
+      else if(statistiques.getBank() >= technologieT2[2].price && !statistiques.isTechnoBuyed('parkingSmart')){
         this.buttonParkingSmart.setInteractive({useHandCursor: true});
         this.buttonParkingSmart.on('pointerdown', () => this.buyTechno('parkingSmart'));
       }
       this.buttonParkingSmart.setOrigin(-3, 0);
       this.buttonParkingSmart.setScrollFactor(0);
       this.buttonParkingSmart.fixedToCamera = true;
-      this.prixParkingSmart = this.add.text(950, 350, technologieT2[2].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textParkingSmart = this.add.text(900, 370, technologieT2[2].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.prixParkingSmart = this.add.text(1150, 350, technologieT2[2].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textParkingSmart = this.add.text(1100, 370, technologieT2[2].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //parkingSmart Info
-      this.buttonInfoParkingSmart = this.add.image(705,360, 'iconeInfo');
+      this.buttonInfoParkingSmart = this.add.image(900,360, 'iconeInfo');
       this.buttonInfoParkingSmart.displayWidth = 50;
       this.buttonInfoParkingSmart.scaleY = this.buttonInfoParkingSmart.scaleX;
       this.buttonInfoParkingSmart.setInteractive({useHandCursor: true});
@@ -1348,15 +1414,55 @@ class techno extends Phaser.Scene{
       this.buttonInfoParkingSmart.setScrollFactor(0);
       this.buttonInfoParkingSmart.fixedToCamera = true;
 
+      //capteurMouv
+      this.buttonCapteurMouv = this.add.image(1000,180, 'capteurMouv');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
+      if(statistiques.getBank() < technologieT2[6].price) { 
+        let croix = this.add.sprite(780, 300, 'croix');
+        croix.depth = 300;
+        croix.displayWidth = 50;
+        croix.scaleX = croix.scaleY;
+      }
+      else if(statistiques.getBank() >= technologieT2[6].price && !statistiques.isTechnoBuyed('capteurMouv')){
+        this.buttonCapteurMouv.setInteractive({useHandCursor: true});
+        this.buttonCapteurMouv.on('pointerdown', () => this.buyTechno('capteurMouv'));
+      }
+      this.buttonCapteurMouv.setOrigin(-3, 0);
+      this.buttonCapteurMouv.setScrollFactor(0);
+      this.buttonCapteurMouv.fixedToCamera = true;
+      this.prixCapteurMouv = this.add.text(1470, 350, technologieT2[6].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textCapteurMouv = this.add.text(1350, 370, technologieT2[6].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      //capteurMouv Info
+      this.buttonInfoCapteurMouv = this.add.image(1150,360, 'iconeInfo');
+      this.buttonInfoCapteurMouv.displayWidth = 50;
+      this.buttonInfoCapteurMouv.scaleY = this.buttonInfoCapteurMouv.scaleX;
+      this.buttonInfoCapteurMouv.setInteractive({useHandCursor: true});
+      this.buttonInfoCapteurMouv.on('pointerdown', () => this.getInfoT('capteurMouv'));
+      this.buttonInfoCapteurMouv.setOrigin(-3, 0);
+      this.buttonInfoCapteurMouv.setScrollFactor(0);
+      this.buttonInfoCapteurMouv.fixedToCamera = true;
+
       //bornes
-      this.buttonBornes = this.add.image(-200,500, 'bornes');
+      this.buttonBornes = this.add.image(0,540, 'bornes');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT2[3].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT2[3].price){
+      else if(statistiques.getBank() >= technologieT2[3].price && !statistiques.isTechnoBuyed('bornes')){
         this.buttonBornes.setInteractive({useHandCursor: true});
         this.buttonBornes.on('pointerdown', () => this.buyTechno('bornes'));
       }
@@ -1364,10 +1470,10 @@ class techno extends Phaser.Scene{
       this.buttonBornes.setScrollFactor(0);
       this.buttonBornes.fixedToCamera = true;
       this.prixBornes = this.add.text(500, 690, technologieT2[3].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textBornes = this.add.text(320, 710, technologieT2[3].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textBornes = this.add.text(445, 710, technologieT2[3].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //bornes Info
-      this.buttonInfoBornes = this.add.image(115,700, 'iconeInfo');
+      this.buttonInfoBornes = this.add.image(230,700, 'iconeInfo');
       this.buttonInfoBornes.displayWidth = 50;
       this.buttonInfoBornes.scaleY = this.buttonInfoBornes.scaleX;
       this.buttonInfoBornes.setInteractive({useHandCursor: true});
@@ -1377,25 +1483,31 @@ class techno extends Phaser.Scene{
       this.buttonInfoBornes.fixedToCamera = true;
 
       //compacPoub
-      this.buttonCompacPoub = this.add.image(300,540, 'compacPoub');
+      this.buttonCompacPoub = this.add.image(450,540, 'compacPoub');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT2[4].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT2[4].price){
+      else if(statistiques.getBank() >= technologieT2[4].price && !statistiques.isTechnoBuyed('compacPoub')){
         this.buttonCompacPoub.setInteractive({useHandCursor: true});
         this.buttonCompacPoub.on('pointerdown', () => this.buyTechno('compacPoub'));
       }
       this.buttonCompacPoub.setOrigin(-3, 0);
       this.buttonCompacPoub.setScrollFactor(0);
       this.buttonCompacPoub.fixedToCamera = true;
-      this.prixCompacPoub = this.add.text(815, 690, technologieT2[4].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textCompacPoub = this.add.text(750, 710, technologieT2[4].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.prixCompacPoub = this.add.text(950, 690, technologieT2[4].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textCompacPoub = this.add.text(900, 710, technologieT2[4].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //compacPoub Info
-      this.buttonInfoCompacPoub = this.add.image(550,700, 'iconeInfo');
+      this.buttonInfoCompacPoub = this.add.image(700,700, 'iconeInfo');
       this.buttonInfoCompacPoub.displayWidth = 50;
       this.buttonInfoCompacPoub.scaleY = this.buttonInfoCompacPoub.scaleX;
       this.buttonInfoCompacPoub.setInteractive({useHandCursor: true});
@@ -1405,60 +1517,38 @@ class techno extends Phaser.Scene{
       this.buttonInfoCompacPoub.fixedToCamera = true;
 
       //IA_Trie
-      this.buttonIA_Trie = this.add.image(600,525, 'IA_Trie');
+      this.buttonIA_Trie = this.add.image(900,525, 'IA_Trie');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT2[5].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT2[5].price){
+      else if(statistiques.getBank() >= technologieT2[5].price && !statistiques.isTechnoBuyed('IA_Trie')){
         this.buttonIA_Trie.setInteractive({useHandCursor: true});
         this.buttonIA_Trie.on('pointerdown', () => this.buyTechno('IA_Trie'));
       }
       this.buttonIA_Trie.setOrigin(-3, 0);
       this.buttonIA_Trie.setScrollFactor(0);
       this.buttonIA_Trie.fixedToCamera = true;
-      this.prixIA_Trie = this.add.text(1120, 690, technologieT2[5].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textIA_Trie = this.add.text(1050, 710, technologieT2[5].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.prixIA_Trie = this.add.text(1390, 690, technologieT2[5].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textIA_Trie = this.add.text(1390, 710, technologieT2[5].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //IA_Trie Info
-      this.buttonInfoIA_Trie = this.add.image(855,700, 'iconeInfo');
+      this.buttonInfoIA_Trie = this.add.image(1190,700, 'iconeInfo');
       this.buttonInfoIA_Trie.displayWidth = 50;
       this.buttonInfoIA_Trie.scaleY = this.buttonInfoIA_Trie.scaleX;
       this.buttonInfoIA_Trie.setInteractive({useHandCursor: true});
-      this.buttonInfoIA_Trie.on('pointerdown', () => this.getInfo('IA_Trie'));
+      this.buttonInfoIA_Trie.on('pointerdown', () => this.getInfoT('IA_Trie'));
       this.buttonInfoIA_Trie.setOrigin(-3, 0);
       this.buttonInfoIA_Trie.setScrollFactor(0);
       this.buttonInfoIA_Trie.fixedToCamera = true;
-
-      //capteurMouv
-      this.buttonCapteurMouv = this.add.image(-100,180, 'capteurMouv');
-      if(statistiques.getBank() < technologieT2[6].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
-        croix.depth = 300;
-        croix.displayWidth = 50;
-        croix.scaleX = croix.scaleY;
-      }
-      else if(statistiques.getBank() >= technologieT2[6].price){
-        this.buttonCapteurMouv.setInteractive({useHandCursor: true});
-        this.buttonCapteurMouv.on('pointerdown', () => this.buyTechno('capteurMouv'));
-      }
-      this.buttonCapteurMouv.setOrigin(-3, 0);
-      this.buttonCapteurMouv.setScrollFactor(0);
-      this.buttonCapteurMouv.fixedToCamera = true;
-      this.prixCapteurMouv = this.add.text(750, 440, technologieT2[6].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textCapteurMouv = this.add.text(752, 460, technologieT2[6].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-
-      //capteurMouv Info
-      this.buttonInfoCapteurMouv = this.add.image(550,445, 'iconeInfo');
-      this.buttonInfoCapteurMouv.displayWidth = 50;
-      this.buttonInfoCapteurMouv.scaleY = this.buttonInfoCapteurMouv.scaleX;
-      this.buttonInfoCapteurMouv.setInteractive({useHandCursor: true});
-      this.buttonInfoCapteurMouv.on('pointerdown', () => this.getInfoT('capteurMouv'));
-      this.buttonInfoCapteurMouv.setOrigin(-3, 0);
-      this.buttonInfoCapteurMouv.setScrollFactor(0);
-      this.buttonInfoCapteurMouv.fixedToCamera = true;
     }
 
     //Mairie niveau 3
@@ -1470,13 +1560,19 @@ class techno extends Phaser.Scene{
 
       //voitureAuto
       this.buttonVoitureAuto = this.add.image(-100,180, 'voitureAuto');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT3[0].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT3[0].price){
+      else if(statistiques.getBank() >= technologieT3[0].price && !statistiques.isTechnoBuyed('voitureAuto')){
         this.buttonVoitureAuto.setInteractive({useHandCursor: true});
         this.buttonVoitureAuto.on('pointerdown', () => this.buyTechno('voitureAuto'));
       }
@@ -1498,13 +1594,19 @@ class techno extends Phaser.Scene{
 
       //IAPolice
       this.buttonIAPolice = this.add.image(-100,180, 'IAPolice');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT3[1].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT3[1].price){
+      else if(statistiques.getBank() >= technologieT3[1].price && !statistiques.isTechnoBuyed('IAPolice')){
         this.buttonIAPolice.setInteractive({useHandCursor: true});
         this.buttonIAPolice.on('pointerdown', () => this.buyTechno('IAPolice'));
       }
@@ -1526,13 +1628,19 @@ class techno extends Phaser.Scene{
 
       //tuyauDech
       this.buttonTuyauDech = this.add.image(-100,180, 'tuyauDech');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT3[2].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT3[2].price){
+      else if(statistiques.getBank() >= technologieT3[2].price && !statistiques.isTechnoBuyed('tuyauDech')){
         this.buttonTuyauDech.setInteractive({useHandCursor: true});
         this.buttonTuyauDech.on('pointerdown', () => this.buyTechno('tuyauDech'));
       }
@@ -1554,13 +1662,19 @@ class techno extends Phaser.Scene{
 
       //IAClean
       this.buttonIAClean = this.add.image(-100,180, 'IAClean');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT3[3].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT3[3].price){
+      else if(statistiques.getBank() >= technologieT3[3].price && !statistiques.isTechnoBuyed('IAClean')){
         this.buttonIAClean.setInteractive({useHandCursor: true});
         this.buttonIAClean.on('pointerdown', () => this.buyTechno('IAClean'));
       }
@@ -1582,13 +1696,19 @@ class techno extends Phaser.Scene{
 
       //capteurRes
       this.buttonCapteurRes = this.add.image(-100,180, 'capteurRes');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT3[4].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT3[4].price){
+      else if(statistiques.getBank() >= technologieT3[4].price && !statistiques.isTechnoBuyed('capteurRes')){
         this.buttonCapteurRes.setInteractive({useHandCursor: true});
         this.buttonCapteurRes.on('pointerdown', () => this.buyTechno('capteurRes'));
       }
@@ -1610,13 +1730,19 @@ class techno extends Phaser.Scene{
 
       //intelOpe
       this.buttonIntelOpe = this.add.image(-100,180, 'intelOpe');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
+        let check = this.add.sprite(780, 300, 'check');
+        check.depth = 300;
+        check.displayWidth = 50;
+        check.scaleX = check.scaleY;
+      }
       if(statistiques.getBank() < technologieT3[5].price) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT3[5].price){
+      else if(statistiques.getBank() >= technologieT3[5].price && !statistiques.isTechnoBuyed('intelOpe')){
         this.buttonIntelOpe.setInteractive({useHandCursor: true});
         this.buttonIntelOpe.on('pointerdown', () => this.buyTechno('intelOpe'));
       }

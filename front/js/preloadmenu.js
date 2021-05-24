@@ -45,9 +45,9 @@ class preloadmenu extends Phaser.Scene{
       this.load.image('parc1','../images/ecologie/parc/parc1.png');
       this.load.image('parc2','../images/ecologie/parc/parc2.png');
       this.load.image('parc3','../images/ecologie/parc/parc3.png');
-      this.load.image('centrale_hydrolique1','../images/ecologie/centrale_hydrolique/centrale_hydrolique1.png');
-      this.load.image('centrale_hydrolique2','../images/ecologie/centrale_hydrolique/centrale_hydrolique2.png');
-      this.load.image('centrale_hydrolique3','../images/ecologie/centrale_hydrolique/centrale_hydrolique3.png');
+      this.load.image('centrale_hydraulique1','../images/ecologie/centrale_hydraulique/centrale_hydraulique1.png');
+      this.load.image('centrale_hydraulique2','../images/ecologie/centrale_hydraulique/centrale_hydraulique2.png');
+      this.load.image('centrale_hydraulique3','../images/ecologie/centrale_hydraulique/centrale_hydraulique3.png');
       this.load.image('magasin1','../images/economie/magasin/magasin1.png');
       this.load.image('magasin2','../images/economie/magasin/magasin2.png');
       this.load.image('magasin3','../images/economie/magasin/magasin3.png');
