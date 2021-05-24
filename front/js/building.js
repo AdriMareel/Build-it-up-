@@ -19,6 +19,18 @@ class gameStat{
 		this.listeTechno.push(name);
 	}
 
+	removeBuilding(name){
+		let pos = this.listeBatiment.indexOf(name);
+		for(let i = pos; i < this.listeBatiment.length; i++){
+				this.listeBatiment[i] = this.listeBatiment[i+1];
+		}
+	}
+
+	upgradeBuilding(nouveau, old){
+		this.saveBatiment(nouveau);
+		this.removeBuilding(old);
+	}
+
 	updateIncome(){
 		if(this.listeBatiment == null) {return 0;}
 		else{
@@ -307,7 +319,7 @@ class gameStat{
 		}
 	}
 
-	isTechnoBuyed(name){
+	isTechnoBought(name){
 		for(let i = 0; i < this.listeTechno.length; i++){
 			if(name == this.listeTechno[i]){ return true; }
 			else{ return false; }
@@ -333,19 +345,37 @@ class gameStat{
 	}
 
 	getBuildingPrice(name){
-		for(let x = 0; x < technologieT1.length; x++){
-			if(name == technologieT1[x].name){
-				return technologieT1[x].price;
+		for(let x = 0; x < buildingListMk1.length; x++){
+			if(name == buildingListMk1[x].name){
+				return buildingListMk1[x].price;
 			}
 		}
-		for(let y = 0; y < technologieT2.length; y++){
-			if(name == technologieT2[y].name){
-				return technologieT2[y].price;
+		for(let y = 0; y < buildingListMk2.length; y++){
+			if(name == buildingListMk2[y].name){
+				return buildingListMk2[y].price;
 			}
 		}
-		for(let z = 0; z < technologieT3.length; z++){
-			if(name == technologieT3[z].name){
-				return technologieT3[z].price;
+		for(let z = 0; z < buildingListMk3.length; z++){
+			if(name == buildingListMk3[z].name){
+				return buildingListMk3[z].price;
+			}
+		}
+	}
+
+	getConditions(name){
+		for(let x = 0; x < buildingListMk1.length; x++){
+			if(name == buildingListMk1[x].name){
+				return buildingListMk1[x].popMin;
+			}
+		}
+		for(let y = 0; y < buildingListMk2.length; y++){
+			if(name == buildingListMk2[y].name){
+				return buildingListMk2[y].popMin;
+			}
+		}
+		for(let z = 0; z < buildingListMk3.length; z++){
+			if(name == buildingListMk3[z].name){
+				return buildingListMk3[z].popMin;
 			}
 		}
 	}
