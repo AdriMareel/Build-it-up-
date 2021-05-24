@@ -125,6 +125,21 @@ class HUDScene extends Phaser.Scene{
       this.iconePopulation.scaleY = this.iconePopulation.scaleX;
       this.iconePopulation.depth = 100;
       this.textPopulation = this.add.text(1810, 102, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      this.errorText = this.add.text(650, 850, 'Vous ne pouvez pas placer ce bâtiment ici', {
+        fontFamily: 'system-ui',
+        fontSize: '30px',
+        color: '#ff0000',
+        align : 'center',
+      }).setVisible(false);
+    }
+
+    displayErrorTextBuilding(){
+      this.errorText.setVisible(true);
+    }
+
+    destroyErrorTextBuilding(){
+      this.errorText.setVisible(false);
     }
 
     openBuildingList(){

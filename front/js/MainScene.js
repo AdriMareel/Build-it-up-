@@ -162,14 +162,15 @@ class MainScene extends Phaser.Scene{
 
 
     displaybatiment(building, isupgrade){
-
         var cam = this.cameras.main;
         let pointer = this.input.mousePointer; 
         let bat_var = 0;
+        let flag;
+        let errorText;
         while(batiments[building][bat_var] != undefined){
             bat_var ++;
         }
-        if(bat_var > 5){
+        if(bat_var > 4){
             return;
         }
         batiments[building][bat_var] = this.add.image(0,0,building);
@@ -186,7 +187,6 @@ class MainScene extends Phaser.Scene{
             let oldbatiment2 = old_batiment.replace(/[\s,]+/g,'').trim();
             //console.log(oldbatiment2);
             batiments[oldbatiment2][bat_var].destroy();
-            
         }
         this.input.mouse.locked = true;
 
@@ -210,13 +210,17 @@ class MainScene extends Phaser.Scene{
         }
 
         this.input.on("pointerdown", () => { //Conditions placer batiments et placement si good
+            let scene = this.scene.get("hud");
+            console.log(scene);
             if(!isPlaced[building][bat_var]){
-                if(map[positionY][positionX] != 'ground'){ //condition si place déjà prise 
-                    let scene = this.scene.get("HUDScene");
-                    //scene.displayErrorTextBuilding();
+                if(map[positionY][positionX] != 'ground'){ //condition si place déjà prise   
+                    flag = 1;
+                    scene.displayErrorTextBuilding();
+                    console.log(scene.errorText);
                 }
-
+                else{         
                     //console.log("test" ,positionX, positionY)
+                    if (flag == 1) {scene.destroyErrorTextBuilding();flag = 0;}
                     map[positionY][positionX] = building;
                     mapVar[positionY][positionX].y += 30;
                     isPlaced[building][bat_var] = true;
@@ -232,6 +236,7 @@ class MainScene extends Phaser.Scene{
                             if(building == buildingListMk1[13].name || building == buildingListMk2[13].name || building == buildingListMk3[13].name) { this.scene.launch('techno'); }
                         }
                     });
+                }
             }
         });
 
