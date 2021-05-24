@@ -134,7 +134,14 @@ class MainScene extends Phaser.Scene{
 				}
 			}
 		});
-
+		//var building = this.add.image(30,30, "building");
+		//var build = this.add.image(100,30, "build");
+		//building.depth = 0;
+		//build.depth = 1;
+		//building.setInteractive();
+		//build.setInteractive();
+        
+	   
 		//ChatBox
 		this.options = this.add.sprite(game.config.width * 0.47, game.config.height * 0.60, "options");
         this.options.displayWidth = 200;
@@ -155,14 +162,15 @@ class MainScene extends Phaser.Scene{
 
 
     displaybatiment(building, isupgrade){
-
         var cam = this.cameras.main;
         let pointer = this.input.mousePointer; 
         let bat_var = 0;
+        let flag;
+        let errorText;
         while(batiments[building][bat_var] != undefined){
             bat_var ++;
         }
-        if(bat_var > 5){
+        if(bat_var > 4){
             return;
         }
         batiments[building][bat_var] = this.add.image(0,0,building);
@@ -178,9 +186,7 @@ class MainScene extends Phaser.Scene{
             let old_batiment = arraybuilding.toString();
             let oldbatiment2 = old_batiment.replace(/[\s,]+/g,'').trim();
             //console.log(oldbatiment2);
-            statistiques.upgradeBuilding(building, oldbatiment2);
             batiments[oldbatiment2][bat_var].destroy();
-            
         }
         this.input.mouse.locked = true;
 
@@ -204,13 +210,17 @@ class MainScene extends Phaser.Scene{
         }
 
         this.input.on("pointerdown", () => { //Conditions placer batiments et placement si good
+            let scene = this.scene.get("hud");
+            console.log(scene);
             if(!isPlaced[building][bat_var]){
-                if(map[positionY][positionX] != 'ground'){ //condition si place déjà prise 
-                    let scene = this.scene.get("HUDScene");
-                    //scene.displayErrorTextBuilding();
+                if(map[positionY][positionX] != 'ground'){ //condition si place déjà prise   
+                    flag = 1;
+                    scene.displayErrorTextBuilding();
+                    console.log(scene.errorText);
                 }
-
+                else{         
                     //console.log("test" ,positionX, positionY)
+                    if (flag == 1) {scene.destroyErrorTextBuilding();flag = 0;}
                     map[positionY][positionX] = building;
                     mapVar[positionY][positionX].y += 30;
                     isPlaced[building][bat_var] = true;
@@ -226,6 +236,7 @@ class MainScene extends Phaser.Scene{
                             if(building == buildingListMk1[13].name || building == buildingListMk2[13].name || building == buildingListMk3[13].name) { this.scene.launch('techno'); }
                         }
                     });
+                }
             }
         });
 

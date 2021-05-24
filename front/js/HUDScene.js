@@ -1,27 +1,8 @@
 let temp = [];
 let tempT = [];
+let DELAY = 24000;
 
 class HUDScene extends Phaser.Scene{
-    timeX1(){
-      this.timer.paused = false;
-      this.time.timeScale = 1;
-      console.log('ok');
-    }
-
-    timeX2(){
-      this.timer.paused = false;
-      this.time.timeScale = 2;
-    }
-
-    timeX3(){
-      this.timer.paused = false;
-      this.time.timeScale = 3;
-    }
-
-    timePause(){
-      this.timer.paused = true;
-    }
-
 	create () {
       //Boutton qui gère la liste des bâtiments
 		  this.button = this.add.sprite(1070, 750, "Bâtiments");
@@ -36,13 +17,11 @@ class HUDScene extends Phaser.Scene{
 
   	   //timer      
        this.counter = 0;
-
        this.timer = this.time.addEvent({
-          delay: 24000,
+          delay: DELAY,
           callback:this.updateDay,
           callbackScope:this,
-          repeat: 100000,
-          paused: false
+          repeat: 100000
       });
 
        this.timerMAJ = this.time.addEvent({
@@ -55,7 +34,7 @@ class HUDScene extends Phaser.Scene{
       this.text = this.add.text(10, 860, 'Jour 0', { fill: 0xffffff, font: 'bold 36px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //Bouton pour changer le temps
-      this.buttonX1 = this.add.sprite(70, 850, "X1");
+      this.buttonX1 = this.add.sprite(700, 40, "X1");
       this.buttonX1.displayWidth = 50;
       this.buttonX1.scaleY = this.buttonX1.scaleX;
       this.buttonX1.depth = 100;
@@ -65,7 +44,7 @@ class HUDScene extends Phaser.Scene{
       this.buttonX1.setScrollFactor(0);
       this.buttonX1.fixedToCamera = true;
 
-      this.buttonX2 = this.add.sprite(130, 850, "X2");
+      this.buttonX2 = this.add.sprite(760, 40, "X2");
       this.buttonX2.displayWidth = 50;
       this.buttonX2.scaleY = this.buttonX2.scaleX;
       this.buttonX2.depth = 100;
@@ -75,7 +54,7 @@ class HUDScene extends Phaser.Scene{
       this.buttonX2.setScrollFactor(0);
       this.buttonX2.fixedToCamera = true;
 
-      this.buttonX3 = this.add.sprite(190, 850, "X3");
+      this.buttonX3 = this.add.sprite(820, 40, "X3");
       this.buttonX3.displayWidth = 50;
       this.buttonX3.scaleY = this.buttonX3.scaleX;
       this.buttonX3.depth = 100;
@@ -85,7 +64,7 @@ class HUDScene extends Phaser.Scene{
       this.buttonX3.setScrollFactor(0);
       this.buttonX3.fixedToCamera = true;
 
-      this.buttonPause = this.add.sprite(10, 850, "Pause");
+      this.buttonPause = this.add.sprite(880, 40, "Pause");
       this.buttonPause.displayWidth = 50;
       this.buttonPause.scaleY = this.buttonPause.scaleX;
       this.buttonPause.depth = 100;
@@ -146,6 +125,21 @@ class HUDScene extends Phaser.Scene{
       this.iconePopulation.scaleY = this.iconePopulation.scaleX;
       this.iconePopulation.depth = 100;
       this.textPopulation = this.add.text(1810, 102, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+
+      this.errorText = this.add.text(650, 850, 'Vous ne pouvez pas placer ce bâtiment ici', {
+        fontFamily: 'system-ui',
+        fontSize: '30px',
+        color: '#ff0000',
+        align : 'center',
+      }).setVisible(false);
+    }
+
+    displayErrorTextBuilding(){
+      this.errorText.setVisible(true);
+    }
+
+    destroyErrorTextBuilding(){
+      this.errorText.setVisible(false);
     }
 
     openBuildingList(){
@@ -190,6 +184,22 @@ class HUDScene extends Phaser.Scene{
       if(bienE*1.5 > 150){ this.barBienEtre.fillRect(160,125, 150, 20); }
       else if(150 < bienE*1.5 < 150){ this.barBienEtre.fillRect(160,125, statistiques.getBienEtre()*1.5, 20); }
       else if(bienE*1.5 <= -150){ this.barBienEtre.fillRect(160,125, -150, 20);}
+    }
+
+    timeX1(){
+      DELAY = 24000;
+    }
+
+    timeX2(){
+      DELAY = 12000;
+    }
+
+    timeX3(){
+      DELAY = 8000;
+    }
+
+    timePause(){
+      DELAY = 1000000000000000;
     }
 
     update () {
@@ -421,7 +431,6 @@ class HUDBuildingListEcologie extends Phaser.Scene{
 
   getInfo(name){
     temp = statistiques.getInfoBuilding(name);
-    this.scene.sleep('ecologie');
     this.scene.launch('info');
   }
 }
@@ -662,7 +671,6 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
   getInfo(name){
     temp = statistiques.getInfoBuilding(name);
-    this.scene.sleep('moral');
     this.scene.launch('info');
   }
 }
@@ -783,7 +791,6 @@ class HUDBuildingListEconomie extends Phaser.Scene{
 
   getInfo(name){
     temp = statistiques.getInfoBuilding(name);
-    this.scene.sleep('economie');
     this.scene.launch('info');
   }
 }
@@ -993,7 +1000,7 @@ class techno extends Phaser.Scene{
 
       //Feu malvoyant
       this.buttonFeu1 = this.add.image(-125,160, 'feuMalvoyant');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1005,7 +1012,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[0].price && !statistiques.isTechnoBought('feuMalvoyant')){
+      else if(statistiques.getBank() >= technologieT1[0].price && !statistiques.isTechnoBuyed('feuMalvoyant')){
         this.buttonFeu1.setInteractive({useHandCursor: true});
         this.buttonFeu1.on('pointerdown', () => this.buyTechno('feuMalvoyant'));
       }
@@ -1027,7 +1034,7 @@ class techno extends Phaser.Scene{
 
       //Signal Sonore
       this.buttonSignalSonore = this.add.image(200,180, 'signalSonore');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1039,7 +1046,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[1].price && !statistiques.isTechnoBought('signalSonore')){
+      else if(statistiques.getBank() >= technologieT1[1].price && !statistiques.isTechnoBuyed('signalSonore')){
         this.buttonSignalSonore.setInteractive({useHandCursor: true});
         this.buttonSignalSonore.on('pointerdown', () => this.buyTechno('signalSonore'));
       }
@@ -1061,7 +1068,7 @@ class techno extends Phaser.Scene{
 
       //feu Smart
       this.buttonFeu2 = this.add.image(750,225, 'feuSmart');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1073,7 +1080,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[2].price && !statistiques.isTechnoBought('feuSmart')){
+      else if(statistiques.getBank() >= technologieT1[2].price && !statistiques.isTechnoBuyed('feuSmart')){
         this.buttonFeu2.setInteractive({useHandCursor: true});
         this.buttonFeu2.on('pointerdown', () => this.buyTechno('feuSmart'));
       }
@@ -1095,7 +1102,7 @@ class techno extends Phaser.Scene{
 
       //peage Vehicule Vert
       this.buttonPeageVehiVert = this.add.image(700,182, 'peageVehiVert');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1107,7 +1114,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[3].price && !statistiques.isTechnoBought('peageVehiVert')){
+      else if(statistiques.getBank() >= technologieT1[3].price && !statistiques.isTechnoBuyed('peageVehiVert')){
         this.buttonPeageVehiVert.setInteractive({useHandCursor: true});
         this.buttonPeageVehiVert.on('pointerdown', () => this.buyTechno('peageVehiVert'));
       }
@@ -1129,7 +1136,7 @@ class techno extends Phaser.Scene{
 
       //e-administration
       this.buttonE_Admin = this.add.image(990,160, 'e_Admin');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1141,7 +1148,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[4].price && !statistiques.isTechnoBought('e_Admin')){
+      else if(statistiques.getBank() >= technologieT1[4].price && !statistiques.isTechnoBuyed('e_Admin')){
         this.buttonE_Admin.setInteractive({useHandCursor: true});
         this.buttonE_Admin.on('pointerdown', () => this.buyTechno('e_Admin'));
       }
@@ -1163,7 +1170,7 @@ class techno extends Phaser.Scene{
 
       //Système de gestion des déchets intelligents
       this.buttonDechetIntell = this.add.image(-200,500, 'dechetIntell');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1175,7 +1182,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[5].price && !statistiques.isTechnoBought('dechetIntell')){
+      else if(statistiques.getBank() >= technologieT1[5].price && !statistiques.isTechnoBuyed('dechetIntell')){
         this.buttonDechetIntell.setInteractive({useHandCursor: true});
         this.buttonDechetIntell.on('pointerdown', () => this.buyTechno('dechetIntell'));
       }
@@ -1197,7 +1204,7 @@ class techno extends Phaser.Scene{
 
       //passageCamions
       this.buttonPassageCamions = this.add.image(300,540, 'passageCamions');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1209,7 +1216,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[6].price && !statistiques.isTechnoBought('passageCamions')){
+      else if(statistiques.getBank() >= technologieT1[6].price && !statistiques.isTechnoBuyed('passageCamions')){
         this.buttonPassageCamions.setInteractive({useHandCursor: true});
         this.buttonPassageCamions.on('pointerdown', () => this.buyTechno('passageCamions'));
       }
@@ -1231,7 +1238,7 @@ class techno extends Phaser.Scene{
 
       //capteurPoub
       this.buttonCapteurPoub = this.add.image(600,525, 'capteurPoub');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1243,7 +1250,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[7].price && !statistiques.isTechnoBought('capteurPoub')){
+      else if(statistiques.getBank() >= technologieT1[7].price && !statistiques.isTechnoBuyed('capteurPoub')){
         this.buttonCapteurPoub.setInteractive({useHandCursor: true});
         this.buttonCapteurPoub.on('pointerdown', () => this.buyTechno('capteurPoub'));
       }
@@ -1265,7 +1272,7 @@ class techno extends Phaser.Scene{
 
       //LED
       this.buttonLED = this.add.image(920,525, 'LED');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1277,7 +1284,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[8].price && !statistiques.isTechnoBought('LED')){
+      else if(statistiques.getBank() >= technologieT1[8].price && !statistiques.isTechnoBuyed('LED')){
         this.buttonLED.setInteractive({useHandCursor: true});
         this.buttonLED.on('pointerdown', () => this.buyTechno('LED'));
       }
@@ -1307,7 +1314,7 @@ class techno extends Phaser.Scene{
 
       //voitureElec
       this.buttonVoitureElec = this.add.image(-115,160, 'voitureElec');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1319,7 +1326,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT2[0].price && !statistiques.isTechnoBought('voitureElec')){
+      else if(statistiques.getBank() >= technologieT2[0].price && !statistiques.isTechnoBuyed('voitureElec')){
         this.buttonVoitureElec.setInteractive({useHandCursor: true});
         this.buttonVoitureElec.on('pointerdown', () => this.buyTechno('voitureElec'));
       }
@@ -1341,7 +1348,7 @@ class techno extends Phaser.Scene{
 
       //routeElec
       this.buttonRouteElec = this.add.image(250,180, 'routeElec');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1353,7 +1360,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT2[1].price && !statistiques.isTechnoBought('routeElec')){
+      else if(statistiques.getBank() >= technologieT2[1].price && !statistiques.isTechnoBuyed('routeElec')){
         this.buttonRouteElec.setInteractive({useHandCursor: true});
         this.buttonRouteElec.on('pointerdown', () => this.buyTechno('routeElec'));
       }
@@ -1375,7 +1382,7 @@ class techno extends Phaser.Scene{
 
       //parkingSmart
       this.buttonParkingSmart = this.add.image(650,200, 'parkingSmart');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1387,7 +1394,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT2[2].price && !statistiques.isTechnoBought('parkingSmart')){
+      else if(statistiques.getBank() >= technologieT2[2].price && !statistiques.isTechnoBuyed('parkingSmart')){
         this.buttonParkingSmart.setInteractive({useHandCursor: true});
         this.buttonParkingSmart.on('pointerdown', () => this.buyTechno('parkingSmart'));
       }
@@ -1409,7 +1416,7 @@ class techno extends Phaser.Scene{
 
       //capteurMouv
       this.buttonCapteurMouv = this.add.image(1000,180, 'capteurMouv');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1421,7 +1428,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT2[6].price && !statistiques.isTechnoBought('capteurMouv')){
+      else if(statistiques.getBank() >= technologieT2[6].price && !statistiques.isTechnoBuyed('capteurMouv')){
         this.buttonCapteurMouv.setInteractive({useHandCursor: true});
         this.buttonCapteurMouv.on('pointerdown', () => this.buyTechno('capteurMouv'));
       }
@@ -1443,7 +1450,7 @@ class techno extends Phaser.Scene{
 
       //bornes
       this.buttonBornes = this.add.image(0,540, 'bornes');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1455,7 +1462,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT2[3].price && !statistiques.isTechnoBought('bornes')){
+      else if(statistiques.getBank() >= technologieT2[3].price && !statistiques.isTechnoBuyed('bornes')){
         this.buttonBornes.setInteractive({useHandCursor: true});
         this.buttonBornes.on('pointerdown', () => this.buyTechno('bornes'));
       }
@@ -1477,7 +1484,7 @@ class techno extends Phaser.Scene{
 
       //compacPoub
       this.buttonCompacPoub = this.add.image(450,540, 'compacPoub');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1489,7 +1496,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT2[4].price && !statistiques.isTechnoBought('compacPoub')){
+      else if(statistiques.getBank() >= technologieT2[4].price && !statistiques.isTechnoBuyed('compacPoub')){
         this.buttonCompacPoub.setInteractive({useHandCursor: true});
         this.buttonCompacPoub.on('pointerdown', () => this.buyTechno('compacPoub'));
       }
@@ -1511,7 +1518,7 @@ class techno extends Phaser.Scene{
 
       //IA_Trie
       this.buttonIA_Trie = this.add.image(900,525, 'IA_Trie');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1523,7 +1530,7 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT2[5].price && !statistiques.isTechnoBought('IA_Trie')){
+      else if(statistiques.getBank() >= technologieT2[5].price && !statistiques.isTechnoBuyed('IA_Trie')){
         this.buttonIA_Trie.setInteractive({useHandCursor: true});
         this.buttonIA_Trie.on('pointerdown', () => this.buyTechno('IA_Trie'));
       }
@@ -1545,7 +1552,6 @@ class techno extends Phaser.Scene{
     }
 
     //Mairie niveau 3
-
      if(temp[0] == buildingListMk3[13].name){
       this.textTechno = this.add.text(400, 270, 'Technologie', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
       let sousMenuEcologie = this.add.rectangle(960, 450, 1500, 800, 0xffffff);
@@ -1553,8 +1559,8 @@ class techno extends Phaser.Scene{
       sousMenuRec1.setStrokeStyle(3, 0x080808);
 
       //voitureAuto
-      this.buttonVoitureAuto = this.add.image(-280,160, 'voitureAuto');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      this.buttonVoitureAuto = this.add.image(-100,180, 'voitureAuto');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1566,22 +1572,20 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT3[0].price && !statistiques.isTechnoBought('voitureAuto')){
+      else if(statistiques.getBank() >= technologieT3[0].price && !statistiques.isTechnoBuyed('voitureAuto')){
         this.buttonVoitureAuto.setInteractive({useHandCursor: true});
         this.buttonVoitureAuto.on('pointerdown', () => this.buyTechno('voitureAuto'));
       }
       this.buttonVoitureAuto.setOrigin(-3, 0);
       this.buttonVoitureAuto.setScrollFactor(0);
       this.buttonVoitureAuto.fixedToCamera = true;
-      this.buttonVoitureAuto.displayWidth = 200;
-      this.buttonVoitureAuto.scaleY = this.buttonVoitureAuto.scaleX;
-      this.prixVoitureAuto = this.add.text(395,350, technologieT3[0].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textVoitureAuto = this.add.text(345,370, technologieT3[0].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.prixVoitureAuto = this.add.text(750, 440, technologieT3[0].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textVoitureAuto = this.add.text(752, 460, technologieT3[0].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //voitureAuto Info
-      this.buttonInfoVoitureAuto = this.add.image(150,370, 'iconeInfo');
+      this.buttonInfoVoitureAuto = this.add.image(550,445, 'iconeInfo');
       this.buttonInfoVoitureAuto.displayWidth = 50;
-      this.buttonInfoVoitureAuto.scaleY = this.buttonInfoVoitureAuto.scaleX;
+      this.buttonInfoVoitureAuto.scaleY = this.buttonInfoPoste.scaleX;
       this.buttonInfoVoitureAuto.setInteractive({useHandCursor: true});
       this.buttonInfoVoitureAuto.on('pointerdown', () => this.getInfoT('voitureAuto'));
       this.buttonInfoVoitureAuto.setOrigin(-3, 0);
@@ -1589,8 +1593,8 @@ class techno extends Phaser.Scene{
       this.buttonInfoVoitureAuto.fixedToCamera = true;
 
       //IAPolice
-      this.buttonIAPolice = this.add.image(80,180, 'IAPolice');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      this.buttonIAPolice = this.add.image(-100,180, 'IAPolice');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1602,20 +1606,18 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT3[1].price && !statistiques.isTechnoBought('IAPolice')){
+      else if(statistiques.getBank() >= technologieT3[1].price && !statistiques.isTechnoBuyed('IAPolice')){
         this.buttonIAPolice.setInteractive({useHandCursor: true});
         this.buttonIAPolice.on('pointerdown', () => this.buyTechno('IAPolice'));
       }
       this.buttonIAPolice.setOrigin(-3, 0);
       this.buttonIAPolice.setScrollFactor(0);
       this.buttonIAPolice.fixedToCamera = true;
-      this.buttonIAPolice.displayWidth = 200;
-      this.buttonIAPolice.scaleY = this.buttonIAPolice.scaleX;
-      this.prixIAPolice = this.add.text(750,350, technologieT3[1].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textIAPolice = this.add.text(720,370, technologieT3[1].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.prixIAPolice = this.add.text(750, 440, technologieT3[1].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textIAPolice = this.add.text(752, 460, technologieT3[1].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //IAPolice Info
-      this.buttonInfoIAPolice = this.add.image(500,370, 'iconeInfo');
+      this.buttonInfoIAPolice = this.add.image(550,445, 'iconeInfo');
       this.buttonInfoIAPolice.displayWidth = 50;
       this.buttonInfoIAPolice.scaleY = this.buttonInfoIAPolice.scaleX;
       this.buttonInfoIAPolice.setInteractive({useHandCursor: true});
@@ -1625,8 +1627,8 @@ class techno extends Phaser.Scene{
       this.buttonInfoIAPolice.fixedToCamera = true;
 
       //tuyauDech
-      this.buttonTuyauDech = this.add.image(800,240, 'tuyauDech');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      this.buttonTuyauDech = this.add.image(-100,180, 'tuyauDech');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1638,20 +1640,18 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT3[2].price && !statistiques.isTechnoBought('tuyauDech')){
+      else if(statistiques.getBank() >= technologieT3[2].price && !statistiques.isTechnoBuyed('tuyauDech')){
         this.buttonTuyauDech.setInteractive({useHandCursor: true});
         this.buttonTuyauDech.on('pointerdown', () => this.buyTechno('tuyauDech'));
       }
       this.buttonTuyauDech.setOrigin(-3, 0);
       this.buttonTuyauDech.setScrollFactor(0);
       this.buttonTuyauDech.fixedToCamera = true;
-      this.buttonTuyauDech.displayWidth = 100;
-      this.buttonTuyauDech.scaleY = this.buttonTuyauDech.scaleX;
-      this.prixTuyauDech = this.add.text(1100, 350, technologieT3[2].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textTuyauDech = this.add.text(1030, 370, technologieT3[2].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8).setWordWrapWidth(250);;
+      this.prixTuyauDech = this.add.text(750, 440, technologieT3[2].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textTuyauDech = this.add.text(752, 460, technologieT3[2].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //tuyauDech Info
-      this.buttonInfoTuyauDech = this.add.image(800,370, 'iconeInfo');
+      this.buttonInfoTuyauDech = this.add.image(550,445, 'iconeInfo');
       this.buttonInfoTuyauDech.displayWidth = 50;
       this.buttonInfoTuyauDech.scaleY = this.buttonInfoTuyauDech.scaleX;
       this.buttonInfoTuyauDech.setInteractive({useHandCursor: true});
@@ -1661,8 +1661,8 @@ class techno extends Phaser.Scene{
       this.buttonInfoTuyauDech.fixedToCamera = true;
 
       //IAClean
-      this.buttonIAClean = this.add.image(720,200, 'IAClean');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      this.buttonIAClean = this.add.image(-100,180, 'IAClean');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1674,20 +1674,18 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT3[3].price && !statistiques.isTechnoBought('IAClean')){
+      else if(statistiques.getBank() >= technologieT3[3].price && !statistiques.isTechnoBuyed('IAClean')){
         this.buttonIAClean.setInteractive({useHandCursor: true});
         this.buttonIAClean.on('pointerdown', () => this.buyTechno('IAClean'));
       }
       this.buttonIAClean.setOrigin(-3, 0);
       this.buttonIAClean.setScrollFactor(0);
       this.buttonIAClean.fixedToCamera = true;
-      this.buttonIAClean.displayWidth = 200;
-      this.buttonIAClean.scaleY = this.buttonIAClean.scaleX;
-      this.prixIAClean = this.add.text(1400, 350, technologieT3[3].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textIAClean = this.add.text(1350, 370, technologieT3[3].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.prixIAClean = this.add.text(750, 440, technologieT3[3].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textIAClean = this.add.text(752, 460, technologieT3[3].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //IAClean Info
-      this.buttonInfoIAClean = this.add.image(1150, 370, 'iconeInfo');
+      this.buttonInfoIAClean = this.add.image(550,445, 'iconeInfo');
       this.buttonInfoIAClean.displayWidth = 50;
       this.buttonInfoIAClean.scaleY = this.buttonInfoIAClean.scaleX;
       this.buttonInfoIAClean.setInteractive({useHandCursor: true});
@@ -1697,8 +1695,8 @@ class techno extends Phaser.Scene{
       this.buttonInfoIAClean.fixedToCamera = true;
 
       //capteurRes
-      this.buttonCapteurRes = this.add.image(-270,530, 'capteurRes');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      this.buttonCapteurRes = this.add.image(-100,180, 'capteurRes');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1710,20 +1708,18 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT3[4].price && !statistiques.isTechnoBought('capteurRes')){
+      else if(statistiques.getBank() >= technologieT3[4].price && !statistiques.isTechnoBuyed('capteurRes')){
         this.buttonCapteurRes.setInteractive({useHandCursor: true});
         this.buttonCapteurRes.on('pointerdown', () => this.buyTechno('capteurRes'));
       }
       this.buttonCapteurRes.setOrigin(-3, 0);
       this.buttonCapteurRes.setScrollFactor(0);
       this.buttonCapteurRes.fixedToCamera = true;
-      this.buttonCapteurRes.displayWidth = 250;
-      this.buttonCapteurRes.scaleY = this.buttonCapteurRes.scaleX;
-      this.prixCapteurRes = this.add.text(550, 690, technologieT3[4].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textCapteurRes = this.add.text(390, 710, technologieT3[4].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.prixCapteurRes = this.add.text(750, 440, technologieT3[4].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textCapteurRes = this.add.text(752, 460, technologieT3[4].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //capteurRes Info
-      this.buttonInfoCapteurRes = this.add.image(190,700, 'iconeInfo');
+      this.buttonInfoCapteurRes = this.add.image(550,445, 'iconeInfo');
       this.buttonInfoCapteurRes.displayWidth = 50;
       this.buttonInfoCapteurRes.scaleY = this.buttonInfoCapteurRes.scaleX;
       this.buttonInfoCapteurRes.setInteractive({useHandCursor: true});
@@ -1733,8 +1729,8 @@ class techno extends Phaser.Scene{
       this.buttonInfoCapteurRes.fixedToCamera = true;
 
       //intelOpe
-      this.buttonIntelOpe = this.add.image(700,580, 'intelOpe');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
+      this.buttonIntelOpe = this.add.image(-100,180, 'intelOpe');
+      if(statistiques.isTechnoBuyed('feuMalvoyant')) {
         let check = this.add.sprite(780, 300, 'check');
         check.depth = 300;
         check.displayWidth = 50;
@@ -1746,20 +1742,18 @@ class techno extends Phaser.Scene{
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT3[5].price && !statistiques.isTechnoBought('intelOpe')){
+      else if(statistiques.getBank() >= technologieT3[5].price && !statistiques.isTechnoBuyed('intelOpe')){
         this.buttonIntelOpe.setInteractive({useHandCursor: true});
         this.buttonIntelOpe.on('pointerdown', () => this.buyTechno('intelOpe'));
       }
       this.buttonIntelOpe.setOrigin(-3, 0);
       this.buttonIntelOpe.setScrollFactor(0);
       this.buttonIntelOpe.fixedToCamera = true;
-      this.buttonIntelOpe.displayWidth = 150;
-      this.buttonIntelOpe.scaleY = this.buttonIntelOpe.scaleX;
-      this.prixIntelOpe = this.add.text(1200, 690, technologieT3[5].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textIntelOpe = this.add.text(1100, 710, technologieT3[5].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.prixIntelOpe = this.add.text(750, 440, technologieT3[5].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textIntelOpe = this.add.text(752, 460, technologieT3[5].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //IntelOpe Info
-      this.buttonInfoIntelOpe = this.add.image(900,700, 'iconeInfo');
+      this.buttonInfoIntelOpe = this.add.image(550,445, 'iconeInfo');
       this.buttonInfoIntelOpe.displayWidth = 50;
       this.buttonInfoIntelOpe.scaleY = this.buttonInfoIntelOpe.scaleX;
       this.buttonInfoIntelOpe.setInteractive({useHandCursor: true});
@@ -1824,13 +1818,13 @@ class infoTechno extends Phaser.Scene{
 
 class Bought extends Phaser.Scene{
     create(){
-    let buyconfirm = this.add.rectangle(980, 500, 600, 100, 0x999999);
-    let sousMenuRec3 = this.add.rectangle(980, 500, 600, 100);
+    let buyconfirm = this.add.rectangle(980, 700, 600, 100, 0x999999);
+    let sousMenuRec3 = this.add.rectangle(980, 700, 600, 100);
     sousMenuRec3.setStrokeStyle(4, 0x080808);
 
-    this.text = this.add.text(880, 480, 'Technologie achetée !', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.text = this.add.text(820, 690, 'Technologie achetée !', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
-    this.confirmbutton = this.add.sprite(1000, 600, 'confirm');
+    this.confirmbutton = this.add.sprite(950, 800, 'confirm');
     this.confirmbutton.displayWidth = 150;
     this.confirmbutton.scaleY = this.confirmbutton.scaleX;
     this.confirmbutton.depth = 200;
