@@ -305,7 +305,7 @@ class HUDBuildingListEcologie extends Phaser.Scene{
 
     //Panneau Solaire
     this.buttonBuildingPSolaire = this.add.image(-1100,100, 'panneau_solaire');
-    if(statistiques.getBank() < buildingListMk1[7].price) { 
+    if(statistiques.getBank() < buildingListMk1[7].price || statistiques.getConditions(buildingListMk1[7].name)) { 
       let croix = this.add.sprite(650, 300, 'croix');
       croix.depth = 300;
       croix.displayWidth = 50;

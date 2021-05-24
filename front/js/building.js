@@ -317,6 +317,16 @@ class gameStat{
 				return buildingListMk1[i].id;
 			}
 		}
+		for(let j = 0; j < buildingListMk2.length; j++){
+			if(name == buildingListMk2[j].name){
+				return buildingListMk2[j].id;
+			}
+		}
+		for(let k = 0; k < buildingListMk3.length; k++){
+			if(name == buildingListMk3[k].name){
+				return buildingListMk3[k].id;
+			}
+		}
 	}
 
 	isTechnoBought(name){
