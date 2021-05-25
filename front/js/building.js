@@ -410,5 +410,22 @@ class gameStat{
 			}
 		}
 	}
+
+	getLvlMairie(){
+		for(let i = 0; i < this.listeBatiment.length; i++){
+			if('mairie1' == this.listeBatiment[i]) { 
+				let name = 'mairie1';
+				return name.substring(name.length - 1); 
+			}
+			if('mairie2' == this.listeBatiment[i]) { 
+				let name = 'mairie2';
+				return name.substring(name.length - 1); 
+			}
+			if('mairie3' == this.listeBatiment[i]) { 
+				let name = 'mairie3';
+				return name.substring(name.length - 1); 
+			}
+		} 
+	}
 }
 

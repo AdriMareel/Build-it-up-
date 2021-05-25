@@ -8,39 +8,38 @@ for(let i=0;i<30;i++){
 }
 
 for(bat in buildingListMk1){
-    batiments[buildingListMk1[bat].name] = new Array(5);
-    isPlaced[buildingListMk1[bat].name] = new Array(5);
+    batiments[buildingListMk1[bat].name] = new Array(30);
+    isPlaced[buildingListMk1[bat].name] = new Array(30);
   
 }
 
 for(bat in buildingListMk2){
-    batiments[buildingListMk2[bat].name] = new Array(5);
-    isPlaced[buildingListMk2[bat].name] = new Array(5);
+    batiments[buildingListMk2[bat].name] = new Array(30);
+    isPlaced[buildingListMk2[bat].name] = new Array(30);
   
 }
 
 for(bat in buildingListMk3){
-    batiments[buildingListMk3[bat].name] = new Array(5);
-    isPlaced[buildingListMk3[bat].name] = new Array(5);
+    batiments[buildingListMk3[bat].name] = new Array(30);
+    isPlaced[buildingListMk3[bat].name] = new Array(30);
   
 }
 for(bat in buildingListMk1){
-    for(let i=0;i<5;i++){
+    for(let i=0;i<30;i++){
         isPlaced[buildingListMk1[bat].name][i] = false;
     }
 }
 for(bat in buildingListMk2){
-    for(let i=0;i<5;i++){
+    for(let i=0;i<30;i++){
         isPlaced[buildingListMk2[bat].name][i] = false;
     }
 }
 
 for(bat in buildingListMk3){
-    for(let i=0;i<5;i++){
+    for(let i=0;i<30;i++){
         isPlaced[buildingListMk3[bat].name][i] = false;
     }
 }
-
 
 let positionY;
 let positionX;

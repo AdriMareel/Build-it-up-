@@ -6,7 +6,7 @@ let unlocked = [];
 let loseEconomie = 0;
 let loseEcologie = 0;
 let loseBienEtre = 0;
-let dayUntilLose = 3;
+let dayUntilLose = 10;
 
 class HUDScene extends Phaser.Scene{
     timeX1(){
@@ -1072,13 +1072,18 @@ class showUpgrade extends Phaser.Scene{
   }
 
   confirmUpgrade(name){
-    if(statistiques.getConditions(temp[0]) <= statistiques.getPop() && statistiques.getBuildingPrice(temp[0]) <= statistiques.getBank()){
+    if(name.substring(0, name.length - 1) == ('mairie') && statistiques.getConditions(temp[0]) <= statistiques.getPop() && statistiques.getBuildingPrice(temp[0]) <= statistiques.getBank()){
       this.scene.stop('showUpgrade');
       var scene = this.scene.get("MainScene");
       var bat = scene.displaybatiment(name, true); 
     }
-    else if(statistiques.getConditions(temp[0]) > statistiques.getPop() || statistiques.getBuildingPrice(temp[0]) > statistiques.getBank()){
+    else if(statistiques.getConditions(temp[0]) > statistiques.getPop() || statistiques.getBuildingPrice(temp[0]) > statistiques.getBank() || statistiques.getLvlMairie() != name.substring(name.length - 1)){
       this.scene.launch('CNR');
+    }
+    else if(statistiques.getConditions(temp[0]) <= statistiques.getPop() && statistiques.getBuildingPrice(temp[0]) <= statistiques.getBank() && statistiques.getLvlMairie() == name.substring(name.length - 1)){
+      this.scene.stop('showUpgrade');
+      var scene = this.scene.get("MainScene");
+      var bat = scene.displaybatiment(name, true); 
     }
   }
 
@@ -2046,9 +2051,12 @@ class conditionsNonRemplies extends Phaser.Scene{
 
     let Rec4 = this.add.rectangle(980, 450, 900, 300, 0xffffff);
     let sousMenuRec4 = this.add.rectangle(980, 450, 900, 300);
-
     sousMenuRec4.setStrokeStyle(4, 0x080808);
+
+    let i = parseInt(statistiques.getLvlMairie().substring(statistiques.getLvlMairie().length - 1));
+    i += 1;
     this.add.text(545, 430, 'Vous ne pouvez pas acheter ça. Il vous faut ' + statistiques.getBuildingPrice(temp[0]) + '$ et au moins ' + statistiques.getConditions(temp[0]) + ' habitants.', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    if(temp[0].substring(0,temp[0].length - 1) != 'mairie') { this.add.text(670, 460, 'Vous devez aussi avoir votre mairie au niveau.' + i, { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8); }
   }
 
   close(){
@@ -2075,9 +2083,14 @@ class End extends Phaser.Scene{
     if(8 < calculFin && calculFin < 10){ resultat = this.add.sprite(1350, 450, 'S');} 
     if(calculFin >= 10){ resultat = this.add.sprite(1530, 235, 'SS');}   
     this.add.text(650, 430, 'Votre mandat prend fin. Vous avez la note de : ', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-  this.returnMenu = this.add.sprite(900, 800, 'return');
-  this.returnMenu.setInteractive({  useHandCursor: true});
-  this.returnMenu.on('pointerdown', () => this.returnToMenu());
+    this.returnMenu = this.add.sprite(900, 800, 'return');
+    this.returnMenu.setInteractive({  useHandCursor: true});
+    this.returnMenu.on('pointerdown', () => this.returnToMenu());
+
+    this.add.text(650, 430, 'Votre mandat prend fin. Vous avez la note de : ', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.add.text(650, 500, 'Economie :' + statistiques.getEconomie(), { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.add.text(650, 530, 'Ecologie : ' + statistiques.getEcologie(), { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.add.text(650, 560, 'Bien-Être : ' + statistiques.getBienEtre(), { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
   }
    returnToMenu()
   {
