@@ -78,7 +78,7 @@ class Tuto2 extends Phaser.Scene{
     previous()
   {
     this.scene.stop();
-    this.scene.launch('Tutoriel')
+    this.scene.launch('tutoriel')
   }  
 }
 
