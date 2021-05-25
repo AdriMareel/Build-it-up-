@@ -1,6 +1,6 @@
-class Tutoriel extends Phaser.Scene{
+class tutoriel extends Phaser.Scene{
     constructor(){
-        super('Tutoriel');
+        super('tutoriel');
     }
     
     create(){
@@ -161,7 +161,7 @@ let statText = "Vous pouvez voir que cette usine a un impact sur chaque statisti
 
 
     // Play button to start the game
-    this.play = this.add.sprite(game.config.width * 0.4499, game.config.height * 0.40, "play");
+    this.play = this.add.sprite(1500,100, "play");
     //set the width of the sprite
             this.play.displayWidth = 270;
             //scale evenly

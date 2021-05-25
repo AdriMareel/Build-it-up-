@@ -6,7 +6,7 @@ let gameConfig = {
   backgroundColor : "4488AA",
     type : Phaser.AUTO,
   scene: [preloadmenu,playmenu,MainScene,
-  new Tutoriel({key: 'Tutoriel'}),
+  new tutoriel({key: 'tutoriel'}),
   new Tuto2({key: 'Tuto2'}),
   new Tuto3({key: 'Tuto3'}),
   new Tuto4({key: 'Tuto4'}),

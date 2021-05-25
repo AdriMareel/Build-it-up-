@@ -5,7 +5,7 @@ class playmenu extends Phaser.Scene {
 
   create() {
 
-    this.play = this.add.sprite(game.config.width * 0.4499, game.config.height * 0.40, "play");
+    this.play = this.add.sprite(game.config.width * 0.4499, game.config.height * 0.35, "play");
     //set the width of the sprite
             this.play.displayWidth = 270;
             //scale evenly
@@ -30,6 +30,7 @@ class playmenu extends Phaser.Scene {
     this.info.depth = 100;
     this.info.setOrigin(0, 0);
     this.info.setScrollFactor(0);
+    this.info.setInteractive({  useHandCursor: true});
     this.info.on('pointerdown', () => this.startTuto());
 
 
@@ -86,10 +87,10 @@ class playmenu extends Phaser.Scene {
 
   startTuto() {
     this.scene.stop();
-    this.scene.launch('Tutoriel');
+    this.scene.launch('tutoriel');
 }
 
-}
+
 
     update() {
 
