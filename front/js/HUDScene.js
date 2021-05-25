@@ -6,7 +6,7 @@ let unlocked = [];
 let loseEconomie = 0;
 let loseEcologie = 0;
 let loseBienEtre = 0;
-let dayUntilLose = 10;
+let dayUntilLose = 3;
 
 class HUDScene extends Phaser.Scene{
     timeX1(){
@@ -2085,7 +2085,46 @@ class Defeat extends Phaser.Scene{
     let sousMenuEcologie = this.add.rectangle(960, 450, 1500, 800, 0xffffff);
     let sousMenuRec1 = this.add.rectangle(960, 450, 1500, 800);
     sousMenuRec1.setStrokeStyle(3, 0x080808);
-    this.loseImage = this.add.sprite(1530, 270, 'lose');
-this.add.text(280, 430, 'Défaite, les statistiques suivantes sont restés dans le négatif pendant une trop grande durée : ' + loseBienEtre, { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    if (statistiques.getEconomie()*0.1  <= 0) 
+    { 
+      console.log("economie sous 0")
+      loseEconomie = "L'Economie";
+      this.statText = this.add.text(600, 650, "L'Economie", { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.piggybank = this.add.sprite(500, 600, 'poor');
+      this.piggybank.displayWidth = 200;
+      this.piggybank.scaleY = this.piggybank.scaleX;
+    }
+    else
+    {
+      loseEconomie ="";
+    }
+    if (statistiques.getEcologie()*0.1  <= 0) 
+    {
+      console.log("ecologie sous 0")
+      loseEcologie = "L'Ecologie";
+      this.statText = this.add.text(1100, 650, "L'Ecologie", { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.witedflower = this.add.sprite(1000, 600, 'flower');
+      this.witedflower.displayWidth = 200;
+      this.witedflower.scaleY = this.witedflower.scaleX;
+    }
+    else
+    {
+      loseEcologie ="";
+    }
+       if (statistiques.getBienEtre()*0.1  <= 0) 
+    {
+      console.log("bien-être sous 0")
+      loseBienEtre = "Le Bien-Être";
+      this.statText = this.add.text(1500, 650, "Le Bien-Être", { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.brokenheart = this.add.sprite(1400, 600, 'brokenheart');
+      this.brokenheart.displayWidth = 200;
+      this.brokenheart.scaleY = this.brokenheart.scaleX;
+    }
+    else
+    {
+      loseBienEtre ="";
+    }
+   this.loseImage = this.add.sprite(1450, 270, 'lose');
+ this.add.text(250, 400, 'Défaite, les statistiques suivantes sont restées dans le négatif pendant une trop grande durée : ', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8).setWordWrapWidth(500);
   }
 }

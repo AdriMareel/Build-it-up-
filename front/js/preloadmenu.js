@@ -100,6 +100,7 @@ class preloadmenu extends Phaser.Scene{
       this.load.image('Pause', "../images/HUD/pause.png");
       this.load.image('check', "../images/HUD/check.png");
 
+      //load win assets
       this.load.image('lose', "../images/HUD/lose.png");
       this.load.image('SS', "../images/HUD/SS.png");
       this.load.image('S', "../images/HUD/S.png");
@@ -108,6 +109,13 @@ class preloadmenu extends Phaser.Scene{
       this.load.image('C', "../images/HUD/C.png");
       this.load.image('D', "../images/HUD/D.png");
 
+
+
+      //load lose assets
+      this.load.image('brokenheart', "../images/HUD/brokenheart.png");
+      this.load.image('poor', "../images/HUD/poor.png");
+      this.load.image('flower', "../images/HUD/flower.png");
+    
 
       //load techno
       this.load.image('techno', "../images/HUD/technoIcone.png");
