@@ -185,6 +185,7 @@ class MainScene extends Phaser.Scene{
             arraybuilding.push(last_char-1);
             let old_batiment = arraybuilding.toString();
             let oldbatiment2 = old_batiment.replace(/[\s,]+/g,'').trim();
+            statistiques.setBank(statistiques.getBuildingPrice(building))
             statistiques.upgradeBuilding(building, oldbatiment2);
             //console.log(oldbatiment2);
 

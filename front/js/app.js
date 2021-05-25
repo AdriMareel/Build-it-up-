@@ -17,7 +17,9 @@ let gameConfig = {
   new showUpgrade({key:'showUpgrade'}), 
   new techno({key: 'techno'}),
   new infoTechno({key: 'infoTechno'}),
-  new Bought({key:'Bought'})]
+  new Bought({key:'Bought'}),
+  new End({key: 'end'}),
+  new conditionsNonRemplies({key: 'CNR'})]
 }
 
 

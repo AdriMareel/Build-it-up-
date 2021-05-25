@@ -1,6 +1,8 @@
 let temp = [];
 let tempT = [];
 
+let unlocked = []; 
+
 class HUDScene extends Phaser.Scene{
     timeX1(){
       this.timer.paused = false;
@@ -22,9 +24,9 @@ class HUDScene extends Phaser.Scene{
       this.timer.paused = true;
     }
 
-	create () {
+  create () {
       //Boutton qui gère la liste des bâtiments
-		  this.button = this.add.sprite(1070, 750, "Bâtiments");
+      this.button = this.add.sprite(1070, 750, "Bâtiments");
       this.button.displayWidth = 200;
       this.button.scaleY = this.button.scaleX;
       this.button.depth = 100;
@@ -34,7 +36,7 @@ class HUDScene extends Phaser.Scene{
       this.button.setScrollFactor(0);
       this.button.fixedToCamera = true;
 
-  	   //timer      
+       //timer      
        this.counter = 0;
 
        this.timer = this.time.addEvent({
@@ -49,7 +51,8 @@ class HUDScene extends Phaser.Scene{
           delay: 100,
           callback:this.updateEverything,
           callbackScope:this,
-          repeat: 100000
+          repeat: 100000,
+          paused:false
       });
 
       this.text = this.add.text(10, 860, 'Jour 0', { fill: 0xffffff, font: 'bold 36px system-ui' }).setShadow(2, 2, 0xffff00, 8);
@@ -127,25 +130,25 @@ class HUDScene extends Phaser.Scene{
       this.lineBienEtre = this.add.line(50, -30, 110, 165, 110, 185, 0x080808);
 
       //Income
-      this.iconeIncome = this.add.sprite(1770, 50, "income");
+      this.iconeIncome = this.add.sprite(1730, 50, "income");
       this.iconeIncome.displayWidth = 60;
       this.iconeIncome.scaleY = this.iconeIncome.scaleX;
       this.iconeIncome.depth = 100;
-      this.textIncome = this.add.text(1810, 40, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textIncome = this.add.text(1780, 40, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //bank
-      this.iconeBank = this.add.sprite(1610, 60, "bank");
+      this.iconeBank = this.add.sprite(1560, 60, "bank");
       this.iconeBank.displayWidth = 60;
       this.iconeBank.scaleY = this.iconeBank.scaleX;
       this.iconeBank.depth = 100;
-      this.textBank = this.add.text(1635, 42, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textBank = this.add.text(1585, 42, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //pop
-      this.iconePopulation = this.add.sprite(1770, 120, "pop");
+      this.iconePopulation = this.add.sprite(1720, 120, "pop");
       this.iconePopulation.displayWidth = 75;
       this.iconePopulation.scaleY = this.iconePopulation.scaleX;
       this.iconePopulation.depth = 100;
-      this.textPopulation = this.add.text(1810, 102, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textPopulation = this.add.text(1780, 102, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //Error
       this.errorText = this.add.text(650, 850, 'Vous ne pouvez pas placer ce bâtiment ici', {
@@ -171,7 +174,11 @@ class HUDScene extends Phaser.Scene{
     updateDay(){
       this.counter++;
       statistiques.updateBank();
-      //if(this.counter >= 365){ this.endGame(); }
+      if(this.counter >= 10){ 
+        this.endGame(); 
+        this.timer.paused = true;
+        this.timerMAJ.paused = true;
+      }
     }
 
     updateEverything(){
@@ -180,7 +187,6 @@ class HUDScene extends Phaser.Scene{
       statistiques.updateEcologie();
       statistiques.updateBienEtre();
       statistiques.updatePop();
-
     }
 
     updateBar(){
@@ -216,6 +222,10 @@ class HUDScene extends Phaser.Scene{
       this.updateBar();
     }
 
+    endGame(){
+      this.scene.launch('end');
+    }
+
 }
 
 
@@ -233,7 +243,7 @@ class HUDStat extends Phaser.Scene{
     this.closeButton.on('pointerdown', () => this.close());
 
     //Menu Ecologie
-    this.buttonEcologie = this.add.sprite(160, 352, 'ecologie');
+    this.buttonEcologie = this.add.sprite(-80,350, 'ecologie');
     this.buttonEcologie.displayWidth = 290;
     this.buttonEcologie.scaleY = this.buttonEcologie.scaleX;
     this.buttonEcologie.depth = 200;
@@ -244,7 +254,7 @@ class HUDStat extends Phaser.Scene{
     this.buttonEcologie.fixedToCamera = true;
 
     //Menu Moral
-    this.buttonMoral = this.add.sprite(250,350, 'bienetre');
+    this.buttonMoral = this.add.sprite(465, 352, 'bienetre');
     this.buttonMoral.displayWidth = 200;
     this.buttonMoral.scaleY = this.buttonMoral.scaleX;
     this.buttonMoral.depth = 100;
@@ -305,13 +315,16 @@ class HUDBuildingListEcologie extends Phaser.Scene{
 
     //Panneau Solaire
     this.buttonBuildingPSolaire = this.add.image(-1100,100, 'panneau_solaire');
-    if(statistiques.getBank() < buildingListMk1[7].price || statistiques.getConditions(buildingListMk1[7].name)) { 
+    if(statistiques.getBank() < buildingListMk1[7].price || statistiques.getConditions(buildingListMk1[7].name) > statistiques.getPop()) { 
       let croix = this.add.sprite(650, 300, 'croix');
       croix.depth = 300;
       croix.displayWidth = 50;
       croix.scaleX = croix.scaleY;
+
+      this.buttonBuildingPSolaire.setInteractive({useHandCursor: true});
+      this.buttonBuildingPSolaire.on('pointerdown', () => this.getConditionsP('panneau_solaire'));
     }
-    else if(statistiques.getBank() >= buildingListMk1[7].price){
+    else if(statistiques.getBank() >= buildingListMk1[7].price && statistiques.getConditions(buildingListMk1[7].name) <= statistiques.getPop()){
       this.buttonBuildingPSolaire.setInteractive({useHandCursor: true});
       this.buttonBuildingPSolaire.on('pointerdown', () => this.placeBuildingEcologie('panneau_solaire'));
     }
@@ -334,13 +347,16 @@ class HUDBuildingListEcologie extends Phaser.Scene{
 
     //Centrale hydraulique
     this.buttonBuildingCentralehydraulique = this.add.image(-50,110, 'centrale_hydraulique1');
-    if(statistiques.getBank() < buildingListMk1[6].price) { 
+    if(statistiques.getBank() < buildingListMk1[6].price || statistiques.getConditions(buildingListMk1[6].name) > statistiques.getPop()) { 
       let croix = this.add.sprite(1350, 300, 'croix');
       croix.depth = 300;
       croix.displayWidth = 50;
       croix.scaleX = croix.scaleY;
+
+      this.buttonBuildingCentralehydraulique.setInteractive({useHandCursor: true});
+      this.buttonBuildingCentralehydraulique.on('pointerdown', () => this.getConditionsP('centrale_hydraulique1'));
     }
-    else if(statistiques.getBank() >= buildingListMk1[6].price){
+    else if(statistiques.getBank() >= buildingListMk1[6].price && statistiques.getConditions(buildingListMk1[6].name) <= statistiques.getPop()){
       this.buttonBuildingCentralehydraulique.setInteractive({useHandCursor: true});
       this.buttonBuildingCentralehydraulique.on('pointerdown', () => this.placeBuildingEcologie('centrale_hydraulique1'));
     }
@@ -362,7 +378,7 @@ class HUDBuildingListEcologie extends Phaser.Scene{
 
     //Parc
     this.buttonBuildingParc = this.add.image(-200,500, 'parc1');
-    if(statistiques.getBank() < buildingListMk1[8].price) { 
+    if(statistiques.getBank() < buildingListMk1[8].price || statistiques.getConditions(buildingListMk1[8].name) > statistiques.getPop()) { 
       let croix = this.add.sprite(540, 500, 'croix');
       croix.depth = 300;
       croix.displayWidth = 50;
@@ -370,8 +386,11 @@ class HUDBuildingListEcologie extends Phaser.Scene{
       croix.setOrigin(0, 0);
       croix.setScrollFactor(0);
       croix.fixedToCamera = true;
+
+      this.buttonBuildingParc.setInteractive({useHandCursor: true});
+      this.buttonBuildingParc.on('pointerdown', () => this.getConditionsP('parc1'));
     }
-    else if(statistiques.getBank() >= buildingListMk1[8].price){
+    else if(statistiques.getBank() >= buildingListMk1[8].price && statistiques.getConditions(buildingListMk1[8].name) <= statistiques.getPop()){
       this.buttonBuildingParc.setInteractive({useHandCursor: true});
       this.buttonBuildingParc.on('pointerdown', () => this.placeBuildingEcologie('parc1'));
     }
@@ -393,7 +412,7 @@ class HUDBuildingListEcologie extends Phaser.Scene{
 
     //Usine Recyclage
     this.buttonBuildingUsineRecyclage = this.add.image(500,520, 'usine_recyclage1');
-    if(statistiques.getBank() < buildingListMk1[9].price) { 
+    if(statistiques.getBank() < buildingListMk1[9].price || statistiques.getConditions(buildingListMk1[9].name) > statistiques.getPop()) { 
       let croix = this.add.sprite(1240, 500, 'croix');
       croix.depth = 200;
       croix.displayWidth = 50;
@@ -401,8 +420,11 @@ class HUDBuildingListEcologie extends Phaser.Scene{
       croix.setOrigin(0, 0);
       croix.setScrollFactor(0);
       croix.fixedToCamera = true;
+
+      this.buttonBuildingUsineRecyclage.setInteractive({useHandCursor: true});
+      this.buttonBuildingUsineRecyclage.on('pointerdown', () => this.getConditionsP('usine_recyclage1'));
     }
-    else if(statistiques.getBank() >= buildingListMk1[9].price){
+    else if(statistiques.getBank() >= buildingListMk1[9].price && statistiques.getConditions(buildingListMk1[9].name) <= statistiques.getPop()){
       this.buttonBuildingUsineRecyclage.setInteractive({useHandCursor: true});
       this.buttonBuildingUsineRecyclage.on('pointerdown', () => this.placeBuildingEcologie('usine_recyclage1'));
     }
@@ -429,6 +451,11 @@ class HUDBuildingListEcologie extends Phaser.Scene{
     statistiques.setBank(buildingListMk1[statistiques.getId(name)].price);
     var scene = this.scene.get("MainScene");
     var bat = scene.displaybatiment(name);
+  }
+
+  getConditionsP(name){
+    temp = statistiques.getInfoBuilding(name);
+    this.scene.launch('CNR');
   }
 
   close(){
@@ -469,13 +496,16 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
       //Caserne
       this.buttonBuildingCaserne = this.add.image(640,180, 'caserne1');
-      if(statistiques.getBank() < buildingListMk1[0].price) { 
+      if(statistiques.getBank() < buildingListMk1[0].price || statistiques.getConditions(buildingListMk1[0].name) > statistiques.getPop()) { 
         let croix = this.add.sprite(1510, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
+
+        this.buttonBuildingCaserne.setInteractive({useHandCursor: true});
+        this.buttonBuildingCaserne.on('pointerdown', () => this.getConditionsP('caserne1'));
       }
-      else if(statistiques.getBank() >= buildingListMk1[0].price){
+      else if(statistiques.getBank() >= buildingListMk1[0].price && statistiques.getConditions(buildingListMk1[0].name) <= statistiques.getPop()){
         this.buttonBuildingCaserne.setInteractive({useHandCursor: true});
         this.buttonBuildingCaserne.on('pointerdown', () => this.placeBuildingMoral('caserne1'));
       }
@@ -497,13 +527,16 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
       //Maison
       this.buttonBuildingMaison = this.add.image(150, 500, 'maison1');
-      if(statistiques.getBank() < buildingListMk1[14].price) { 
+      if(statistiques.getBank() < buildingListMk1[14].price || statistiques.getConditions(buildingListMk1[14].name) > statistiques.getPop()) { 
         let croix = this.add.sprite(1000, 620, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
+
+        this.buttonBuildingMaison.setInteractive({useHandCursor: true});
+        this.buttonBuildingMaison.on('pointerdown', () => this.getConditionsP('maison1'));
       }
-      else if(statistiques.getBank() >= buildingListMk1[14].price){
+      else if(statistiques.getBank() >= buildingListMk1[14].price && statistiques.getConditions(buildingListMk1[14].name) <= statistiques.getPop()){
         this.buttonBuildingMaison.setInteractive({useHandCursor: true});
         this.buttonBuildingMaison.on('pointerdown', () => this.placeBuildingMoral('maison1'));
       }
@@ -525,13 +558,16 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
       //Centrale
       this.buttonBuildingCentrale = this.add.image(500,500, 'centrale1');
-      if(statistiques.getBank() < buildingListMk1[1].price) {
+      if(statistiques.getBank() < buildingListMk1[1].price || statistiques.getConditions(buildingListMk1[1].name) > statistiques.getPop()) {
         let croix = this.add.sprite(1350, 620, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
+
+        this.buttonBuildingCentrale.setInteractive({useHandCursor: true});
+        this.buttonBuildingCentrale.on('pointerdown', () => this.getConditionsP('centrale1'));
       }
-      else if(statistiques.getBank() >= buildingListMk1[1].price){
+      else if(statistiques.getBank() >= buildingListMk1[1].price && statistiques.getConditions(buildingListMk1[1].name) <= statistiques.getPop()){
         this.buttonBuildingCentrale.setInteractive({useHandCursor: true});
         this.buttonBuildingCentrale.on('pointerdown', () => this.placeBuildingMoral('centrale1'));
       }
@@ -553,13 +589,16 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
       //Commissariat
       this.buttonBuildingCommissariat = this.add.image(250,180, 'commissariat1');
-      if(statistiques.getBank() < buildingListMk1[2].price) { 
+      if(statistiques.getBank() < buildingListMk1[2].price || statistiques.getConditions(buildingListMk1[2].name) > statistiques.getPop()) { 
         let croix = this.add.sprite(1120, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
+
+        this.buttonBuildingCommissariat.setInteractive({useHandCursor: true});
+        this.buttonBuildingCommissariat.on('pointerdown', () => this.getConditionsP('commissariat1'));
       }
-      else if(statistiques.getBank() >= buildingListMk1[2].price){
+      else if(statistiques.getBank() >= buildingListMk1[2].price && statistiques.getConditions(buildingListMk1[2].name) <= statistiques.getPop()){
         this.buttonBuildingCommissariat.setInteractive({useHandCursor: true});
         this.buttonBuildingCommissariat.on('pointerdown', () => this.placeBuildingMoral('commissariat1'));
       }
@@ -581,13 +620,16 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
       //Ecole
       this.buttonBuildingEcole = this.add.image(-250,500, 'ecole1');
-      if(statistiques.getBank() < buildingListMk1[3].price) { 
+      if(statistiques.getBank() < buildingListMk1[3].price || statistiques.getConditions(buildingListMk1[3].name) > statistiques.getPop()) { 
         let croix = this.add.sprite(600, 620, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
+
+        this.buttonBuildingEcole.setInteractive({useHandCursor: true});
+        this.buttonBuildingEcole.on('pointerdown', () => this.getConditionsP('ecole1'));
       }
-      else if(statistiques.getBank() >= buildingListMk1[3].price){
+      else if(statistiques.getBank() >= buildingListMk1[3].price && statistiques.getConditions(buildingListMk1[3].name) <= statistiques.getPop()){
         this.buttonBuildingEcole.setInteractive({useHandCursor: true});
         this.buttonBuildingEcole.on('pointerdown', () => this.placeBuildingMoral('ecole1'));
       }
@@ -609,15 +651,18 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
       //Hopital
       this.buttonBuildingHopital = this.add.image(-450,180, 'hopital1');
-      if(statistiques.getBank() < buildingListMk1[4].price) { 
+      if(statistiques.getBank() < buildingListMk1[4].price || statistiques.getConditions(buildingListMk1[4].name) > statistiques.getPop()) { 
         let croix = this.add.sprite(400, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
-      }
-      else if(statistiques.getBank() >= buildingListMk1[4].price){
+
         this.buttonBuildingHopital.setInteractive({useHandCursor: true});
-        this.buttonBuildingHopital.on('pointerdown', () => this.placeBuildingMoral('hopital1'));
+        this.buttonBuildingHopital.on('pointerdown', () => this.getConditionsP('hopital1'));
+      }
+      else if(statistiques.getBank() >= buildingListMk1[4].price && statistiques.getConditions(buildingListMk1[4].name) <= statistiques.getPop()){
+        this.buttonBuildingHopital.setInteractive({useHandCursor: true});
+        this.buttonBuildingHopital.on('pointerdown', () => this.getConditionsP('hopital1'));
       }
       this.buttonBuildingHopital.setOrigin(-3, 0);
       this.buttonBuildingHopital.setScrollFactor(0);
@@ -637,13 +682,16 @@ class HUDBuildingListMoral extends Phaser.Scene {
 
       //Poste
       this.buttonBuildingPoste = this.add.image(-100,180, 'poste1');
-      if(statistiques.getBank() < buildingListMk1[5].price) { 
+      if(statistiques.getBank() < buildingListMk1[5].price || statistiques.getConditions(buildingListMk1[5].name) > statistiques.getPop()) { 
         let croix = this.add.sprite(780, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
+
+        this.buttonBuildingPoste.setInteractive({useHandCursor: true});
+        this.buttonBuildingPoste.on('pointerdown', () => this.getConditionsP('poste1'));
       }
-      else if(statistiques.getBank() >= buildingListMk1[5].price){
+      else if(statistiques.getBank() >= buildingListMk1[5].price && statistiques.getConditions(buildingListMk1[5].name) <= statistiques.getPop()){
         this.buttonBuildingPoste.setInteractive({useHandCursor: true});
         this.buttonBuildingPoste.on('pointerdown', () => this.placeBuildingMoral('poste1'));
       }
@@ -671,6 +719,11 @@ class HUDBuildingListMoral extends Phaser.Scene {
       var scene = this.scene.get("MainScene");
       var bat = scene.displaybatiment(name);
    }
+
+  getConditionsP(name){
+    temp = statistiques.getInfoBuilding(name);
+    this.scene.launch('CNR');
+  }
 
   close(){
     this.scene.stop('moral').stop('stat');
@@ -702,13 +755,17 @@ class HUDBuildingListEconomie extends Phaser.Scene{
 
     //Banque
     this.buttonBuildingBanque = this.add.image(-750,150, 'banque1');
-    if(statistiques.getBank() < buildingListMk1[10].price) {
+    if(statistiques.getBank() < buildingListMk1[10].price || statistiques.getConditions(buildingListMk1[10].name) > statistiques.getPop()) {
       let croix = this.add.sprite(980, 400, 'croix');
       croix.depth = 300;
       croix.displayWidth = 50;
       croix.scaleX = croix.scaleY;
+
+      this.buttonBuildingBanque.setInteractive({useHandCursor: true});
+      this.buttonBuildingBanque.on('pointerdown', () => this.getConditionsP('banque1'));
+
     }
-    else if(statistiques.getBank() >= buildingListMk1[10].price){
+    else if(statistiques.getBank() >= buildingListMk1[10].price && statistiques.getConditions(buildingListMk1[10].name) <= statistiques.getPop()){
       this.buttonBuildingBanque.setInteractive({useHandCursor: true});
       this.buttonBuildingBanque.on('pointerdown', () => this.placeBuildingEconomie('banque1'));
     }
@@ -730,13 +787,16 @@ class HUDBuildingListEconomie extends Phaser.Scene{
 
     //Magasin
     this.buttonBuildingMagasin = this.add.image(-350,300, 'magasin1');
-    if(statistiques.getBank() < buildingListMk1[11].price) {
+    if(statistiques.getBank() < buildingListMk1[11].price || statistiques.getConditions(buildingListMk1[11].name) > statistiques.getPop()) {
       let croix = this.add.sprite(520, 420, 'croix');
       croix.depth = 300;
       croix.displayWidth = 50;
       croix.scaleX = croix.scaleY;
+
+      this.buttonBuildingMagasin.setInteractive({useHandCursor: true});
+      this.buttonBuildingMagasin.on('pointerdown', () => this.getConditionsP('magasin1'));
     }
-    else if(statistiques.getBank() >= buildingListMk1[11].price){
+    else if(statistiques.getBank() >= buildingListMk1[11].price && statistiques.getConditions(buildingListMk1[11].name) <= statistiques.getPop()){
       this.buttonBuildingMagasin.setInteractive({useHandCursor: true});
       this.buttonBuildingMagasin.on('pointerdown', () => this.placeBuildingEconomie('magasin1'));
     }
@@ -758,13 +818,16 @@ class HUDBuildingListEconomie extends Phaser.Scene{
 
     //Usine
     this.buttonBuildingUsine = this.add.image(550,290, 'usine1');
-    if(statistiques.getBank() < buildingListMk1[12].price) {
+    if(statistiques.getBank() < buildingListMk1[12].price || statistiques.getConditions(buildingListMk1[12].name) > statistiques.getPop()) {
       let croix = this.add.sprite(1400, 400, 'croix');
       croix.depth = 300;
       croix.displayWidth = 50;
       croix.scaleX = croix.scaleY;
+
+      this.buttonBuildingUsine.setInteractive({useHandCursor: true});
+      this.buttonBuildingUsine.on('pointerdown', () => this.getConditionsP('usine1'));
     }
-    else if(statistiques.getBank() >= buildingListMk1[12].price){
+    else if(statistiques.getBank() >= buildingListMk1[12].price && statistiques.getConditions(buildingListMk1[12].name) <= statistiques.getPop()){
       this.buttonBuildingUsine.setInteractive({useHandCursor: true});
       this.buttonBuildingUsine.on('pointerdown', () => this.placeBuildingEconomie('usine1'));
     }
@@ -783,6 +846,11 @@ class HUDBuildingListEconomie extends Phaser.Scene{
     this.buttonInfoUsine.setOrigin(-3, 0);
     this.buttonInfoUsine.setScrollFactor(0);
     this.buttonInfoUsine.fixedToCamera = true;
+  }
+
+  getConditionsP(name){
+    temp = statistiques.getInfoBuilding(name);
+    this.scene.launch('CNR');
   }
 
   placeBuildingEconomie(name){
@@ -840,7 +908,7 @@ class Info extends Phaser.Scene{
 
     //Text description 
     this.titleDesc = this.add.text(1060, 250, 'Description du batiment:', {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8); 
-    this.textDesc = this.add.text(1060, 350, temp[7], {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff0);
+    this.textDesc = this.add.text(1060, 350, temp[7], {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff0).setWordWrapWidth(400);
   }
 
   close(){
@@ -892,14 +960,20 @@ class buildingMenu extends Phaser.Scene{
       let newword = name.slice(0, -1);
       let finalword =  newword + "3";
       temp = statistiques.getInfoBuilding(finalword);
+      this.scene.launch('showUpgrade');
+      this.scene.stop('info').stop('menu').stop('techno');
     }
-    else {
+    else if (word == 1) {
       let editedtext = name.slice(0, -1);
       let newtest = editedtext + "2";
       temp = statistiques.getInfoBuilding(newtest);
+      this.scene.launch('showUpgrade');
+      this.scene.stop('info').stop('menu').stop('techno');
     }
-    this.scene.launch('showUpgrade');
-    this.scene.stop('info').stop('menu').stop('techno');
+    if (word == 3) { 
+      this.scene.launch('unableToUpgrade');
+      this.scene.stop('info').stop('menu').stop('techno');
+    }
   }
 
   close(){
@@ -926,8 +1000,8 @@ class showUpgrade extends Phaser.Scene{
     let sousMenuRec2 = this.add.rectangle(1260, 450, 600, 500);
     sousMenuRec2.setStrokeStyle(3, 0x080808);
 
-    let buyconfirm = this.add.rectangle(980, 700, 600, 100, 0x999999);
-    let sousMenuRec3 = this.add.rectangle(980, 700, 600, 100);
+    let buyconfirm = this.add.rectangle(980, 650, 600, 100, 0x999999);
+    let sousMenuRec3 = this.add.rectangle(980, 650, 600, 100);
     sousMenuRec3.setStrokeStyle(4, 0x080808);
 
    //Text Info
@@ -946,20 +1020,19 @@ class showUpgrade extends Phaser.Scene{
 
     //Text description 
     this.titleDesc = this.add.text(1060, 250, 'Description du batiment:', {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8); 
-    this.textDesc = this.add.text(1060, 350, temp[7], {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff0);
+    this.textDesc = this.add.text(1060, 350, temp[7], {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff0).setWordWrapWidth(400);;
 
     //Text shop
-    this.shopPop = this.add.text(820, 690, 'Achetez-vous ce batiment pour ' + temp[1] + '?', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);    
+    this.shopPop = this.add.text(820, 640, 'Achetez-vous ce batiment pour ' + temp[1] + '?', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);    
     
-    this.confirmbutton = this.add.sprite(900, 840, 'confirm');
+    this.confirmbutton = this.add.sprite(900, 750, 'confirm');
     this.confirmbutton.displayWidth = 150;
     this.confirmbutton.scaleY = this.confirmbutton.scaleX;
     this.confirmbutton.depth = 200;
     this.confirmbutton.setInteractive({  useHandCursor: true});
     this.confirmbutton.on('pointerdown', () => this.confirmUpgrade(temp[0]));
-
-
-    this.cancelbutton = this.add.sprite(1100, 850, 'cancel');
+    
+    this.cancelbutton = this.add.sprite(1100, 760, 'cancel');
     this.cancelbutton.displayWidth = 150;
     this.cancelbutton.scaleY = this.cancelbutton.scaleX;
     this.cancelbutton.depth = 200;
@@ -969,10 +1042,14 @@ class showUpgrade extends Phaser.Scene{
   }
 
   confirmUpgrade(name){
-    this.scene.stop('showUpgrade');
-    var scene = this.scene.get("MainScene");
-    var bat = scene.displaybatiment(name, true); 
-
+    if(statistiques.getConditions(temp[0]) <= statistiques.getPop() && statistiques.getBuildingPrice(temp[0]) <= statistiques.getBank()){
+      this.scene.stop('showUpgrade');
+      var scene = this.scene.get("MainScene");
+      var bat = scene.displaybatiment(name, true); 
+    }
+    else if(statistiques.getConditions(temp[0]) > statistiques.getPop() || statistiques.getBuildingPrice(temp[0]) > statistiques.getBank()){
+      this.scene.launch('CNR');
+    }
   }
 
   close(){
@@ -988,11 +1065,11 @@ class techno extends Phaser.Scene{
     this.upgradebutton.scaleY = this.upgradebutton.scaleX;
     this.upgradebutton.depth = 200;
     this.upgradebutton.setInteractive({  useHandCursor: true});
-    this.upgradebutton.on('pointerdown', () => this.mairieTechno());
+    this.upgradebutton.on('pointerdown', () => this.mairieTechno()); 
   }
-  
+
   mairieTechno(){
-  //Close button
+    //Close button
     this.closeButton = this.add.sprite(1680, 80, 'close');
     this.closeButton.displayWidth = 50;
     this.closeButton.scaleY = this.closeButton.scaleX;
@@ -1000,7 +1077,7 @@ class techno extends Phaser.Scene{
     this.closeButton.setInteractive({  useHandCursor: true});
     this.closeButton.on('pointerdown', () => this.close());
 
-  //Mairie niveau 1
+    //Mairie niveau 1
     if(temp[0] == buildingListMk1[13].name){
       this.textTechno = this.add.text(400, 270, 'Technologie', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
       let sousMenuEcologie = this.add.rectangle(960, 450, 1500, 800, 0xffffff);
@@ -1009,14 +1086,16 @@ class techno extends Phaser.Scene{
 
       //Feu malvoyant
       this.buttonFeu1 = this.add.image(-125,160, 'feuMalvoyant');
-      if(statistiques.isTechnoBought('feuMalvoyant')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('feuMalvoyant' == unlocked[i]){
+          let check = this.add.sprite(400, 300, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT1[0].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT1[0].price && !statistiques.isTechnoBought('feuMalvoyant')) { 
+        let croix = this.add.sprite(400, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1043,14 +1122,16 @@ class techno extends Phaser.Scene{
 
       //Signal Sonore
       this.buttonSignalSonore = this.add.image(200,180, 'signalSonore');
-      if(statistiques.isTechnoBought('signalSonore')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('signalSonore' == unlocked[i]){
+          let check = this.add.sprite(720, 300, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT1[1].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT1[1].price && !statistiques.isTechnoBought('signalSonore')) { 
+        let croix = this.add.sprite(720, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1077,14 +1158,16 @@ class techno extends Phaser.Scene{
 
       //feu Smart
       this.buttonFeu2 = this.add.image(750,225, 'feuSmart');
-      if(statistiques.isTechnoBought('feuSmart')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('feuSmart' == unlocked[i]){
+          let check = this.add.sprite(950, 300, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT1[2].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT1[2].price && !statistiques.isTechnoBought('feuSmart')) { 
+        let croix = this.add.sprite(950, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1111,14 +1194,16 @@ class techno extends Phaser.Scene{
 
       //peage Vehicule Vert
       this.buttonPeageVehiVert = this.add.image(700,182, 'peageVehiVert');
-      if(statistiques.isTechnoBought('peageVehiVert')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('peageVehiVert' == unlocked[i]){
+          let check = this.add.sprite(1220, 300, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT1[3].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT1[3].price && !statistiques.isTechnoBought('peageVehiVert')) { 
+        let croix = this.add.sprite(1220, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1145,14 +1230,16 @@ class techno extends Phaser.Scene{
 
       //e-administration
       this.buttonE_Admin = this.add.image(990,160, 'e_Admin');
-      if(statistiques.isTechnoBought('e_Admin')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('e_Admin' == unlocked[i]){
+          let check = this.add.sprite(1520, 300, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT1[4].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT1[4].price && !statistiques.isTechnoBought('e_Admin')) { 
+        let croix = this.add.sprite(1520, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1179,14 +1266,16 @@ class techno extends Phaser.Scene{
 
       //Système de gestion des déchets intelligents
       this.buttonDechetIntell = this.add.image(-200,500, 'dechetIntell');
-      if(statistiques.isTechnoBought('dechetIntell')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('dechetIntell' == unlocked[i]){
+          let check = this.add.sprite(480, 650, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT1[5].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT1[5].price && !statistiques.isTechnoBought('dechetIntell')) { 
+        let croix = this.add.sprite(480, 650, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1213,14 +1302,16 @@ class techno extends Phaser.Scene{
 
       //passageCamions
       this.buttonPassageCamions = this.add.image(300,540, 'passageCamions');
-      if(statistiques.isTechnoBought('passageCamions')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('passageCamions' == unlocked[i]){
+          let check = this.add.sprite(810, 650, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT1[6].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT1[6].price && !statistiques.isTechnoBought('passageCamions')) { 
+        let croix = this.add.sprite(810, 650, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1247,14 +1338,16 @@ class techno extends Phaser.Scene{
 
       //capteurPoub
       this.buttonCapteurPoub = this.add.image(600,525, 'capteurPoub');
-      if(statistiques.isTechnoBought('capteurPoub')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('capteurPoub' == unlocked[i]){
+          let check = this.add.sprite(1100, 650, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT1[7].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT1[7].price && !statistiques.isTechnoBought('capteurPoub')) { 
+        let croix = this.add.sprite(1100, 650, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1281,14 +1374,16 @@ class techno extends Phaser.Scene{
 
       //LED
       this.buttonLED = this.add.image(920,525, 'LED');
-      if(statistiques.isTechnoBought('LED')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('LED' == unlocked[i]){
+          let check = this.add.sprite(1450, 650, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT1[8].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT1[8].price && !statistiques.isTechnoBought('LED')) { 
+        let croix = this.add.sprite(1450, 650, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1323,13 +1418,15 @@ class techno extends Phaser.Scene{
 
       //voitureElec
       this.buttonVoitureElec = this.add.image(-115,160, 'voitureElec');
-      if(statistiques.isTechnoBought('voitureElec')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('voitureElec' == unlocked[i]){
+          let check = this.add.sprite(400, 300, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT2[0].price) { 
+      if(statistiques.getBank() < technologieT2[0].price && !statistiques.isTechnoBought('voitureElec')) { 
         let croix = this.add.sprite(400, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
@@ -1357,14 +1454,16 @@ class techno extends Phaser.Scene{
 
       //routeElec
       this.buttonRouteElec = this.add.image(250,180, 'routeElec');
-      if(statistiques.isTechnoBought('routeElec')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('routeElec' == unlocked[i]){
+          let check = this.add.sprite(760, 300, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT2[1].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT2[1].price && !statistiques.isTechnoBought('routeElec')) { 
+        let croix = this.add.sprite(760, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1391,14 +1490,16 @@ class techno extends Phaser.Scene{
 
       //parkingSmart
       this.buttonParkingSmart = this.add.image(650,200, 'parkingSmart');
-      if(statistiques.isTechnoBought('parkingSmart')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('parkingSmart' == unlocked[i]){
+          let check = this.add.sprite(1150, 300, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT2[2].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT2[2].price && !statistiques.isTechnoBought('parkingSmart')) { 
+        let croix = this.add.sprite(1150, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1425,14 +1526,16 @@ class techno extends Phaser.Scene{
 
       //capteurMouv
       this.buttonCapteurMouv = this.add.image(1000,180, 'capteurMouv');
-      if(statistiques.isTechnoBought('capteurMouv')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('capteurMouv' == unlocked[i]){
+          let check = this.add.sprite(1500, 300, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT2[6].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT2[6].price && !statistiques.isTechnoBought('capteurMouv')) { 
+        let croix = this.add.sprite(1500, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1459,14 +1562,16 @@ class techno extends Phaser.Scene{
 
       //bornes
       this.buttonBornes = this.add.image(0,540, 'bornes');
-      if(statistiques.isTechnoBought('bornes')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('bornes' == unlocked[i]){
+          let check = this.add.sprite(550, 650, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT2[3].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT2[3].price && !statistiques.isTechnoBought('bornes')) { 
+        let croix = this.add.sprite(550, 650, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1493,14 +1598,16 @@ class techno extends Phaser.Scene{
 
       //compacPoub
       this.buttonCompacPoub = this.add.image(450,540, 'compacPoub');
-      if(statistiques.isTechnoBought('compacPoub')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('compacPoub' == unlocked[i]){
+          let check = this.add.sprite(950, 650, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT2[4].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT2[4].price && !statistiques.isTechnoBought('compacPoub')) { 
+        let croix = this.add.sprite(950, 650, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1527,14 +1634,16 @@ class techno extends Phaser.Scene{
 
       //IA_Trie
       this.buttonIA_Trie = this.add.image(900,525, 'IA_Trie');
-      if(statistiques.isTechnoBought('IA_Trie')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('IA_Trie' == unlocked[i]){
+          let check = this.add.sprite(1400, 650, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT2[5].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT2[5].price && !statistiques.isTechnoBought('IA_Trie')) { 
+        let croix = this.add.sprite(1400, 650, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1569,15 +1678,17 @@ class techno extends Phaser.Scene{
       sousMenuRec1.setStrokeStyle(3, 0x080808);
 
       //voitureAuto
-      this.buttonVoitureAuto = this.add.image(-240,220, 'voitureAuto');
-      if(statistiques.isTechnoBought('voitureAuto')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      this.buttonVoitureAuto = this.add.image(-240,180, 'voitureAuto');
+      for(let i = 0; i < unlocked.length; i++){
+        if('voitureAuto' == unlocked[i]){
+          let check = this.add.sprite(450, 300, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT3[0].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT3[0].price && !statistiques.isTechnoBought('voitureAuto')) { 
+        let croix = this.add.sprite(450, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1606,14 +1717,16 @@ class techno extends Phaser.Scene{
 
       //IAPolice
       this.buttonIAPolice = this.add.image(120,180, 'IAPolice');
-      if(statistiques.isTechnoBought('IAPolice')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('IAPolice' == unlocked[i]){
+          let check = this.add.sprite(800, 300, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT3[1].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT3[1].price && !statistiques.isTechnoBought('IAPolice')) { 
+        let croix = this.add.sprite(800, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1642,14 +1755,16 @@ class techno extends Phaser.Scene{
 
       //tuyauDech
       this.buttonTuyauDech = this.add.image(840,240, 'tuyauDech');
-      if(statistiques.isTechnoBought('tuyauDech')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('tuyauDech' == unlocked[i]){
+          let check = this.add.sprite(1160, 300, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT3[2].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT3[2].price && !statistiques.isTechnoBought('tuyauDech')) { 
+        let croix = this.add.sprite(1150, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1678,14 +1793,16 @@ class techno extends Phaser.Scene{
 
       //IAClean
       this.buttonIAClean = this.add.image(800,200, 'IAClean');
-      if(statistiques.isTechnoBought('IAClean')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('IAClean' == unlocked[i]){
+          let check = this.add.sprite(1500, 300, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT3[3].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT3[3].price && !statistiques.isTechnoBought('IAClean')) { 
+        let croix = this.add.sprite(1500, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1714,14 +1831,16 @@ class techno extends Phaser.Scene{
 
       //capteurRes
       this.buttonCapteurRes = this.add.image(-170,530, 'capteurRes');
-      if(statistiques.isTechnoBought('capteurRes')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('capteurRes' == unlocked[i]){
+          let check = this.add.sprite(690, 650, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT3[4].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT3[4].price && !statistiques.isTechnoBought('capteurRes')) { 
+        let croix = this.add.sprite(700, 650, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1736,7 +1855,7 @@ class techno extends Phaser.Scene{
       this.buttonCapteurRes.displayWidth = 250;
       this.buttonCapteurRes.scaleY = this.buttonCapteurRes.scaleX;
       this.prixCapteurRes = this.add.text(635, 700, technologieT3[4].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textCapteurRes = this.add.text(455, 720, technologieT3[4].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textCapteurRes = this.add.text(470, 720, technologieT3[4].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //capteurRes Info
       this.buttonInfoCapteurRes = this.add.image(270,710, 'iconeInfo');
@@ -1750,14 +1869,16 @@ class techno extends Phaser.Scene{
 
       //intelOpe
       this.buttonIntelOpe = this.add.image(750,580, 'intelOpe');
-      if(statistiques.isTechnoBought('intelOpe')) {
-        let check = this.add.sprite(780, 300, 'check');
-        check.depth = 300;
-        check.displayWidth = 50;
-        check.scaleX = check.scaleY;
+      for(let i = 0; i < unlocked.length; i++){
+        if('intelOpe' == unlocked[i]){
+          let check = this.add.sprite(1300, 650, 'check');
+          check.depth = 300;
+          check.displayWidth = 50;
+          check.scaleX = check.scaleY;
+        }
       }
-      if(statistiques.getBank() < technologieT3[5].price) { 
-        let croix = this.add.sprite(780, 300, 'croix');
+      if(statistiques.getBank() < technologieT3[5].price && !statistiques.isTechnoBought('intelOpe')) { 
+        let croix = this.add.sprite(1295, 650, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
@@ -1788,6 +1909,7 @@ class techno extends Phaser.Scene{
 
   buyTechno(name){
     statistiques.saveTechno(name);
+    unlocked.push(name);
     statistiques.setBank(statistiques.getTechnoPrice(name));
     this.scene.launch('Bought').stop('techno').stop('menu').stop('info');
   }
@@ -1856,5 +1978,71 @@ class Bought extends Phaser.Scene{
 
   close(){
     this.scene.stop('Bought').launch('techno').launch('info').launch('menu');
+  }
+}
+
+class unableToUpgrade extends Phaser.Scene{
+  create(){
+    //Close bouton
+    this.closeButton = this.add.sprite(1400, 320, 'close');
+    this.closeButton.displayWidth = 50;
+    this.closeButton.scaleY = this.closeButton.scaleX;
+    this.closeButton.depth = 200;
+    this.closeButton.setInteractive({  useHandCursor: true});
+    this.closeButton.on('pointerdown', () => this.close());
+
+    let dlcBatiment = this.add.rectangle(980, 450, 900, 300, 0xffffff);
+    let sousMenuRec4 = this.add.rectangle(980, 450, 900, 300);
+    sousMenuRec4.setStrokeStyle(4, 0x080808);
+
+
+    this.titleUpgrade = this.add.text(750, 350, "Plus d'améliorations disponibles !", { fill: 0xffffff, font: 'bold 32px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.dlcDesc = this.add.text(620, 430, "Vous trouverez nos prochains bâtiments dans notre prochain DLC !" , { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+  }
+   close(){
+    this.scene.stop('showUpgrade').stop('techno').stop('unableToUpgrade');
+  }
+}
+
+class conditionsNonRemplies extends Phaser.Scene{
+  create(){
+    //Close bouton
+    this.closeButton = this.add.sprite(1400, 325, 'close');
+    this.closeButton.displayWidth = 50;
+    this.closeButton.scaleY = this.closeButton.scaleX;
+    this.closeButton.depth = 200;
+    this.closeButton.setInteractive({  useHandCursor: true});
+    this.closeButton.on('pointerdown', () => this.close());
+
+    let Rec4 = this.add.rectangle(980, 450, 900, 300, 0xffffff);
+    let sousMenuRec4 = this.add.rectangle(980, 450, 900, 300);
+
+    sousMenuRec4.setStrokeStyle(4, 0x080808);
+    this.add.text(545, 430, 'Vous ne pouvez pas acheter ça. Il vous faut ' + statistiques.getBuildingPrice(temp[0]) + '$ et au moins ' + statistiques.getConditions(temp[0]) + ' habitants.', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+  }
+
+  close(){
+    this.scene.stop('showUpgrade').stop('techno').stop('unableToUpgrade').stop('CNR');
+  }
+}
+
+
+class End extends Phaser.Scene{
+  create(){
+    let sousMenuEcologie = this.add.rectangle(960, 450, 1500, 800, 0xffffff);
+    let sousMenuRec1 = this.add.rectangle(960, 450, 1500, 800);
+    sousMenuRec1.setStrokeStyle(3, 0x080808);
+
+    let resultat = '';
+
+    let calculFin = ((statistiques.getEconomie() * 0.1) + (statistiques.getEcologie() * 0.1) + (statistiques.getBienEtre() * 0.1)) / 3;
+    if(calculFin >= 10){ resultat = 'S';} 
+    if(calculFin <= 0){ resultat = 'F';}  
+    if(0 < calculFin && calculFin <= 2){ resultat = 'E';} 
+    if(2 < calculFin && calculFin <= 4){ resultat = 'D';} 
+    if(4 < calculFin && calculFin <= 6){ resultat = 'C';}
+    if(6 < calculFin && calculFin <= 8){ resultat = 'B';}
+    if(8 < calculFin && calculFin < 10){ resultat = 'A';}   
+    this.add.text(650, 430, 'Votre mandat prend fin. Vous avez la note de : ' + resultat, { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
   }
 }

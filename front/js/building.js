@@ -208,9 +208,7 @@ class gameStat{
 		}
 	}
 
-	updateBank(){
-		this.Bank += this.Income;
-	}
+	updateBank(){ this.Bank += this.Income; }
 
 	getEconomie(){ return this.statEconomie; }
 
@@ -329,10 +327,33 @@ class gameStat{
 		}
 	}
 
+	getIdTechno(name){
+		for(let i = 0; i < technologieT1.length; i++){
+			if(name == technologieT1[i].name){
+				return technologieT1[i].id;
+			}
+		}
+		for(let j = 0; j < technologieT2.length; j++){
+			if(name == technologieT2[j].name){
+				return technologieT2[j].id;
+			}
+		}
+		for(let k = 0; k < technologieT3.length; k++){
+			if(name == technologieT3[k].name){
+				return technologieT3[k].id;
+			}
+		}
+	}
+
 	isTechnoBought(name){
+		if(this.listeTechno == null) { return temp; }
 		for(let i = 0; i < this.listeTechno.length; i++){
-			if(name == this.listeTechno[i]){ return true; }
-			else{ return false; }
+			if(name == this.listeTechno[i]){
+				return true;
+			}
+			else{ 
+				return false;
+			}
 		}
 	}
 
