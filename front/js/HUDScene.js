@@ -1150,41 +1150,41 @@ class techno extends Phaser.Scene{
       this.buttonInfoFeu1.setScrollFactor(0);
       this.buttonInfoFeu1.fixedToCamera = true;
 
-      //Signal Sonore
-      this.buttonSignalSonore = this.add.image(200,180, 'signalSonore');
+      //SpotWifi
+      this.buttonspotWifi = this.add.image(20,140, 'spotwifi');
       for(let i = 0; i < unlocked.length; i++){
-        if('signalSonore' == unlocked[i]){
+        if('spotWifi' == unlocked[i]){
           let check = this.add.sprite(720, 300, 'check');
           check.depth = 300;
           check.displayWidth = 50;
           check.scaleX = check.scaleY;
         }
       }
-      if(statistiques.getBank() < technologieT1[1].price && !statistiques.isTechnoBought('signalSonore')) { 
+      if(statistiques.getBank() < technologieT1[1].price && !statistiques.isTechnoBought('spotwifi')) { 
         let croix = this.add.sprite(720, 300, 'croix');
         croix.depth = 300;
         croix.displayWidth = 50;
         croix.scaleX = croix.scaleY;
       }
-      else if(statistiques.getBank() >= technologieT1[1].price && !statistiques.isTechnoBought('signalSonore')){
-        this.buttonSignalSonore.setInteractive({useHandCursor: true});
-        this.buttonSignalSonore.on('pointerdown', () => this.buyTechno('signalSonore'));
+      else if(statistiques.getBank() >= technologieT1[1].price && !statistiques.isTechnoBought('spotwifi')){
+        this.buttonspotWifi.setInteractive({useHandCursor: true});
+        this.buttonspotWifi.on('pointerdown', () => this.buyTechno('spotwifi'));
       }
-      this.buttonSignalSonore.setOrigin(-3, 0);
-      this.buttonSignalSonore.setScrollFactor(0);
-      this.buttonSignalSonore.fixedToCamera = true;
-      this.prixSignalSonore = this.add.text(710,352, technologieT1[1].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-      this.textSignalSonore = this.add.text(680,372, technologieT1[1].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.buttonspotWifi.setOrigin(-3, 0);
+      this.buttonspotWifi.setScrollFactor(0);
+      this.buttonspotWifi.fixedToCamera = true;
+      this.prixspotWifi = this.add.text(710,352, technologieT1[1].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textspotWifi = this.add.text(680,372, technologieT1[1].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
-      //SignalSonore Info
-      this.buttonInfoSignalSonore = this.add.image(470,360, 'iconeInfo');
-      this.buttonInfoSignalSonore.displayWidth = 50;
-      this.buttonInfoSignalSonore.scaleY = this.buttonInfoSignalSonore.scaleX;
-      this.buttonInfoSignalSonore.setInteractive({useHandCursor: true});
-      this.buttonInfoSignalSonore.on('pointerdown', () => this.getInfoT('signalSonore'));
-      this.buttonInfoSignalSonore.setOrigin(-3, 0);
-      this.buttonInfoSignalSonore.setScrollFactor(0);
-      this.buttonInfoSignalSonore.fixedToCamera = true;
+      //spotWifi Info
+      this.buttonInfospotWifi = this.add.image(470,360, 'iconeInfo');
+      this.buttonInfospotWifi.displayWidth = 50;
+      this.buttonInfospotWifi.scaleY = this.buttonInfospotWifi.scaleX;
+      this.buttonInfospotWifi.setInteractive({useHandCursor: true});
+      this.buttonInfospotWifi.on('pointerdown', () => this.getInfoT('spotwifi'));
+      this.buttonInfospotWifi.setOrigin(-3, 0);
+      this.buttonInfospotWifi.setScrollFactor(0);
+      this.buttonInfospotWifi.fixedToCamera = true;
 
       //feu Smart
       this.buttonFeu2 = this.add.image(750,225, 'feuSmart');

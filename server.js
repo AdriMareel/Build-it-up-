@@ -12,6 +12,6 @@ if (app.get('env') === 'production') {
   session.cookie.secure = true // serve secure cookies
 }
 
-http.listen(4600, () => {
+http.listen(4200, () => {
   console.log('Serveur lancé sur le port 4200');
 });

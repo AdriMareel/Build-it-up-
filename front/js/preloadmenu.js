@@ -31,9 +31,7 @@ class preloadmenu extends Phaser.Scene{
       });
 
       //load game assets
-      this.load.image('building','../images/building.png');
-      this.load.image('building2','../images/building.png');
-      this.load.image('build','../images/build.png');
+
       this.load.image("terre", "../images/terre.png");
       this.load.image('mairie1','../images/mairie/mairie1.png');
       this.load.image('mairie2','../images/mairie/mairie2.png');
@@ -121,7 +119,7 @@ class preloadmenu extends Phaser.Scene{
       //load techno
       this.load.image('techno', "../images/HUD/technoIcone.png");
       this.load.image('feuMalvoyant', "../images/techno/Niveau 1/feuMalvoyant.png");
-      this.load.image('signalSonore', "../images/techno/Niveau 1/signalSonore.png");
+      this.load.image('spotwifi', "../images/techno/Niveau 1/spotwifi.png");
       this.load.image('feuSmart', "../images/techno/Niveau 1/feuSmart.png");
       this.load.image('peageVehiVert', "../images/techno/Niveau 1/peageVehiVert.png");
       this.load.image('e_Admin', "../images/techno/Niveau 1/e-Admin.png");
@@ -142,10 +140,7 @@ class preloadmenu extends Phaser.Scene{
       this.load.image('IAClean', "../images/techno/Niveau 3/IAClean.png");
       this.load.image('capteurRes', "../images/techno/Niveau 3/capteurRes.png");
       this.load.image('intelOpe', "../images/techno/Niveau 3/intelOpe.png");
-      
-      //Dialogue
-      this.load.image('box', './images/dialog.png');
-      this.load.image('girl', './images/girl.png');
+
     }
     
     create(){
