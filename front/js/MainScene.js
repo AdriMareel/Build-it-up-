@@ -141,7 +141,7 @@ class MainScene extends Phaser.Scene{
 		//building.setInteractive();
 		//build.setInteractive();
         
-	   
+	   /*
 		//ChatBox
 		this.options = this.add.sprite(game.config.width * 0.47, game.config.height * 0.60, "options");
         this.options.displayWidth = 200;
@@ -157,7 +157,7 @@ class MainScene extends Phaser.Scene{
         this.events.on('resume', function () {
             console.log('MainScene resumed');
         })
-		
+		*/
     }
 
 

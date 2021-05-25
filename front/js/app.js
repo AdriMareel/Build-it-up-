@@ -19,7 +19,8 @@ let gameConfig = {
   new infoTechno({key: 'infoTechno'}),
   new Bought({key:'Bought'}),
   new End({key: 'end'}),
-  new conditionsNonRemplies({key: 'CNR'})]
+  new conditionsNonRemplies({key: 'CNR'}),
+  new Defeat({key: 'Perdu'})]
 }
 
 

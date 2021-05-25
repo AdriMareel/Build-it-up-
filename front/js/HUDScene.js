@@ -3,11 +3,15 @@ let tempT = [];
 
 let unlocked = []; 
 
+let loseEconomie = 0;
+let loseEcologie = 0;
+let loseBienEtre = 0;
+let dayUntilLose = 10;
+
 class HUDScene extends Phaser.Scene{
     timeX1(){
       this.timer.paused = false;
       this.time.timeScale = 1;
-      console.log('ok');
     }
 
     timeX2(){
@@ -36,10 +40,9 @@ class HUDScene extends Phaser.Scene{
       this.button.setScrollFactor(0);
       this.button.fixedToCamera = true;
 
-       //timer      
-       this.counter = 0;
-
-       this.timer = this.time.addEvent({
+      //timer      
+      this.counter = 0;
+      this.timer = this.time.addEvent({
           delay: 24000,
           callback:this.updateDay,
           callbackScope:this,
@@ -47,7 +50,7 @@ class HUDScene extends Phaser.Scene{
           paused: false
       });
 
-       this.timerMAJ = this.time.addEvent({
+      this.timerMAJ = this.time.addEvent({
           delay: 100,
           callback:this.updateEverything,
           callbackScope:this,
@@ -174,7 +177,8 @@ class HUDScene extends Phaser.Scene{
     updateDay(){
       this.counter++;
       statistiques.updateBank();
-      if(this.counter >= 10){ 
+      this.loseCond();
+      if(this.counter >= 365){ 
         this.endGame(); 
         this.timer.paused = true;
         this.timerMAJ.paused = true;
@@ -226,6 +230,32 @@ class HUDScene extends Phaser.Scene{
       this.scene.launch('end');
     }
 
+    loseCond(){
+      if(loseEconomie == dayUntilLose) { 
+        this.scene.launch('Perdu');
+        this.timer.paused = true;
+        this.timerMAJ.paused = true;
+      }
+      if(loseEcologie == dayUntilLose) { 
+        this.scene.launch('Perdu'); 
+        this.timer.paused = true;
+        this.timerMAJ.paused = true;
+      }
+      if(loseBienEtre == dayUntilLose) { 
+        this.scene.launch('Perdu');
+        this.timer.paused = true;
+        this.timerMAJ.paused = true;
+      }
+
+      if(statistiques.getEconomie() >= 0) loseEconomie = 0;
+      else if(statistiques.getEconomie() < 0) loseEconomie++;
+
+      if(statistiques.getEcologie() >= 0) loseEcologie = 0;
+      else if(statistiques.getEcologie() < 0) loseEcologie++;
+
+      if(statistiques.getBienEtre() >= 0) loseBienEtre = 0;
+      else if(statistiques.getBienEtre() < 0) loseBienEtre++;
+    }
 }
 
 
@@ -2036,13 +2066,25 @@ class End extends Phaser.Scene{
     let resultat = '';
 
     let calculFin = ((statistiques.getEconomie() * 0.1) + (statistiques.getEcologie() * 0.1) + (statistiques.getBienEtre() * 0.1)) / 3;
-    if(calculFin >= 10){ resultat = 'S';} 
-    if(calculFin <= 0){ resultat = 'F';}  
-    if(0 < calculFin && calculFin <= 2){ resultat = 'E';} 
-    if(2 < calculFin && calculFin <= 4){ resultat = 'D';} 
-    if(4 < calculFin && calculFin <= 6){ resultat = 'C';}
-    if(6 < calculFin && calculFin <= 8){ resultat = 'B';}
-    if(8 < calculFin && calculFin < 10){ resultat = 'A';}   
+
+    if(calculFin >= 10){ resultat = 'SS';} 
+    if(calculFin <= 2){ resultat = 'D';} 
+    if(2 < calculFin && calculFin <= 4){ resultat = 'C';} 
+    if(4 < calculFin && calculFin <= 6){ resultat = 'B';}
+    if(6 < calculFin && calculFin <= 8){ resultat = 'A';}
+    if(8 < calculFin && calculFin < 10){ resultat = 'S';}   
     this.add.text(650, 430, 'Votre mandat prend fin. Vous avez la note de : ' + resultat, { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+  }
+}
+
+class Defeat extends Phaser.Scene{
+  create(){
+    var hud = this.scene.get('hud');
+
+    let sousMenuEcologie = this.add.rectangle(960, 450, 1500, 800, 0xffffff);
+    let sousMenuRec1 = this.add.rectangle(960, 450, 1500, 800);
+    sousMenuRec1.setStrokeStyle(3, 0x080808);
+
+    this.add.text(650, 430, 'Défaite', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
   }
 }
