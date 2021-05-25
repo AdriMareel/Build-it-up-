@@ -5,42 +5,33 @@ class playmenu extends Phaser.Scene {
 
   create() {
 
-    this.play = this.add.sprite(game.config.width * 0.47, game.config.height * 0.40, "play");
+    this.play = this.add.sprite(game.config.width * 0.4499, game.config.height * 0.40, "play");
     //set the width of the sprite
-            this.play.displayWidth = 200;
+            this.play.displayWidth = 270;
             //scale evenly
             this.play.scaleY = this.play.scaleX;
 
     this.play.depth = 100;
 
     this.play.setInteractive({  useHandCursor: true});
-    this.play.on('pointerdown', () => this.clickButton());
-
-
-    this.exit = this.add.sprite(game.config.width * 0.47, game.config.height * 0.50, "exit");
-    //set the width of the sprite
-            this.exit.displayWidth = 200;
-            //scale evenly
-            this.exit.scaleY = this.play.scaleX;
-
-    this.exit.depth = 100;
-
-
-    this.options = this.add.sprite(game.config.width * 0.47, game.config.height * 0.60, "options");
-    //set the width of the sprite
-            this.options.displayWidth = 200;
-            //scale evenly
-            this.options.scaleY = this.options.scaleX;
-
-    this.options.depth = 100;
-
-
+    this.play.on('pointerdown', () => this.startGame());
     this.play.setOrigin(0, 0);
     this.play.setScrollFactor(0);
-    this.exit.setOrigin(0, 0);
-    this.exit.setScrollFactor(0);
-    this.options.setOrigin(0, 0);
-    this.options.setScrollFactor(0);
+
+
+
+
+    this.info = this.add.sprite(game.config.width * 0.465, game.config.height * 0.50, "info");
+    //set the width of the sprite
+            this.info.displayWidth = 230;
+            //scale evenly
+            this.info.scaleY = this.info.scaleX;
+
+    this.info.depth = 100;
+    this.info.setOrigin(0, 0);
+    this.info.setScrollFactor(0);
+    this.info.on('pointerdown', () => this.startTuto());
+
 
     this.skybg = this.add.tileSprite(0, 0, game.config.width , game.config.height, "skybg");
     this.skybg.setOrigin(0, 0);
@@ -87,9 +78,17 @@ class playmenu extends Phaser.Scene {
 
 
 
-  }
-  clickButton() {
+ }
+  startGame()
+  {
     this.scene.launch('MainScene').launch('hud').stop();
+  }
+
+  startTuto() {
+    this.scene.stop();
+    this.scene.launch('Tutoriel');
+}
+
 }
 
     update() {

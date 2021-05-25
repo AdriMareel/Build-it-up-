@@ -6,9 +6,23 @@ class preloadmenu extends Phaser.Scene{
       // load all assets tile sprites
       this.load.image("skybg", "./images/skybg.jpg");
       this.load.image("city", "./images/city.png");
-      this.load.image("exit", "./images/exit.png");
+      this.load.image("info", "./images/info.png");
       this.load.image("play", "./images/play.png");
-      this.load.image("options", "./images/options.png");
+
+
+
+      //load tutorial assets
+      this.load.image("flecheL", "./images/flecheL.png");
+      this.load.image("flecheR", "./images/flecheR.png");
+
+      this.load.image("tutorielStart", "./images/tutorielStart.png");
+      this.load.image("tutorielStats", "./images/tutorielStats.png");
+      this.load.image("tutorielIncome", "./images/tutorielIncome.png");
+      this.load.image("tutorielShop", "./images/tutorielShop.png");
+      this.load.image("tutorielShopping", "./images/tutorielShopping.png");
+      this.load.image("tutorielBat", "./images/tutorielBatiment.png");
+      this.load.image("tutorielJour", "./images/tutorielJour.png");
+      this.load.image("tutorielTechno", "./images/tutorielTechno.png");
       
       // load spritesheet
       this.load.spritesheet("sonic", "./images/sonic.png",{
