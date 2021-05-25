@@ -18,6 +18,7 @@ let gameConfig = {
   new Info({key: 'info'}), 
   new buildingMenu({key: 'menu'}), 
   new showUpgrade({key:'showUpgrade'}), 
+  new unableToUpgrade({key:'unableToUpgrade'}), 
   new techno({key: 'techno'}),
   new infoTechno({key: 'infoTechno'}),
   new Bought({key:'Bought'}),

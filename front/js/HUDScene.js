@@ -1000,7 +1000,7 @@ class buildingMenu extends Phaser.Scene{
       this.scene.launch('showUpgrade');
       this.scene.stop('info').stop('menu').stop('techno');
     }
-    if (word == 3) { 
+    if (word == 3 || name == "panneau_solaire"){ 
       this.scene.launch('unableToUpgrade');
       this.scene.stop('info').stop('menu').stop('techno');
     }
@@ -2063,17 +2063,18 @@ class End extends Phaser.Scene{
     let sousMenuRec1 = this.add.rectangle(960, 450, 1500, 800);
     sousMenuRec1.setStrokeStyle(3, 0x080808);
 
-    let resultat = '';
+    let resultat;
 
     let calculFin = ((statistiques.getEconomie() * 0.1) + (statistiques.getEcologie() * 0.1) + (statistiques.getBienEtre() * 0.1)) / 3;
 
-    if(calculFin >= 10){ resultat = 'SS';} 
-    if(calculFin <= 2){ resultat = 'D';} 
-    if(2 < calculFin && calculFin <= 4){ resultat = 'C';} 
-    if(4 < calculFin && calculFin <= 6){ resultat = 'B';}
-    if(6 < calculFin && calculFin <= 8){ resultat = 'A';}
-    if(8 < calculFin && calculFin < 10){ resultat = 'S';}   
-    this.add.text(650, 430, 'Votre mandat prend fin. Vous avez la note de : ' + resultat, { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    
+    if(calculFin <= 2){ resultat = this.add.sprite(1350, 450, 'D');} 
+    if(2 < calculFin && calculFin <= 4){ resultat = this.add.sprite(1350, 450, 'C');} 
+    if(4 < calculFin && calculFin <= 6){ resultat = this.add.sprite(1350, 450, 'B');}
+    if(6 < calculFin && calculFin <= 8){ resultat = this.add.sprite(1350, 450, 'A');}
+    if(8 < calculFin && calculFin < 10){ resultat = this.add.sprite(1350, 450, 'S');} 
+    if(calculFin >= 10){ resultat = this.add.sprite(1530, 235, 'SS');}   
+    this.add.text(650, 430, 'Votre mandat prend fin. Vous avez la note de : ', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
   }
 }
 
@@ -2084,7 +2085,7 @@ class Defeat extends Phaser.Scene{
     let sousMenuEcologie = this.add.rectangle(960, 450, 1500, 800, 0xffffff);
     let sousMenuRec1 = this.add.rectangle(960, 450, 1500, 800);
     sousMenuRec1.setStrokeStyle(3, 0x080808);
-
-    this.add.text(650, 430, 'Défaite', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.loseImage = this.add.sprite(1530, 270, 'lose');
+this.add.text(280, 430, 'Défaite, les statistiques suivantes sont restés dans le négatif pendant une trop grande durée : ' + loseBienEtre, { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
   }
 }

@@ -100,6 +100,14 @@ class preloadmenu extends Phaser.Scene{
       this.load.image('Pause', "../images/HUD/pause.png");
       this.load.image('check', "../images/HUD/check.png");
 
+      this.load.image('lose', "../images/HUD/lose.png");
+      this.load.image('SS', "../images/HUD/SS.png");
+      this.load.image('S', "../images/HUD/S.png");
+      this.load.image('A', "../images/HUD/A.png");
+      this.load.image('B', "../images/HUD/B.png");
+      this.load.image('C', "../images/HUD/C.png");
+      this.load.image('D', "../images/HUD/D.png");
+
 
       //load techno
       this.load.image('techno', "../images/HUD/technoIcone.png");
