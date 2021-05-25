@@ -2075,6 +2075,13 @@ class End extends Phaser.Scene{
     if(8 < calculFin && calculFin < 10){ resultat = this.add.sprite(1350, 450, 'S');} 
     if(calculFin >= 10){ resultat = this.add.sprite(1530, 235, 'SS');}   
     this.add.text(650, 430, 'Votre mandat prend fin. Vous avez la note de : ', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+  this.returnMenu = this.add.sprite(900, 800, 'return');
+  this.returnMenu.setInteractive({  useHandCursor: true});
+  this.returnMenu.on('pointerdown', () => this.returnToMenu());
+  }
+   returnToMenu()
+  {
+document.location.reload();
   }
 }
 
@@ -2124,7 +2131,15 @@ class Defeat extends Phaser.Scene{
     {
       loseBienEtre ="";
     }
-   this.loseImage = this.add.sprite(1450, 270, 'lose');
- this.add.text(250, 400, 'Défaite, les statistiques suivantes sont restées dans le négatif pendant une trop grande durée : ', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8).setWordWrapWidth(500);
+  this.loseImage = this.add.sprite(1450, 270, 'lose');
+  this.add.text(250, 400, 'Défaite, les statistiques suivantes sont restées dans le négatif pendant une trop grande durée : ', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8).setWordWrapWidth(500);
+  this.returnMenu = this.add.sprite(900, 800, 'return');
+  this.returnMenu.setInteractive({  useHandCursor: true});
+  this.returnMenu.on('pointerdown', () => this.returnToMenu());
+ 
+  }
+  returnToMenu()
+  {
+document.location.reload();
   }
 }

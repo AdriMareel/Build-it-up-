@@ -99,6 +99,7 @@ class preloadmenu extends Phaser.Scene{
       this.load.image('X3', "../images/HUD/x3.png");
       this.load.image('Pause', "../images/HUD/pause.png");
       this.load.image('check', "../images/HUD/check.png");
+      this.load.image('return', "../images/HUD/returnMenu.png");
 
       //load win assets
       this.load.image('lose', "../images/HUD/lose.png");
