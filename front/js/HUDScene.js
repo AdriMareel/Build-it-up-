@@ -1020,7 +1020,7 @@ class showUpgrade extends Phaser.Scene{
 
     //Text description 
     this.titleDesc = this.add.text(1060, 250, 'Description du batiment:', {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8); 
-    this.textDesc = this.add.text(1060, 350, temp[7], {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff0).setWordWrapWidth(400);;
+    this.textDesc = this.add.text(1060, 350, temp[7], {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff0).setWordWrapWidth(400);
 
     //Text shop
     this.shopPop = this.add.text(820, 640, 'Achetez-vous ce batiment pour ' + temp[1] + '?', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);    
@@ -1952,7 +1952,7 @@ class infoTechno extends Phaser.Scene{
 
     //Text description 
     this.titleDesc = this.add.text(1060, 250, 'Description de la technologie :', {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8); 
-    this.textDesc = this.add.text(1060, 350, tempT[6], {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff0);
+    this.textDesc = this.add.text(1060, 350, tempT[6], {fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff0).setWordWrapWidth(400);;
   }
 
   close(){
