@@ -234,7 +234,7 @@ class MainScene extends Phaser.Scene{
         while(batiments[building][bat_var] != undefined){
             bat_var ++;
         }
-        if(bat_var > 4){
+        if(bat_var > 10){
             return;
         }
 
