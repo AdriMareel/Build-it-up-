@@ -1064,7 +1064,12 @@ class showUpgrade extends Phaser.Scene{
   }
 
   confirmUpgrade(name){
-    if(name.substring(0, name.length - 1) == ('mairie') && statistiques.getConditions(temp[0]) <= statistiques.getPop() && statistiques.getBuildingPrice(temp[0]) <= statistiques.getBank()){
+    if(statistiques.getLvlMairie() == 3){
+      this.scene.stop('showUpgrade');
+      var scene = this.scene.get("MainScene");
+      var bat = scene.displaybatiment(name, true,undefined); 
+    }
+    else if(name.substring(0, name.length - 1) == ('mairie') && statistiques.getConditions(temp[0]) <= statistiques.getPop() && statistiques.getBuildingPrice(temp[0]) <= statistiques.getBank()){
       this.scene.stop('showUpgrade');
       var scene = this.scene.get("MainScene");
       var bat = scene.displaybatiment(name, true,undefined); 
