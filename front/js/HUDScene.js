@@ -140,11 +140,11 @@ class HUDScene extends Phaser.Scene{
       this.textIncome = this.add.text(1780, 40, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //bank
-      this.iconeBank = this.add.sprite(1560, 60, "bank");
+      this.iconeBank = this.add.sprite(1480, 60, "bank");
       this.iconeBank.displayWidth = 60;
       this.iconeBank.scaleY = this.iconeBank.scaleX;
       this.iconeBank.depth = 100;
-      this.textBank = this.add.text(1585, 42, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.textBank = this.add.text(1505, 42, '0', { fill: 0xffffff, font: 'bold 30px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //pop
       this.iconePopulation = this.add.sprite(1720, 120, "pop");
@@ -220,8 +220,8 @@ class HUDScene extends Phaser.Scene{
 
     update () {
       this.text.setText('Jour ' + this.counter.toFixed(0));
-      this.textBank.setText(statistiques.getBank()/1000 + 'k');
-      this.textIncome.setText(statistiques.getIncome()/1000 + 'k');
+      this.textBank.setText(statistiques.getBank()/1000 + '$');
+      this.textIncome.setText(statistiques.getIncome()/1000 + 'k$/j');
       this.textPopulation.setText(statistiques.getPop()/1000 + 'k');
       this.updateBar();
     }
@@ -341,7 +341,7 @@ class HUDBuildingListEcologie extends Phaser.Scene{
     this.closeButton.on('pointerdown', () => this.close());
 
     //Text Bank 2
-    this.textBank2 = this.add.text(1500, 70, "Vous avez : " + statistiques.getBank()/1000 + 'k', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textBank2 = this.add.text(1400, 70, "Vous avez : " + statistiques.getBank()/1000 + 'k', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
     //Panneau Solaire
     this.buttonBuildingPSolaire = this.add.image(-1100,100, 'panneau_solaire');
@@ -514,15 +514,7 @@ class HUDBuildingListMoral extends Phaser.Scene {
       this.closeButton.on('pointerdown', () => this.close());
 
       //Text Bank 2
-      this.textBank2 = this.add.text(1500, 70, "Vous avez : " + statistiques.getBank()/1000 + 'k', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-
-      /* TEMPORAIRE MAIRIE*/
-      this.buttonBuildingMairie = this.add.image(150,0, 'mairie1');
-      this.buttonBuildingMairie.setInteractive({useHandCursor: true});
-      this.buttonBuildingMairie.on('pointerdown', () => this.placeBuildingMoral('mairie1'));
-      this.buttonBuildingMairie.setOrigin(-3, 0);
-      this.buttonBuildingMairie.setScrollFactor(0);
-      this.buttonBuildingMairie.fixedToCamera = true;
+      this.textBank2 = this.add.text(1400, 70, "Vous avez : " + statistiques.getBank()/1000 + 'k', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //Caserne
       this.buttonBuildingCaserne = this.add.image(640,180, 'caserne1');
@@ -781,7 +773,7 @@ class HUDBuildingListEconomie extends Phaser.Scene{
     this.closeButton.on('pointerdown', () => this.close());
 
     //Text Bank 2
-    this.textBank2 = this.add.text(1500, 120,"Vous avez : " + statistiques.getBank()/1000 + 'k', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textBank2 = this.add.text(1400, 120,"Vous avez : " + statistiques.getBank()/1000 + 'k', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
     //Banque
     this.buttonBuildingBanque = this.add.image(-750,150, 'banque1');
@@ -972,8 +964,6 @@ class buildingMenu extends Phaser.Scene{
     this.upgradebutton.depth = 200;
     this.upgradebutton.setInteractive({  useHandCursor: true});
     this.upgradebutton.on('pointerdown', () => this.getInfoUpgrade(temp[0]));
-
-
   }
 
   close(){
@@ -1162,7 +1152,7 @@ class techno extends Phaser.Scene{
       //SpotWifi
       this.buttonspotWifi = this.add.image(20,140, 'spotwifi');
       for(let i = 0; i < unlocked.length; i++){
-        if('spotWifi' == unlocked[i]){
+        if('spotwifi' == unlocked[i]){
           let check = this.add.sprite(720, 300, 'check');
           check.depth = 300;
           check.displayWidth = 50;
@@ -1182,7 +1172,7 @@ class techno extends Phaser.Scene{
       this.buttonspotWifi.setOrigin(-3, 0);
       this.buttonspotWifi.setScrollFactor(0);
       this.buttonspotWifi.fixedToCamera = true;
-      this.prixspotWifi = this.add.text(710,352, technologieT1[1].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      this.prixspotWifi = this.add.text(690,352, technologieT1[1].price +"$", { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
       this.textspotWifi = this.add.text(680,372, technologieT1[1].nom, { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //spotWifi Info
@@ -2046,21 +2036,21 @@ class unableToUpgrade extends Phaser.Scene{
 class conditionsNonRemplies extends Phaser.Scene{
   create(){
     //Close bouton
-    this.closeButton = this.add.sprite(1400, 325, 'close');
+    this.closeButton = this.add.sprite(1400, 310, 'close');
     this.closeButton.displayWidth = 50;
     this.closeButton.scaleY = this.closeButton.scaleX;
     this.closeButton.depth = 200;
     this.closeButton.setInteractive({  useHandCursor: true});
     this.closeButton.on('pointerdown', () => this.close());
 
-    let Rec4 = this.add.rectangle(980, 450, 900, 300, 0xffffff);
-    let sousMenuRec4 = this.add.rectangle(980, 450, 900, 300);
+    let Rec4 = this.add.rectangle(980, 450, 900, 350, 0xffffff);
+    let sousMenuRec4 = this.add.rectangle(980, 450, 900, 350);
     sousMenuRec4.setStrokeStyle(4, 0x080808);
 
     let i = parseInt(statistiques.getLvlMairie().substring(statistiques.getLvlMairie().length - 1));
-    i += 1;
-    this.add.text(545, 430, 'Vous ne pouvez pas acheter ça. Il vous faut ' + statistiques.getBuildingPrice(temp[0]) + '$ et au moins ' + statistiques.getConditions(temp[0]) + ' habitants.', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
-    if(temp[0].substring(0,temp[0].length - 1) != 'mairie') { this.add.text(670, 460, 'Vous devez aussi avoir votre mairie au niveau.' + i, { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8); }
+    i = i + 1;
+    this.add.text(540, 430, 'Vous ne pouvez pas acheter ça. Il vous faut ' + statistiques.getBuildingPrice(temp[0]) + '$ et au moins ' + statistiques.getConditions(temp[0]) + ' habitants.', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    if(temp[0].substring(0,temp[0].length - 1) != 'mairie') { this.add.text(670, 460, 'Vous devez aussi avoir votre mairie au niveau ' + i + '.', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8); }
   }
 
   close(){
