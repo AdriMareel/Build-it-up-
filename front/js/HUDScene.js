@@ -957,21 +957,30 @@ class buildingMenu extends Phaser.Scene{
     this.closeButton.setInteractive({  useHandCursor: true});
     this.closeButton.on('pointerdown', () => this.close());
 
-    //Bouton Move
-    this.movebutton = this.add.sprite(800, 700, 'move');
+    //Button Move
+    this.movebutton = this.add.sprite(750, 700, 'move');
     this.movebutton.displayWidth = 150;
     this.movebutton.scaleY = this.movebutton.scaleX;
     this.movebutton.depth = 200;
     this.movebutton.setInteractive({  useHandCursor: true});
     this.movebutton.on('pointerdown', () => this.teleportBuilding());
 
-    //Bouton Upgrade
-    this.upgradebutton = this.add.sprite(1150, 700, 'star');
+    //Button Upgrade
+    this.upgradebutton = this.add.sprite(950, 700, 'star');
     this.upgradebutton.displayWidth = 150;
     this.upgradebutton.scaleY = this.upgradebutton.scaleX;
     this.upgradebutton.depth = 200;
     this.upgradebutton.setInteractive({  useHandCursor: true});
     this.upgradebutton.on('pointerdown', () => this.getInfoUpgrade(temp[0]));
+
+
+    //Button Delete
+    this.deletebutton = this.add.sprite(1150, 700, 'trash');
+    this.deletebutton.displayWidth = 150;
+    this.deletebutton.scaleY = this.deletebutton.scaleX;
+    this.deletebutton.depth = 200;
+    this.deletebutton.setInteractive({  useHandCursor: true});
+    this.deletebutton.on('pointerdown', () => this.deleteBuilding(temp[0]));
   }
 
   close(){

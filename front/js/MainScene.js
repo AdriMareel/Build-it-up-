@@ -104,8 +104,6 @@ class MainScene extends Phaser.Scene{
 
         console.log(map);
 
-        statistiques.Pop = 10000;
-
         var cam = this.cameras.main;
         //Map
         this.GenerateMap();
