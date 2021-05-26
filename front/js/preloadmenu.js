@@ -22,7 +22,10 @@ class preloadmenu extends Phaser.Scene{
       this.load.image("tutorielShopping", "./images/tutorielShopping.png");
       this.load.image("tutorielBat", "./images/tutorielBatiment.png");
       this.load.image("tutorielJour", "./images/tutorielJour.png");
+      this.load.image("tutorielMairie", "./images/tutorielMairie.png");
       this.load.image("tutorielTechno", "./images/tutorielTechno.png");
+      this.load.image('arrow', "../images/HUD/arrow.png");
+      this.load.image('boom', "../images/HUD/boom.png");
       
       // load spritesheet
       this.load.spritesheet("sonic", "./images/sonic.png",{
@@ -89,6 +92,7 @@ class preloadmenu extends Phaser.Scene{
       this.load.image('iconeInfo', "../images/HUD/iconeInfo.png");
       this.load.image('star', "../images/HUD/star.png");
       this.load.image('move', "../images/HUD/move.png");
+      this.load.image('trash', "../images/HUD/trash.png");
       this.load.image('croix', "../images/HUD/redcross.png");
       this.load.image('confirm', "../images/HUD/confirm.png");
       this.load.image('cancel', "../images/HUD/cancel.png");
