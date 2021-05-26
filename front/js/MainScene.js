@@ -76,9 +76,6 @@ class MainScene extends Phaser.Scene{
         }
     }
     moveBuilding(posX,posY,building){
-        //console.log(building);
-        //console.log(this.getCoordCenter(building.texture.key)[0]);
-        //console.log(this.getCoordCenter(building.texture.key)[1]);
         building.x = -(posX*grassTile.width/2)+grassTile.width/2+posY*grassTile.width/2 + this.getCoordCenter(building.texture.key)[0];
         building.y = (posX+posY)*grassTile.height/2 +this.getCoordCenter(building.texture.key)[1];
     }
@@ -106,10 +103,6 @@ class MainScene extends Phaser.Scene{
         var cam = this.cameras.main;
         //Map
         this.GenerateMap();
-
-        let pointer = this.input.mousePointer;        
-	
-		this.count = 0;
     	
 		//Gestion scroll
 		this.input.on('pointermove', function (p){
@@ -117,8 +110,6 @@ class MainScene extends Phaser.Scene{
                 cam.scrollX -= (p.x - p.prevPosition.x) / cam.zoom;
                 cam.scrollY -= (p.y - p.prevPosition.y) / cam.zoom;  
         });
-
-
 
 		//Zoom
 		this.input.on("wheel",  (pointer, gameObjects, deltaX, deltaY) => {
@@ -133,7 +124,64 @@ class MainScene extends Phaser.Scene{
 				}
 			}
 		});
+
+        cam.scrollX -= 4*193;
+        cam.scrollY += 12.5*193;
+
+        //placement Mairie 1
+        batiments["mairie1"][0] = this.add.image(0,0,"mairie1");
+        isPlaced["mairie1"][0] = true;
+        this.moveBuilding(15,15,batiments["mairie1"][0]);
+        map[15][15] = "mairie10";
+        statistiques.listeBatiment.push("mairie1");
+
+        batiments["mairie1"][0].setInteractive();
+        batiments["mairie1"][0].on("pointerdown", () => {
+            var scene = this.scene.get("ecologie");
+            scene.getInfo("mairie1");
+            this.scene.launch('menu');
+            if("mairie1" == buildingListMk1[13].name || "mairie1" == buildingListMk2[13].name || "mairie1" == buildingListMk3[13].name) { this.scene.launch('techno'); }
+        });
+
 	
+    }
+
+    hideBuilding(building,bat_var){
+        let index = 0;
+
+        console.log(batiments["caserne1"][0]);
+
+        for(bat in batiments){
+            for (let i = 0; i < 10 ; i++){
+                if (batiments[bat][i] != undefined){
+                    batiments[bat][i].setVisible(false); 
+                }   
+            }
+        }
+
+        for (let i = 0; i < 30 ; i++){
+            for (let j = 0 ; j < 30 ; j++) {
+                if (map[i][j] != 'ground') mapVar[i][j].setTint("000");
+            }
+        }
+
+        batiments[building][bat_var].setVisible(true);
+    }
+
+    showBuilding(){
+        for(bat in batiments){
+            for (let i = 0; i < 10 ; i++){
+                if (batiments[bat][i] != undefined){
+                    batiments[bat][i].setVisible(true); 
+                }   
+            }
+        }
+
+        for (let i = 0; i < 30 ; i++){
+            for (let j = 0 ; j < 30 ; j++) {
+                if (map[i][j] != 'ground') mapVar[i][j].clearTint();
+            }
+        }
     }
 
 
@@ -172,8 +220,10 @@ class MainScene extends Phaser.Scene{
         if(bat_var > 4){
             return;
         }
+        
         console.log(building + " " + bat_var);
         batiments[building][bat_var] = this.add.image(0,0,building);
+        this.hideBuilding(building,bat_var);
       
         this.input.mouse.requestPointerLock();  
         if(isupgrade){
@@ -253,6 +303,7 @@ class MainScene extends Phaser.Scene{
 
                 else{         
                     //console.log("test" ,positionX, positionY)
+                    this.showBuilding();
                     if (flag == 1) {scene.destroyErrorTextBuilding();flag = 0;}
                     
                     if (sizeX == 0 && sizeY == 0) map[positionY][positionX] = building + bat_var;
@@ -297,18 +348,8 @@ class MainScene extends Phaser.Scene{
                 batiments[building][bat_var].x = cam.scrollX + pointer.x;
                 batiments[building][bat_var].y = cam.scrollY + pointer.y;
                 }                
-        });
-
-       
-        
+        });     
     }
-    
-
-	clickButton(){
-        this.scene.pause();
-        this.scene.launch('DialogBox');
-
-	}
 
 	update(){
 	}
