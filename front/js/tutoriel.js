@@ -11,9 +11,9 @@ class tutoriel extends Phaser.Scene{
         
         let start = this.add.image(500, 400, "tutorielStart");
 
-        let sousMenuInfo = this.add.rectangle(1500, 450, 600, 500, 0xffffff);
+        let sousMenuInfo = this.add.rectangle(1500, 450, 600, 500, 0x999999);
         let sousMenuRec = this.add.rectangle(1500, 450, 600, 500);
-        sousMenuRec.setStrokeStyle(3, 0x080808);
+        sousMenuRec.setStrokeStyle(4, 0x080808);
         this.titleText = this.add.text(1330,200, intro, { fill: 0xff0000, font: 'bold 26px system-ui' }).setShadow(2, 2, 0xffff00, 8).setWordWrapWidth(400);
         this.text = this.add.text(1260,300, introText, { fill: 0xffffff, font: 'bold 23px system-ui' }).setShadow(2, 2, 0xffff00, 8).setWordWrapWidth(520);
 
@@ -174,7 +174,7 @@ class Tuto4 extends Phaser.Scene{
 
 
 
-    let mairieText = "J'ai une dernière chose à vous montrer, promis ! Voici le menu de chaque bâtiment qui vous permettra d'organiser correctement votre ville. On y trouve 4 boutons: \r\n -Move (à gauche) vous permettra de relocaliser vos bâtiments. \r\n -L'Upgrade (au milieu) vous permettra d'améliorer vos bâtiments que sous certaine conditions. \r\n-Le delete (à droite) vous permettra comme son nom l'indique de supprimer un bâtiment mais attention ! Vous ne serez pas remboursés CHEH. \r\nEt enfin le bouton spécifique à la mairie, le bouton de technologie. Ce bouton très spéciale vous sera d'une très grande aide comme expliqué en-dessous. \r\n"
+    let mairieText = "J'ai une dernière chose à vous montrer, promis ! Voici le menu de chaque bâtiment qui vous permettra d'organiser correctement votre ville. On y trouve 4 boutons: \r\n -Move (à gauche) vous permettra de relocaliser vos bâtiments. \r\n -L'Upgrade (à droite) vous permettra d'améliorer vos bâtiments que sous certaine conditions. \r\n -Le bouton spécifique à la mairie (au centre), le bouton de technologie. Ce bouton très spécial vous sera d'une très grande aide comme expliqué en-dessous. \r\n"
     this.mairieDesc = this.add.text(900,150, mairieText, { fill: 0xffffff, font: 'bold 20px system-ui' }).setShadow(2, 2, 0xffff00, 8).setWordWrapWidth(520);
 
 

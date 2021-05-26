@@ -1107,7 +1107,7 @@ class techno extends Phaser.Scene{
 
   mairieTechno(){
     //Close button
-    this.upgradebutton.setVisible('false');
+    this.upgradebutton.setVisible(false);
 
     this.closeButton = this.add.sprite(1680, 80, 'close');
     this.closeButton.displayWidth = 50;

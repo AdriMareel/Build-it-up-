@@ -96,11 +96,16 @@ class MainScene extends Phaser.Scene{
             }
         }
     }
+    attributeDepth(building,posX,posY){
+        building.depth = posX + posY;
+    }
 	
 	create(){
         var cam = this.cameras.main;
         //Map
         this.GenerateMap();
+
+        this.sound.add("bgm",{loop: true, volume:0.01}).play();
     	
 		//Gestion scroll
 		this.input.on('pointermove', function (p){
@@ -333,6 +338,7 @@ class MainScene extends Phaser.Scene{
                         map[positionY][positionX - 1] = building + bat_var;
                         map[positionY - 1][positionX - 1] = building + bat_var;
                     }
+                    this.attributeDepth(batiments[building][bat_var],positionX,positionY);
                     mapVar[positionY][positionX].y += 30;
                     isPlaced[building][bat_var] = true;
                     this.input.mouse.locked = false;
