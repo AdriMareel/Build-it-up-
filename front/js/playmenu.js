@@ -4,7 +4,8 @@ class playmenu extends Phaser.Scene {
   }
 
   create() {
-
+    this.music = this.sound.add("sonictheme",{ volume:0.09});
+    this.music.play()
     this.play = this.add.sprite(game.config.width * 0.4499, game.config.height * 0.35, "play");
     //set the width of the sprite
             this.play.displayWidth = 270;
@@ -15,6 +16,9 @@ class playmenu extends Phaser.Scene {
 
     this.play.setInteractive({  useHandCursor: true});
     this.play.on('pointerdown', () => this.startGame());
+        this.play.on("pointerdown", () => {
+            this.music.stop();
+        });
     this.play.setOrigin(0, 0);
     this.play.setScrollFactor(0);
 
@@ -31,7 +35,11 @@ class playmenu extends Phaser.Scene {
     this.info.setOrigin(0, 0);
     this.info.setScrollFactor(0);
     this.info.setInteractive({  useHandCursor: true});
-    this.info.on('pointerdown', () => this.startTuto());
+    this.info.on('pointerdown', () =>  this.startTuto() );
+
+        this.info.on("pointerdown", () => {
+            this.music.stop();
+        });
 
 
     this.skybg = this.add.tileSprite(0, 0, game.config.width , game.config.height, "skybg");
@@ -83,10 +91,13 @@ class playmenu extends Phaser.Scene {
   startGame()
   {
     this.scene.launch('MainScene').launch('hud').stop();
+    this.sound.add("button",{loop: false, volume:0.2}).play();
+
   }
 
   startTuto() {
     this.scene.stop();
+    this.sound.add("button",{loop: false, volume:0.2}).play();
     this.scene.launch('tutoriel');
 }
 

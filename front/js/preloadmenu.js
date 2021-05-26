@@ -9,7 +9,14 @@ class preloadmenu extends Phaser.Scene{
       this.load.image("info", "./images/info.png");
       this.load.image("play", "./images/play.png");
 
+
+      // load audio and sound effect
       this.load.audio("bgm", "./images/bgm.mp3");
+      this.load.audio("dollar", "./images/dollar.mp3");
+      this.load.audio("clown", "./images/clown.mp3");
+      this.load.audio("coin", "./images/coin.mp3");
+      this.load.audio("button", "./images/button.mp3");
+      this.load.audio("sonictheme", "./images/sonictheme.mp3");
 
       //load tutorial assets
       this.load.image("flecheL", "./images/flecheL.png");

@@ -1,9 +1,13 @@
+
+    
+
 class tutoriel extends Phaser.Scene{
     constructor(){
         super('tutoriel');
     }
     
     create(){
+
 
         let intro = "Bonjour et Bienvenue à vous !" 
         let introText = "L’ancien maire a delaissé sa ville en embarquant toute l'économie ! Vous avez été donc choisi comme nouveau maire afin de la rebâtir et pour cela, vous ne disposerez que d'un an. Votre but étant d’en faire une ville la plus intelligente et durable possible. Pour ce faire, vous disposez de 3 statistiques : bien-être, économie et écologie, ainsi que de nombreux bâtiments que vous pourrez construire et/ou améliorer au fil de votre aventure et qui auront un impact très important sur le déroulement de votre partie!"
@@ -29,16 +33,20 @@ class tutoriel extends Phaser.Scene{
         this.flecheL.on('pointerdown', () => this.previous());
 
 
+
+
     }
      next()
     {
     this.scene.stop();
     this.scene.launch('Tuto2')
+    this.sound.add("button",{loop: false, volume:0.2}).play();
     } 
         previous()
   {
     this.scene.stop();
     this.scene.launch('playmenu')
+    this.sound.add("button",{loop: false, volume:0.2}).play();
   }  
     
 }
@@ -84,11 +92,13 @@ class Tuto2 extends Phaser.Scene{
     {
     this.scene.stop();
     this.scene.launch('Tuto3')
+    this.sound.add("button",{loop: false, volume:0.2}).play();
     }
     previous()
   {
     this.scene.stop();
     this.scene.launch('tutoriel')
+    this.sound.add("button",{loop: false, volume:0.2}).play();
   }  
 }
 
@@ -134,11 +144,14 @@ let statText = "Vous pouvez voir que cette usine a un impact sur chaque statisti
     {
     this.scene.stop();
     this.scene.launch('Tuto4')
+     this.sound.add("button",{loop: false, volume:0.2}).play();
+
     }
    previous()
   {
     this.scene.stop();
     this.scene.launch('Tuto2')
+     this.sound.add("button",{loop: false, volume:0.2}).play();
   }  
 }
 
@@ -178,7 +191,7 @@ class Tuto4 extends Phaser.Scene{
     this.mairieDesc = this.add.text(900,150, mairieText, { fill: 0xffffff, font: 'bold 20px system-ui' }).setShadow(2, 2, 0xffff00, 8).setWordWrapWidth(520);
 
 
-    let technoText = "Le bouton technologie vous dirigera sur une interface comme celle-ci, qui est un tout nouveau magasin où vous pourrez acheter des technologies possédant aussi des bonus pour les statistiques."
+    let technoText = "Le bouton technologie vous dirigera sur une interface comme celle-ci, qui est un tout nouveau magasin où vous pourrez acheter des technologies possédant aussi des bonus pour les statistiques. \r\n Attention, si vous améliorez la mairie sans avoir acheter certaine technologies vous ne pourrez plus revenir en arrière pour les recupérer."
 
     this.technoDesc = this.add.text(950,680, technoText, { fill: 0xffffff, font: 'bold 20px system-ui' }).setShadow(2, 2, 0xffff00, 8).setWordWrapWidth(520);
 
@@ -199,7 +212,6 @@ class Tuto4 extends Phaser.Scene{
 
 
 
-
     // Navigate through the tutorial
     this.flecheL = this.add.sprite(100, 800, "flecheL");
     this.flecheL.setInteractive({  useHandCursor: true});
@@ -211,10 +223,12 @@ class Tuto4 extends Phaser.Scene{
   startTheGame()
   {
    this.scene.launch('MainScene').launch('hud').stop();
+    this.sound.add("button",{loop: false, volume:0.2}).play();
   }
   previous()
   {
     this.scene.stop();
     this.scene.launch('Tuto3')
+     this.sound.add("button",{loop: false, volume:0.2}).play();
   }
 }

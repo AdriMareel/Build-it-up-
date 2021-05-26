@@ -481,6 +481,7 @@ class HUDBuildingListEcologie extends Phaser.Scene{
     statistiques.setBank(buildingListMk1[statistiques.getId(name)].price);
     var scene = this.scene.get("MainScene");
     var bat = scene.displaybatiment(name,false,undefined);
+    this.sound.add("dollar",{loop: false, volume:0.5}).play();
   }
 
   getConditionsP(name){
@@ -740,6 +741,7 @@ class HUDBuildingListMoral extends Phaser.Scene {
       statistiques.setBank(buildingListMk1[statistiques.getId(name)].price);
       var scene = this.scene.get("MainScene");
       var bat = scene.displaybatiment(name,false,undefined);
+      this.sound.add("dollar",{loop: false, volume:0.5}).play();
    }
 
   getConditionsP(name){
@@ -881,6 +883,7 @@ class HUDBuildingListEconomie extends Phaser.Scene{
     statistiques.setBank(buildingListMk1[statistiques.getId(name)].price);
     var scene = this.scene.get("MainScene");
     var bat = scene.displaybatiment(name,false,undefined); 
+    this.sound.add("dollar",{loop: false, volume:0.5}).play();
   }
 
   close(){
@@ -1063,11 +1066,18 @@ class showUpgrade extends Phaser.Scene{
 
   }
 
-  confirmUpgrade(name){
-    if(name.substring(0, name.length - 1) == ('mairie') && statistiques.getConditions(temp[0]) <= statistiques.getPop() && statistiques.getBuildingPrice(temp[0]) <= statistiques.getBank()){
+ confirmUpgrade(name){
+    if(statistiques.getLvlMairie() == 3){
       this.scene.stop('showUpgrade');
       var scene = this.scene.get("MainScene");
       var bat = scene.displaybatiment(name, true,undefined); 
+       this.sound.add("dollar",{loop: false, volume:0.5}).play();
+    }
+    else if(name.substring(0, name.length - 1) == ('mairie') && statistiques.getConditions(temp[0]) <= statistiques.getPop() && statistiques.getBuildingPrice(temp[0]) <= statistiques.getBank()){
+      this.scene.stop('showUpgrade');
+      var scene = this.scene.get("MainScene");
+      var bat = scene.displaybatiment(name, true,undefined); 
+       this.sound.add("dollar",{loop: false, volume:0.5}).play();
     }
     else if(statistiques.getConditions(temp[0]) > statistiques.getPop() || statistiques.getBuildingPrice(temp[0]) > statistiques.getBank() || statistiques.getLvlMairie() != name.substring(name.length - 1)){
       this.scene.launch('CNR');
@@ -1076,6 +1086,7 @@ class showUpgrade extends Phaser.Scene{
       this.scene.stop('showUpgrade');
       var scene = this.scene.get("MainScene");
       var bat = scene.displaybatiment(name, true,undefined); 
+       this.sound.add("dollar",{loop: false, volume:0.5}).play();
     }
   }
 
@@ -1097,6 +1108,7 @@ class techno extends Phaser.Scene{
 
   mairieTechno(){
     //Close button
+
     this.upgradebutton.setVisible(false);
 
     this.closeButton = this.add.sprite(1680, 80, 'close');
@@ -1941,6 +1953,8 @@ class techno extends Phaser.Scene{
     unlocked.push(name);
     statistiques.setBank(statistiques.getTechnoPrice(name));
     this.scene.launch('Bought').stop('techno').stop('menu').stop('info');
+    this.sound.add("coin",{ volume:0.01}).play();
+
   }
 
   getInfoT(name){
@@ -1949,6 +1963,7 @@ class techno extends Phaser.Scene{
   }
 
   close(){
+   
     this.scene.stop('info').stop('menu').stop('techno');
   }
 }
@@ -2139,10 +2154,12 @@ class Defeat extends Phaser.Scene{
       loseBienEtre ="";
     }
   this.loseImage = this.add.sprite(1450, 270, 'lose');
-  this.add.text(250, 400, 'Défaite, les statistiques suivantes sont restées dans le négatif pendant une trop grande durée : ', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8).setWordWrapWidth(500);
+  this.add.text(250,200, 'DEFAITE',{ fill: 0xffffff, font: 'bold 36px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+  this.add.text(250, 400, 'Les statistiques suivantes sont restées dans le négatif pendant une trop grande durée : ', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8).setWordWrapWidth(500);
   this.returnMenu = this.add.sprite(900, 800, 'return');
   this.returnMenu.setInteractive({  useHandCursor: true});
   this.returnMenu.on('pointerdown', () => this.returnToMenu());
+  this.sound.add("clown",{ volume:0.5}).play();
  
   }
   returnToMenu()

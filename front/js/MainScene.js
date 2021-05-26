@@ -105,7 +105,7 @@ class MainScene extends Phaser.Scene{
         //Map
         this.GenerateMap();
 
-        this.sound.add("bgm",{loop: true, volume:0.01}).play();
+        this.sound.add("bgm",{loop: true, volume:0.1}).play();
     	
 		//Gestion scroll
 		this.input.on('pointermove', function (p){
