@@ -480,7 +480,7 @@ class HUDBuildingListEcologie extends Phaser.Scene{
     statistiques.saveBatiment(name);
     statistiques.setBank(buildingListMk1[statistiques.getId(name)].price);
     var scene = this.scene.get("MainScene");
-    var bat = scene.displaybatiment(name);
+    var bat = scene.displaybatiment(name,false,undefined);
   }
 
   getConditionsP(name){
@@ -747,7 +747,7 @@ class HUDBuildingListMoral extends Phaser.Scene {
       statistiques.saveBatiment(name);
       statistiques.setBank(buildingListMk1[statistiques.getId(name)].price);
       var scene = this.scene.get("MainScene");
-      var bat = scene.displaybatiment(name);
+      var bat = scene.displaybatiment(name,false,undefined);
    }
 
   getConditionsP(name){
@@ -888,7 +888,7 @@ class HUDBuildingListEconomie extends Phaser.Scene{
     statistiques.saveBatiment(name);
     statistiques.setBank(buildingListMk1[statistiques.getId(name)].price);
     var scene = this.scene.get("MainScene");
-    var bat = scene.displaybatiment(name); 
+    var bat = scene.displaybatiment(name,false,undefined); 
   }
 
   close(){
@@ -966,7 +966,7 @@ class buildingMenu extends Phaser.Scene{
     this.movebutton.on('pointerdown', () => this.teleportBuilding());
 
     //Button Upgrade
-    this.upgradebutton = this.add.sprite(950, 700, 'star');
+    this.upgradebutton = this.add.sprite(1150, 700, 'star');
     this.upgradebutton.displayWidth = 150;
     this.upgradebutton.scaleY = this.upgradebutton.scaleX;
     this.upgradebutton.depth = 200;
@@ -974,13 +974,6 @@ class buildingMenu extends Phaser.Scene{
     this.upgradebutton.on('pointerdown', () => this.getInfoUpgrade(temp[0]));
 
 
-    //Button Delete
-    this.deletebutton = this.add.sprite(1150, 700, 'trash');
-    this.deletebutton.displayWidth = 150;
-    this.deletebutton.scaleY = this.deletebutton.scaleX;
-    this.deletebutton.depth = 200;
-    this.deletebutton.setInteractive({  useHandCursor: true});
-    this.deletebutton.on('pointerdown', () => this.deleteBuilding(temp[0]));
   }
 
   close(){
@@ -988,9 +981,9 @@ class buildingMenu extends Phaser.Scene{
   }
 
   teleportBuilding(name){
-    this.scene.stop('info').stop('menu');
+    this.scene.stop('info').stop('menu').stop('techno');
     var scene = this.scene.get("MainScene");
-    var bat = scene.displaybatiment(temp[0],false); 
+    var bat = scene.replaceBuilding(temp[0]);
   }
 
    getInfoUpgrade(name){
@@ -1084,7 +1077,7 @@ class showUpgrade extends Phaser.Scene{
     if(name.substring(0, name.length - 1) == ('mairie') && statistiques.getConditions(temp[0]) <= statistiques.getPop() && statistiques.getBuildingPrice(temp[0]) <= statistiques.getBank()){
       this.scene.stop('showUpgrade');
       var scene = this.scene.get("MainScene");
-      var bat = scene.displaybatiment(name, true); 
+      var bat = scene.displaybatiment(name, true,undefined); 
     }
     else if(statistiques.getConditions(temp[0]) > statistiques.getPop() || statistiques.getBuildingPrice(temp[0]) > statistiques.getBank() || statistiques.getLvlMairie() != name.substring(name.length - 1)){
       this.scene.launch('CNR');
@@ -1092,7 +1085,7 @@ class showUpgrade extends Phaser.Scene{
     else if(statistiques.getConditions(temp[0]) <= statistiques.getPop() && statistiques.getBuildingPrice(temp[0]) <= statistiques.getBank() && statistiques.getLvlMairie() == name.substring(name.length - 1)){
       this.scene.stop('showUpgrade');
       var scene = this.scene.get("MainScene");
-      var bat = scene.displaybatiment(name, true); 
+      var bat = scene.displaybatiment(name, true,undefined); 
     }
   }
 
@@ -1104,7 +1097,7 @@ class showUpgrade extends Phaser.Scene{
 class techno extends Phaser.Scene{
   create(){
     //Bouton Upgrade
-    this.upgradebutton = this.add.sprite(960, 800, 'techno');
+    this.upgradebutton = this.add.sprite(950, 700, 'techno');
     this.upgradebutton.displayWidth = 150;
     this.upgradebutton.scaleY = this.upgradebutton.scaleX;
     this.upgradebutton.depth = 200;
@@ -1114,6 +1107,8 @@ class techno extends Phaser.Scene{
 
   mairieTechno(){
     //Close button
+    this.upgradebutton.setVisible('false');
+
     this.closeButton = this.add.sprite(1680, 80, 'close');
     this.closeButton.displayWidth = 50;
     this.closeButton.scaleY = this.closeButton.scaleX;

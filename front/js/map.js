@@ -10,20 +10,3 @@ for(let x=0;x<30;x++){
 		map[x][y] = 'ground';
 	}
 }
-
-/*var grid = [];
-
-for(var i = 0; i < 1000; i++)
-{
-    var row = [];
-    
-    for(var j = 0; j < 1000; j++)
-    {
-        var posX = (j - i) * 32;
-        var posY = (j + i) * 16;
-        var sprite = this.game.add.sprite(posX, posY, grass);
-        row.push(sprite);
-    }
-    
-    grid.push(row);
-}*/
