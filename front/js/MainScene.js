@@ -1,6 +1,8 @@
 let mapVar = new Array(30);
 let batiments = new Array();
 
+var batVarModif;
+
 let isPlaced = new Array();
 
 for(let i=0;i<30;i++){
@@ -100,6 +102,10 @@ class MainScene extends Phaser.Scene{
 	
 	create(){
 
+        console.log(map);
+
+        statistiques.Pop = 10000;
+
         var cam = this.cameras.main;
         //Map
         this.GenerateMap();
@@ -149,8 +155,6 @@ class MainScene extends Phaser.Scene{
     hideBuilding(building,bat_var){
         let index = 0;
 
-        console.log(batiments["caserne1"][0]);
-
         for(bat in batiments){
             for (let i = 0; i < 10 ; i++){
                 if (batiments[bat][i] != undefined){
@@ -194,26 +198,30 @@ class MainScene extends Phaser.Scene{
         let sizeX = 0;let sizeY = 0;let prevSizeX = 0;let prevSizeY = 0;
 
         //Variables pour placement si taille batiment != 1x1
-        let tabNumber = building.charAt(building.length - 1);
-        console.log(tabNumber);
+        let tabNumber = parseInt(building.charAt(building.length - 1));
+        console.log("tab number " + tabNumber + " " + typeof(tabNumber));
         switch(tabNumber){
-            case "1":
+            case 1:
+                console.log("yep1");
                 if(buildingListMk1[statistiques.getId(building)].sizeX == 1 || buildingListMk1[statistiques.getId(building)].sizeX == 2){
-                   sizeX = buildingListMk1[statistiques.getId(building)].sizeX;sizeY = buildingListMk1[statistiques.getId(building)].sizeY;
+                   sizeX = buildingListMk1[statistiques.getId(building)].sizeX; console.log(buildingListMk1[statistiques.getId(building)]);sizeY = buildingListMk1[statistiques.getId(building)].sizeY;
                 }
             break;
-            case "2": 
+            case 2:
+                
                 if(buildingListMk2[statistiques.getId(building)].sizeX == 1 || buildingListMk2[statistiques.getId(building)].sizeX == 2){
+                   console.log("yep2");
                    sizeX = buildingListMk2[statistiques.getId(building)].sizeX;sizeY = buildingListMk2[statistiques.getId(building)].sizeY;
                 }
             break;
-            case "3": 
+            case 3:
+                console.log("yep3");
                 if(buildingListMk3[statistiques.getId(building)].sizeX == 1 || buildingListMk3[statistiques.getId(building)].sizeX == 2){
                    sizeX = buildingListMk3[statistiques.getId(building)].sizeX;sizeY = buildingListMk3[statistiques.getId(building)].sizeY;
                 }
             break;
         }
-
+        if (building == 'panneau_solaire') {sizeX = 2; sizeY = 2};
         while(batiments[building][bat_var] != undefined){
             bat_var ++;
         }
@@ -222,11 +230,13 @@ class MainScene extends Phaser.Scene{
         }
         
         console.log(building + " " + bat_var);
-        batiments[building][bat_var] = this.add.image(0,0,building);
-        this.hideBuilding(building,bat_var);
-      
-        this.input.mouse.requestPointerLock();  
+        batiments[building][bat_var] = this.add.image(0,0,building);       
+        console.log("sizeX " + sizeX + "sizeY " + sizeY);
+        this.input.mouse.requestPointerLock();
+
         if(isupgrade){
+            if (building == "mairie1" || building == "mairie2" || building == "mairie3") batVarModif = 0;
+            if (batVarModif != undefined) console.log(batVarModif)
             let arraybuilding = building.split('');
             let last_char = arraybuilding[building.length-1];
             arraybuilding.pop();
@@ -236,10 +246,9 @@ class MainScene extends Phaser.Scene{
             statistiques.setBank(statistiques.getBuildingPrice(building))
             statistiques.upgradeBuilding(building, oldbatiment2);
 
-            batiments[oldbatiment2][bat_var].destroy();
+            batiments[oldbatiment2][batVarModif].destroy();
 
             let prevTabNumber = tabNumber - 1;
-            console.log("prev tab number " + prevTabNumber);
             switch(prevTabNumber){
                 case 1: 
                     prevSizeX = buildingListMk1[statistiques.getId(oldbatiment2)].sizeX;prevSizeY = buildingListMk1[statistiques.getId(oldbatiment2)].sizeY;
@@ -252,12 +261,13 @@ class MainScene extends Phaser.Scene{
             
             for(let i = 0; i < 30 ; i++){
                 for (let j = 0; j < 30; j++){
-                    if (map[i][j] == oldbatiment2 + bat_var.toString()){
+                    if (map[i][j] == oldbatiment2 + batVarModif.toString()){
                         map[i][j] = 'ground';
                     }
                 }
             }
         }
+        this.hideBuilding(building,bat_var);
         this.input.mouse.locked = true;
 
         for (let i=0;i<30;i++){ 
@@ -287,7 +297,7 @@ class MainScene extends Phaser.Scene{
                     scene.displayErrorTextBuilding();
                     console.log(scene.errorText);
                 }
-                else if(map[positionY][positionX - 1] != 'ground' && sizeX == 2 && sizeY == 1){ //condition si place déjà prise
+                else if(map[positionY][positionX - 1] != 'ground' && sizeX == 2 && sizeY == 1){ 
                     console.log("ouais");
                     flag = 1;
                     scene.displayErrorTextBuilding();
@@ -302,7 +312,6 @@ class MainScene extends Phaser.Scene{
                 }
 
                 else{         
-                    //console.log("test" ,positionX, positionY)
                     this.showBuilding();
                     if (flag == 1) {scene.destroyErrorTextBuilding();flag = 0;}
                     
@@ -329,9 +338,11 @@ class MainScene extends Phaser.Scene{
                     batiments[building][bat_var].setInteractive();
                     batiments[building][bat_var].on("pointerdown", () => {
                         if(isPlaced[building][bat_var]){
+                            batVarModif = bat_var;
                             var scene = this.scene.get("ecologie");
                             scene.getInfo(building);
                             this.scene.launch('menu');
+                            
                             if(building == buildingListMk1[13].name || building == buildingListMk2[13].name || building == buildingListMk3[13].name) { this.scene.launch('techno'); }
                         }
                     });
@@ -350,6 +361,27 @@ class MainScene extends Phaser.Scene{
                 }                
         });     
     }
+
+    removeOnClickBuilding(){
+        for(bat in batiments){
+            for (let i = 0; i < 10 ; i++){
+                if (batiments[bat][i] != undefined){
+                    batiments[bat][i].removeInteractive(); 
+                }   
+            }
+        } 
+    }
+
+    addOnClickBuilding(){
+        for(bat in batiments){
+            for (let i = 0; i < 10 ; i++){
+                if (batiments[bat][i] != undefined){
+                    batiments[bat][i].setInteractive(); 
+                }   
+            }
+        } 
+    }
+
 
 	update(){
 	}
