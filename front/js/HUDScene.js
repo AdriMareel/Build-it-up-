@@ -220,12 +220,52 @@ class HUDScene extends Phaser.Scene{
 
     update () {
       this.text.setText('Jour ' + this.counter.toFixed(0));
-      this.textBank.setText(statistiques.getBank()/1000 + '$');
-      this.textIncome.setText(statistiques.getIncome()/1000 + 'k$/j');
-      this.textPopulation.setText(statistiques.getPop()/1000 + 'k');
+      this.textBank.setText(this.showBank());
+      this.textIncome.setText(this.showIncome());
+      this.textPopulation.setText(this.showPop());
       this.updateBar();
     }
 
+    showBank(){
+      let a = '';
+      if(statistiques.getBank() >= 1000000){
+        a = statistiques.getBank()/1000000 + 'M$';
+        return a;
+      }
+      if(statistiques.getBank() < 1000000){
+        a = statistiques.getBank()/1000 + 'k$';
+        return a;
+      }
+    }
+
+    showIncome(){
+      let a = '';
+      if(statistiques.getIncome() >= 1000000){
+        a = statistiques.getIncome()/1000000 + 'M$/j';
+        return a;
+      }
+      if(statistiques.getIncome() >= 1000){
+        a = statistiques.getIncome()/1000 + 'k$/j';
+        return a;
+      }
+      if(statistiques.getIncome() < 1000){
+        a = statistiques.getIncome() + '$/j';
+        return a;
+      }
+    }
+
+    showPop(){
+      let a = '';
+      if(statistiques.getPop() >= 1000){
+        a = statistiques.getPop()()/1000 + 'k';
+        return a;
+      }
+      if(statistiques.getPop() < 1000){
+        a = statistiques.getPop();
+        return a;
+      }
+      
+    }
     endGame(){
       this.scene.launch('end');
     }
@@ -1079,14 +1119,14 @@ class showUpgrade extends Phaser.Scene{
       var bat = scene.displaybatiment(name, true,undefined); 
        this.sound.add("dollar",{loop: false, volume:0.5}).play();
     }
-    else if(statistiques.getConditions(temp[0]) > statistiques.getPop() || statistiques.getBuildingPrice(temp[0]) > statistiques.getBank() || statistiques.getLvlMairie() != name.substring(name.length - 1)){
-      this.scene.launch('CNR');
-    }
     else if(statistiques.getConditions(temp[0]) <= statistiques.getPop() && statistiques.getBuildingPrice(temp[0]) <= statistiques.getBank() && statistiques.getLvlMairie() == name.substring(name.length - 1)){
       this.scene.stop('showUpgrade');
       var scene = this.scene.get("MainScene");
       var bat = scene.displaybatiment(name, true,undefined); 
        this.sound.add("dollar",{loop: false, volume:0.5}).play();
+    }
+    else if(statistiques.getConditions(temp[0]) > statistiques.getPop() || statistiques.getBuildingPrice(temp[0]) > statistiques.getBank() || statistiques.getLvlMairie() != name.substring(name.length - 1)){
+      this.scene.launch('CNR');
     }
   }
 
@@ -2051,20 +2091,20 @@ class unableToUpgrade extends Phaser.Scene{
 class conditionsNonRemplies extends Phaser.Scene{
   create(){
     //Close bouton
-    this.closeButton = this.add.sprite(1400, 310, 'close');
+    this.closeButton = this.add.sprite(1450, 310, 'close');
     this.closeButton.displayWidth = 50;
     this.closeButton.scaleY = this.closeButton.scaleX;
     this.closeButton.depth = 200;
     this.closeButton.setInteractive({  useHandCursor: true});
     this.closeButton.on('pointerdown', () => this.close());
 
-    let Rec4 = this.add.rectangle(980, 450, 900, 350, 0xffffff);
-    let sousMenuRec4 = this.add.rectangle(980, 450, 900, 350);
+    let Rec4 = this.add.rectangle(980, 450, 1000, 350, 0xffffff);
+    let sousMenuRec4 = this.add.rectangle(980, 450, 1000, 350);
     sousMenuRec4.setStrokeStyle(4, 0x080808);
 
     let i = parseInt(statistiques.getLvlMairie().substring(statistiques.getLvlMairie().length - 1));
     i = i + 1;
-    this.add.text(540, 430, 'Vous ne pouvez pas acheter ça. Il vous faut ' + statistiques.getBuildingPrice(temp[0]) + '$ et au moins ' + statistiques.getConditions(temp[0]) + ' habitants.', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.add.text(530, 430, 'Vous ne pouvez pas acheter ça. Il vous faut ' + statistiques.getBuildingPrice(temp[0]) + '$ et au moins ' + statistiques.getConditions(temp[0]) + ' habitants.', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8);
     if(temp[0].substring(0,temp[0].length - 1) != 'mairie') { this.add.text(670, 460, 'Vous devez aussi avoir votre mairie au niveau ' + i + '.', { fill: 0xffffff, font: 'bold 24px system-ui' }).setShadow(2, 2, 0xffff00, 8); }
   }
 
