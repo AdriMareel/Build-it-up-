@@ -257,7 +257,7 @@ class HUDScene extends Phaser.Scene{
     showPop(){
       let a = '';
       if(statistiques.getPop() >= 1000){
-        a = statistiques.getPop()()/1000 + 'k';
+        a = statistiques.getPop()/1000 + 'k';
         return a;
       }
       if(statistiques.getPop() < 1000){
@@ -713,7 +713,7 @@ class HUDBuildingListMoral extends Phaser.Scene {
       this.buttonInfoEcole.setOrigin(-3, 0);
       this.buttonInfoEcole.setScrollFactor(0);
       this.buttonInfoEcole.fixedToCamera = true;
-      
+
       //Hopital
       this.buttonBuildingHopital = this.add.image(-450,180, 'hopital1');
       if(statistiques.getBank() < buildingListMk1[4].price || statistiques.getConditions(buildingListMk1[4].name) > statistiques.getPop()) { 
@@ -818,7 +818,7 @@ class HUDBuildingListEconomie extends Phaser.Scene{
 
     //Text Bank 2
     var scene1 = this.scene.get("hud");
-    this.textBank2 = this.add.text(1400, 70, "Vous avez : " + scene1.showBank(), { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    this.textBank2 = this.add.text(1400, 120, "Vous avez : " + scene1.showBank(), { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
     //Banque
     this.buttonBuildingBanque = this.add.image(-750,150, 'banque1');

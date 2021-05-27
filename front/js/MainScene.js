@@ -12,17 +12,63 @@ for(let i=0;i<30;i++){
 for(bat in buildingListMk1){
     batiments[buildingListMk1[bat].name] = new Array(30);
     isPlaced[buildingListMk1[bat].name] = new Array(30);
+
+    batiments["caserne1"] = new Array(3);     
+    isPlaced["caserne1"] = new Array(3);
+
+    batiments["commissariat1"] = new Array(3);     
+    isPlaced["commissariat1"] = new Array(3);
+
+    batiments["ecole1"] = new Array(3);     
+    isPlaced["ecole1"] = new Array(3);
+
+    batiments["hopital1"] = new Array(3);     
+    isPlaced["hopital1"] = new Array(3);
+
+    batiments["poste1"] = new Array(3);     
+    isPlaced["poste1"] = new Array(3);
 }
 
 for(bat in buildingListMk2){
     batiments[buildingListMk2[bat].name] = new Array(30);
     isPlaced[buildingListMk2[bat].name] = new Array(30);
+
+    batiments["caserne2"] = new Array(3);     
+    isPlaced["caserne2"] = new Array(3);
+
+    batiments["commissariat2"] = new Array(3);     
+    isPlaced["commissariat2"] = new Array(3);
+
+    batiments["ecole2"] = new Array(3);     
+    isPlaced["ecole2"] = new Array(3);
+
+    batiments["hopital2"] = new Array(3);     
+    isPlaced["hopital2"] = new Array(3);
+
+    batiments["poste2"] = new Array(3);     
+    isPlaced["poste2"] = new Array(3);
 }
 
 for(bat in buildingListMk3){
     batiments[buildingListMk3[bat].name] = new Array(30);
     isPlaced[buildingListMk3[bat].name] = new Array(30);
+
+    batiments["caserne3"] = new Array(3);     
+    isPlaced["caserne3"] = new Array(3);
+
+    batiments["commissariat3"] = new Array(3);     
+    isPlaced["commissariat3"] = new Array(3);
+
+    batiments["ecole3"] = new Array(3);     
+    isPlaced["ecole3"] = new Array(3);
+
+    batiments["hopital3"] = new Array(3);     
+    isPlaced["hopital3"] = new Array(3);
+
+    batiments["poste3"] = new Array(3);     
+    isPlaced["poste3"] = new Array(3);
 }
+
 for(bat in buildingListMk1){
     for(let i=0;i<30;i++){
         isPlaced[buildingListMk1[bat].name][i] = false;
@@ -219,7 +265,6 @@ class MainScene extends Phaser.Scene{
                 }
             break;
             case 2:
-                
                 if(buildingListMk2[statistiques.getId(building)].sizeX == 1 || buildingListMk2[statistiques.getId(building)].sizeX == 2){
                    sizeX = buildingListMk2[statistiques.getId(building)].sizeX;sizeY = buildingListMk2[statistiques.getId(building)].sizeY;
                 }
@@ -234,7 +279,9 @@ class MainScene extends Phaser.Scene{
         while(batiments[building][bat_var] != undefined){
             bat_var ++;
         }
-        if(bat_var > 10){
+        if(batiments[building].length - 1 < bat_var){
+            statistiques.removeBuilding(building);
+            statistiques.setBank(-statistiques.getBuildingPrice(building));
             return;
         }
 
