@@ -1,7 +1,7 @@
 class gameStat{
 	constructor(){
 		this.Income = 0;
-		this.Bank = 1000000;
+		this.Bank = 100000000;
 		this.Pop = 0;
 		this.statEcologie = 0;
 		this.statEconomie = 0;

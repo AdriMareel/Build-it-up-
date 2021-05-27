@@ -381,7 +381,8 @@ class HUDBuildingListEcologie extends Phaser.Scene{
     this.closeButton.on('pointerdown', () => this.close());
 
     //Text Bank 2
-    this.textBank2 = this.add.text(1400, 70, "Vous avez : " + statistiques.getBank()/1000 + 'k', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    var scene1 = this.scene.get("hud");
+    this.textBank2 = this.add.text(1400, 70, "Vous avez : " + scene1.showBank(), { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
     //Panneau Solaire
     this.buttonBuildingPSolaire = this.add.image(-1100,100, 'panneau_solaire');
@@ -555,7 +556,8 @@ class HUDBuildingListMoral extends Phaser.Scene {
       this.closeButton.on('pointerdown', () => this.close());
 
       //Text Bank 2
-      this.textBank2 = this.add.text(1400, 70, "Vous avez : " + statistiques.getBank()/1000 + 'k', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+      var scene1 = this.scene.get("hud");
+      this.textBank2 = this.add.text(1400, 70, "Vous avez : " + scene1.showBank(), { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
       //Caserne
       this.buttonBuildingCaserne = this.add.image(640,180, 'caserne1');
@@ -711,7 +713,7 @@ class HUDBuildingListMoral extends Phaser.Scene {
       this.buttonInfoEcole.setOrigin(-3, 0);
       this.buttonInfoEcole.setScrollFactor(0);
       this.buttonInfoEcole.fixedToCamera = true;
-
+      
       //Hopital
       this.buttonBuildingHopital = this.add.image(-450,180, 'hopital1');
       if(statistiques.getBank() < buildingListMk1[4].price || statistiques.getConditions(buildingListMk1[4].name) > statistiques.getPop()) { 
@@ -725,7 +727,7 @@ class HUDBuildingListMoral extends Phaser.Scene {
       }
       else if(statistiques.getBank() >= buildingListMk1[4].price && statistiques.getConditions(buildingListMk1[4].name) <= statistiques.getPop()){
         this.buttonBuildingHopital.setInteractive({useHandCursor: true});
-        this.buttonBuildingHopital.on('pointerdown', () => this.getConditionsP('hopital1'));
+        this.buttonBuildingHopital.on('pointerdown', () => this.placeBuildingMoral('hopital1'));
       }
       this.buttonBuildingHopital.setOrigin(-3, 0);
       this.buttonBuildingHopital.setScrollFactor(0);
@@ -815,7 +817,8 @@ class HUDBuildingListEconomie extends Phaser.Scene{
     this.closeButton.on('pointerdown', () => this.close());
 
     //Text Bank 2
-    this.textBank2 = this.add.text(1400, 120,"Vous avez : " + statistiques.getBank()/1000 + 'k', { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
+    var scene1 = this.scene.get("hud");
+    this.textBank2 = this.add.text(1400, 70, "Vous avez : " + scene1.showBank(), { fill: 0xffffff, font: 'bold 18px system-ui' }).setShadow(2, 2, 0xffff00, 8);
 
     //Banque
     this.buttonBuildingBanque = this.add.image(-750,150, 'banque1');
@@ -1113,18 +1116,21 @@ class showUpgrade extends Phaser.Scene{
       var bat = scene.displaybatiment(name, true,undefined); 
        this.sound.add("dollar",{loop: false, volume:0.5}).play();
     }
-    else if(name.substring(0, name.length - 1) == ('mairie') && statistiques.getConditions(temp[0]) <= statistiques.getPop() && statistiques.getBuildingPrice(temp[0]) <= statistiques.getBank()){
-      this.scene.stop('showUpgrade');
-      var scene = this.scene.get("MainScene");
-      var bat = scene.displaybatiment(name, true,undefined); 
-       this.sound.add("dollar",{loop: false, volume:0.5}).play();
-    }
+
     else if(statistiques.getConditions(temp[0]) <= statistiques.getPop() && statistiques.getBuildingPrice(temp[0]) <= statistiques.getBank() && statistiques.getLvlMairie() == name.substring(name.length - 1)){
       this.scene.stop('showUpgrade');
       var scene = this.scene.get("MainScene");
       var bat = scene.displaybatiment(name, true,undefined); 
        this.sound.add("dollar",{loop: false, volume:0.5}).play();
     }
+
+    else if(name.substring(0, name.length - 1) == ('mairie') && statistiques.getConditions(temp[0]) <= statistiques.getPop() && statistiques.getBuildingPrice(temp[0]) <= statistiques.getBank()){
+      this.scene.stop('showUpgrade');
+      var scene = this.scene.get("MainScene");
+      var bat = scene.displaybatiment(name, true,undefined); 
+       this.sound.add("dollar",{loop: false, volume:0.5}).play();
+    }
+    
     else if(statistiques.getConditions(temp[0]) > statistiques.getPop() || statistiques.getBuildingPrice(temp[0]) > statistiques.getBank() || statistiques.getLvlMairie() != name.substring(name.length - 1)){
       this.scene.launch('CNR');
     }
