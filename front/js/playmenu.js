@@ -4,7 +4,7 @@ class playmenu extends Phaser.Scene {
   }
 
   create() {
-    this.music = this.sound.add("sonictheme",{ volume:0.09});
+    this.music = this.sound.add("sonictheme",{ volume:0.06});
     this.music.play()
     this.play = this.add.sprite(game.config.width * 0.4499, game.config.height * 0.35, "play");
     //set the width of the sprite
